@@ -138,7 +138,7 @@ function showIndex(data) {
 					current_li = " class=\"current\"";
 				}
 
-				var category_li = "<li"+current_li+"><a href=\""+basepath+"index.html?cate="+category.favoritesId+ "\" >"+ category.favoritesTitle+"</a></li>";
+				var category_li = "<li"+current_li+"><a href=\""+basepath+"?cate="+category.favoritesId+ "\" >"+ category.favoritesTitle+"</a></li>";
 
 				$("#category_list").append(category_li);
 			}
