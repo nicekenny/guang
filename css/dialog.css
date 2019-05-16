@@ -1,0 +1,55 @@
+@charset "utf-8";
+.dialogLayer {
+	font-size: 12px;
+	font-family: "Microsoft YaHei";
+	color: #333333;
+}
+.dialogLayer {
+	margin: 0px;
+	padding: 0px;
+	height: 100px;
+	width: 100px;
+	background-color: #FFFFFF;
+	position: fixed;
+	box-shadow: 0 3px 5px #666666;
+	overflow: hidden;
+	border-radius: 5px;
+	display: none;
+}
+.dialogLayer .dialogTitle {
+	height: 30px;
+	padding-right: 3px;
+	padding-left: 10px;
+	cursor: move;
+}
+.dialogLayer .dialogTitle .dialogTitleText {
+	font-size: 14px;
+	line-height: 30px;
+	font-weight: bold;
+	color: #333333;
+	text-decoration: none;
+}
+.dialogLayer .dialogTitle .closeDialog {
+	background-image: url(images/close-icon.png);
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-indent: -9999px;
+	display: block;
+	float: right;
+	height: 30px;
+	width: 30px;
+	cursor: pointer;
+}
+.dialogLayer .dialogContent {
+	padding: 0px;
+	overflow: hidden;
+	background-color: #FFFFFF;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+.dialogLayer .dialogContent .dialogLoading {
+	width: 300px;
+	margin-right: auto;
+	margin-left: auto;
+	
+}
