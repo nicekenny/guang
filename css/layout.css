@@ -306,6 +306,7 @@ a:hover {
 	background-color: #FFFFFF;
 	position: relative;
 	height: 45px;
+	overflow: hidden;
 }
 .cc_root_box {
 	padding-top: 5px;
