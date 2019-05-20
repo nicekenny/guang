@@ -1,4 +1,14 @@
 @charset "utf-8";
+@font-face {
+	font-family: 'fontello';
+	src: url('./font/fontello.eot');
+	src: url('./font/fontello.eot#iefix') format('embedded-opentype'),
+		url('./font/fontello.woff') format('woff'),
+		url('./font/fontello.ttf') format('truetype'),
+		url('./font/fontello.svg#fontello') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
 * {
 	-webkit-user-select: none;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -58,6 +68,33 @@ a:hover {
 	color: #333333;
 	text-decoration: none;
 }
+.font_icon {
+	font-family: fontello;
+	font-style: normal;
+	font-weight: normal;
+	speak: none;
+	display: inline-block;
+	width: 40px;
+	text-align: center;
+	/* opacity: .8; */
+	
+	/* For safety - reset parent styles, that can break glyph codes*/
+	font-variant: normal;
+	text-transform: none;
+	/* fix buttons height, for twitter bootstrap */
+	line-height: 40px;
+	/* Animation center compensation - margins should be symmetric */
+	/* remove if not needed */
+	/* You can be more comfortable with increased icons size */
+	/* font-size: 120%; */
+	
+	/* Font smoothing. That was taken from TWBS */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-size: 20px;
+	/* Uncomment for 3D effect */
+	/* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
 .r3 {
 	border-radius: 3px;
 }
@@ -101,15 +138,15 @@ a:hover {
 }
 .head_bar .hb_left {
 	position: absolute;
-	height: 45px;
-	width: 45px;
+	height: 40px;
+	width: 40px;
 	left: 0px;
 	top: 0px;
 }
 .head_bar .hb_right {
 	position: absolute;
-	height: 45px;
-	width: 45px;
+	height: 40px;
+	width: 40px;
 	top: 0px;
 	right: 0px;
 }
@@ -259,30 +296,11 @@ a:hover {
 	background-position: 8px -62px;
 	text-indent: -9999px;
 	display: block;
-	height: 45px;
-	width: 45px;
+	height: 40px;
+	width: 40px;
 }
 .hd_search_link {
-	background-image: url(images/hd_icons.png);
-	background-repeat: no-repeat;
-	background-position: 13px 12px;
-	text-indent: -9999px;
-	display: block;
-	height: 45px;
-	width: 45px;
-}
-.hd_search_off {
-	background: none;
-	text-indent: 5px;
-	display: block;
-	height: 45px;
-	width: 45px;
-	font-size: 14px;
-	line-height: 45px;
-	font-weight: normal;
-	color: #333333;
-	text-decoration: none;
-	text-align: left;
+
 }
 .category_childs_box {
 	background-color: #FFFFFF;

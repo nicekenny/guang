@@ -33,15 +33,16 @@ $(function() {
 		resetBox();
 	});
 	$("#hd_search_link").click(function() {
-		if($(this).attr("class")=="hd_search_link") {
+		if($(this).attr("status")=="close") {
 			resetBox();
-			$(this).text("取消");
-			$(this).attr("class","hd_search_off");
+			$(this).html("&#xe81b;");
 			$("#hb_search_box").show();
 			$("#m_ui_mask").show();
 			$("#hb_search_text").focus();
-		} else if($(this).attr("class")=="hd_search_off") {
+			$(this).attr("status","open");
+		} else if($(this).attr("status")=="open") {
 			resetBox();
+			$(this).attr("status","close");
 		}
 	});
 	$("#hd_category_link").click(function() {
@@ -100,8 +101,7 @@ function resetBox() {
 		return;
 	if(!$("#hb_search_box").is(":hidden")) {
 		$("#hb_search_box").hide();
-		$("#hd_search_link").attr("class","hd_search_link");
-		$("#hd_search_link").text("搜索");
+		$("#hd_search_link").html("&#xe834;");
 	}
 	if(!$("#hb_category_box").is(":hidden")) {
 		$("#hb_category_box").hide();
