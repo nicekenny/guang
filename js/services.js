@@ -28,10 +28,45 @@ $(function() {
 		var tmp_href = $(this).attr("href");
 		$(this).attr("href", serv_basepath + tmp_href);
 	});
+
+	$("#m_ui_mask").click(function() {
+		resetBox();
+	});
+	$("#hd_search_link").click(function() {
+		if($(this).attr("class")=="hd_search_link") {
+			resetBox();
+			$(this).text("取消");
+			$(this).attr("class","hd_search_off");
+			$("#hb_search_box").show();
+			$("#m_ui_mask").show();
+			$("#hb_search_text").focus();
+		} else if($(this).attr("class")=="hd_search_off") {
+			resetBox();
+		}
+	});
+	$("#hd_category_link").click(function() {
+		if($(this).attr("show_box")!="1") {
+			resetBox();
+			$(this).attr("show_box","1");
+			$("#hb_category_box").show();
+			$("#m_ui_mask").show();
+		} else if($(this).attr("show_box")=="1") {
+			resetBox();
+		}
+	});
+	$("#hb_search_form").submit(function() {
+		var keyword = $.trim($("#hb_search_text").val());
+		if(keyword=="")
+			return false;
+		var action = basepath+encodeURI(keyword);
+		$(this).attr("action",action);
+		return true;
+	});
 	
 	var pathname = window.location.pathname;
 	// alert(pathname);
 	if(pathname=="" || pathname=="/" || pathname=="/index.html") {
+		// 载入首页
 		loadIndex();
 		// 滚动条加载商品数据
 		$(window).scroll(function() {
@@ -55,9 +90,24 @@ $(function() {
 			}
 
 		});
-	}	
+	}
+
 
 });
+function resetBox() {
+	if($("#m_ui_mask").is(":hidden"))
+		return;
+	if(!$("#hb_search_box").is(":hidden")) {
+		$("#hb_search_box").hide();
+		$("#hd_search_link").attr("class","hd_search_link");
+		$("#hd_search_link").text("搜索");
+	}
+	if(!$("#hb_category_box").is(":hidden")) {
+		$("#hb_category_box").hide();
+		$("#hd_category_link").removeAttr("show_box");
+	}
+	$("#m_ui_mask").hide();
+}
 
 // index.html页面数据加载
 function loadIndex() {
@@ -68,20 +118,31 @@ function loadIndex() {
 	// 设置加载中
 	loaded = false;
 	$("#wall_loading").show();
-	var categoryId = getQueryString("cate");
+	var load_url;
+	var from = getQueryString("from");
+	if(from!=undefined && from!="") {
+		if(from=="search") {
+			var search_q = getQueryString("q");
+			load_url = "taobao/item/ajaxSearch.html?q="+search_q+"&page="+page_no+"&app="+base_app_code;
+		}
+	}
+	if(load_url==undefined) {
+		var categoryId = getQueryString("cate");
+		load_url = "taobao/item/ajaxItems.html?cate="+categoryId+"&page="+page_no+"&app="+base_app_code;
+	}
 	$.ajax({
-		url: serv_basepath + "taobao/item/ajaxItems.html?cate="+categoryId+"&page="+page_no+"&app="+base_app_code,
+		url: serv_basepath + load_url,
 		type: 'GET',
 		dataType: "jsonp",
-		jsonpCallback: "showIndex",
+		jsonpCallback: "showItems",
 		success: function (data) {
 			//console.info("success");
 		}
 	});
 }
 
-// loadIndex回调函数
-function showIndex(data) {
+// 回调：显示Items
+function showItems(data) {
 	var current_category = data.currentCategory;
 	if(current_category!=undefined) {
 		$(document).attr("title", current_category + " - 逛街啦");
@@ -146,6 +207,7 @@ function showIndex(data) {
 	}
 	
 }
+
 // 去购买（淘口令）
 function doBuy(a) {
 	var itemId = $(a).attr("itemId");

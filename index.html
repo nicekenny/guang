@@ -26,11 +26,36 @@
 
 	<div class="screen_wrap">
     
-    	<div id="head_box" class="head_bar" style="display: none;">
-            <div class="hb_center">
+    	<div id="head_box" class="head_bar"><!--  style="display: none;" -->
+			<div class="hb_center">
               <a href="" scl="guang" class="hb_title">～逛一逛～</a>
             </div>
-        </div>
+            <!-- Left-Menu -->
+            <div class="hb_left"><a id="hd_category_link" class="hb_category_link">Category</a></div>
+            <div id="hb_category_box" class="hb_category_box" style="display: none;"><!--  style="display: none;" -->
+                <ul class="clearfix">
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-tops"></i>上衣</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-dresses"></i>裙子</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-shoes"></i>鞋子</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-bags"></i>包包</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-underwears"></i>内衣</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-acceries"></i>配饰</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-beauty"></i>美妆</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-baby"></i>母婴</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-homedeco"></i>家居</a></li>
+                    <li><a href="" scl="guang"><i class="ct-icon ct-i-digital"></i>数码</a></li>
+                    <li><a href="" scl="guang">回到首页</a></li>
+                </ul>
+            </div>
+            <!-- Right-Search -->
+            <div class="hb_right"><a id="hd_search_link" class="hd_search_link">Search</a></div>
+            <div id="hb_search_box" class="hb_search_box" style="display: none;"><!--  style="display: none;" -->
+            	<form id="hb_search_form" action="" method="get">
+                	<input id="hb_search_text" name="q" type="text" placeholder="请输入关键词" class="hb_sb_text"/>
+                    <input type="hidden" name="from" value="search" />
+                </form>
+            </div>
+		</div>
     	
 		<div class="category_childs_box">
         	<ul id="category_list" class="cc_root_box clearfix">
@@ -64,10 +89,12 @@
 			<span id="browser_version">Loading...</span>
 		</div>
 	</div>
+    <!-- mask -->
+	<div id="m_ui_mask" class="ui_mask" style="display: none;"></div>
 	<!--悬浮工具栏-->
 	<div class="fixed_box">
 		<a class="back_top" href="javascript:void(0);">回到顶部</a>
 	</div>
-
+    
 </body>
 </html>
