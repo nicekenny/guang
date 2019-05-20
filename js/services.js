@@ -58,7 +58,7 @@ $(function() {
 		var keyword = $.trim($("#hb_search_text").val());
 		if(keyword=="")
 			return false;
-		var action = basepath+encodeURI(keyword);
+		var action = basepath;//+encodeURI(keyword);
 		$(this).attr("action",action);
 		return true;
 	});
