@@ -205,6 +205,10 @@ function showItems(data) {
 
 				$("#category_list").append(category_li);
 			}
+		} else {
+			if(current_category!=undefined) {
+				var category_li = "<li class=\"current\"><a>"+ current_category +"</a></li>";
+			}
 		}
 	}
 	
