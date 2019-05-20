@@ -207,7 +207,10 @@ function showItems(data) {
 			}
 		} else {
 			if(current_category!=undefined) {
-				var category_li = "<li class=\"current\"><a style=\"max-width:60%;overflow:hidden;\">"+ current_category +"</a></li>";
+				var tmp_category = current_category;
+				if(current_category.length>20)
+					tmp_category = current_category.substring(0,20)+"...";
+				var category_li = "<li class=\"current\"><a style=\"overflow:hidden;\">"+ tmp_category +"</a></li>";
 				$("#category_list").append(category_li);
 			}
 		}
