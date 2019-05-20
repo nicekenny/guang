@@ -123,6 +123,7 @@ function loadIndex() {
 	if(from!=undefined && from!="") {
 		if(from=="search") {
 			var search_q = getQueryString("q");
+			search_q = decodeURI(search_q);
 			load_url = "taobao/item/ajaxSearch.html?q="+search_q+"&page="+page_no+"&app="+base_app_code;
 		}
 	}
