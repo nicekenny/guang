@@ -291,13 +291,7 @@ a:hover {
 	padding-top: 2px;
 }
 .hb_category_link {
-	background-image: url(images/hd_icons.png);
-	background-repeat: no-repeat;
-	background-position: 8px -62px;
-	text-indent: -9999px;
-	display: block;
-	height: 40px;
-	width: 40px;
+
 }
 .hd_search_link {
 
