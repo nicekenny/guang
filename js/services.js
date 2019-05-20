@@ -58,7 +58,6 @@ $(function() {
 		var keyword = $.trim($("#hb_search_text").val());
 		if(keyword=="")
 			return false;
-		$("#hb_search_text").val(encodeURI(keyword))
 		var action = basepath; //+"?q="+encodeURI(keyword);
 		$(this).attr("action",action);
 		return true;
