@@ -129,7 +129,7 @@ function loadIndex() {
 		} else if(from=="material") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
-			var cate_param
+			var cate_param = "";
 			var cate = getQueryString("cate");
 			if(cate!=undefined)
 				cate_param = "&cate="+cate;
