@@ -251,11 +251,13 @@ function sortItems(a) {
 	var link = $(a);
 	var sort = link.attr("sort");
 	if(link.find("i.si_up").hasClass("current")) {
-		changeParamReload("sort",sort+"_des");
+		return changeParamReload("sort",sort+"_des");
 	}
 	if(link.find("i.si_down").hasClass("current")) {
-		changeParamReload("sort",sort+"_asc");
+		return changeParamReload("sort",sort+"_asc");
 	}
+	// Default sort
+	changeParamReload("sort",sort+"_des");
 }
 
 // 去购买（淘口令）
