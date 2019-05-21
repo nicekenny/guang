@@ -219,6 +219,13 @@ function showItems(data) {
 				$("#category_list").append(category_li);
 			}
 		}
+		if(data.from=="material") {
+			var query = data.query;
+			if(query!=undefined) {
+				var title_li = "<li class=\"current\"><a>"+ query.keyword +"</a></li>";
+				$("#category_list").append(title_li);
+			}
+		}
 	}
 	
 }
