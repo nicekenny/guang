@@ -582,10 +582,17 @@ a:hover {
 	width: 36px;
 	margin-top: 15px;
 	border-radius: 20px;
-	background-color:rgba(240,240,240,.7);
+	/*background-color:rgba(240,240,240,.7);*/
 }
 .fixed_box a.back_top {
-	background-position: 3px 3px;
+	background-image: none;
+	text-align: center;
+	text-indent: 0px;
+	font-size: 30px;
+	line-height: 36px;
+	opacity: 0.7;
+	filter:alpha(Opacity=70);
+	-moz-opacity:0.7;
 }
 
 .welcome_box {
