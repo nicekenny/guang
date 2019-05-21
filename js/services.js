@@ -195,7 +195,7 @@ function showItems(data) {
 	} else if(page_no==1) {
 		$("#warning_box").show();
 	}
-	if(current_page_no<=1) {
+	if(current_page_no==1) {
 		var categorys = data.categorys;
 		if(categorys!=undefined) {
 			for(var i=0;i<categorys.length;i++) {
