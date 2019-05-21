@@ -222,11 +222,12 @@ function showItems(data) {
 		if(data.from=="material") {
 			var query = data.query;
 			if(query!=undefined) {
+				var sort_vol_up = "current",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
 				var category_option;
-				var title_li = "<li class=\"current\"><a>"+ query.keyword +"</a></li>";
-				category_option = title_li + "<li><a href=\"\">综合排序</a></li>"
-					+"<li><a href=\"\">销量</a></li>"
-					+"<li><a href=\"\">价格</a></li>";
+				var title_li = "<li class=\"query_title current\"><a>"+ query.keyword +"</a></li>";
+				category_option = title_li + "</ul><ul class=\"cc_options\"><li><a href=\"\">综合排序</a></li>"
+					+"<li><a href=\"\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
+					+"<li><a href=\"\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
 				$("#category_list").append(category_option);
 			}
 		}
