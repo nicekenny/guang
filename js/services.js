@@ -290,7 +290,7 @@ function doBuy(a) {
 
 	var price_name = "折扣价：";
 	if(coupon!=undefined && coupon!="undefined" && coupon!="") {
-		coupon_txt = "&nbsp;<i style=\"font-size:10px;\">(券后)</i>";
+		coupon_txt = "&nbsp;<span style=\"font-size:10px;color:#999999;\">(用券后)</span>";
 		price_name = "优惠价：";
 	}
 
