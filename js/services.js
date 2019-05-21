@@ -129,6 +129,10 @@ function loadIndex() {
 		} else if(from=="material") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
+			var cate_param
+			var cate = getQueryString("cate");
+			if(cate!=undefined)
+				cate_param = "&cate="+cate;
 			var material_param = "";
 			var material_id = getQueryString("material_id");
 			if(material_id!=undefined)
@@ -137,6 +141,7 @@ function loadIndex() {
 			var sort = getQueryString("sort");
 			if(sort!=undefined)
 				sort_param = "&sort="+sort;
+			
 			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + material_param + sort_param +"&page="+page_no+"&app="+base_app_code;
 		}
 	}
