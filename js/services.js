@@ -243,7 +243,7 @@ function showItems(data) {
 
 				var category_option;
 				var title_li = "<li class=\"query_title current\"><a>"+ query.keyword +"</a></li>";
-				category_option = "<li><a href=\"\">综合排序</a></li>"
+				category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
 				$("#category_list").append(title_li);
@@ -257,6 +257,9 @@ function showItems(data) {
 function sortItems(a) {
 	var link = $(a);
 	var sort = link.attr("sort");
+	if(sort=="default") {
+		return changeParamReload("sort","");
+	}
 	if(link.find("i.si_up").hasClass("current")) {
 		return changeParamReload("sort",sort+"_des");
 	}
