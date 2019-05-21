@@ -16,7 +16,6 @@ serv_basepath = "https://x.scode.org.cn:444/";
 var base_app_code = "guang";
 // 初始化页码
 var page_no = 1,current_page_no = 0,loaded = true;
-var search_url_params = "&material_id=3756&has_coupon=true";
 
 // 页面数据初始化
 $(function() {
@@ -126,7 +125,12 @@ function loadIndex() {
 		if(from=="search") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
-			load_url = "taobao/item/ajaxSearch.html?q="+ search_q + search_url_params +"&page="+page_no+"&app="+base_app_code;
+			load_url = "taobao/item/ajaxSearch.html?q="+ search_q +"&page="+page_no+"&app="+base_app_code;
+		} else if(from=="material") {
+			var search_q = getQueryString("q");
+			var material_id = getQueryString("material_id");
+			search_q = decodeURI(search_q);
+			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + "&material_id="+material_id+"&page="+page_no+"&app="+base_app_code;
 		}
 	}
 	if(load_url==undefined) {
