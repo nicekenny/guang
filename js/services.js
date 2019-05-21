@@ -229,7 +229,7 @@ function showItems(data) {
 					+"<li><a href=\"\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
 					+"<li><a href=\"\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
 				$("#category_list").append(title_li);
-				$("#category_options").empty().append(category_option);
+				$("#category_options").empty().append(category_option).show();
 			}
 		}
 	}
