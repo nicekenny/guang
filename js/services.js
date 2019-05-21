@@ -142,7 +142,7 @@ function loadIndex() {
 			if(sort!=undefined)
 				sort_param = "&sort="+sort;
 			
-			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + material_param + sort_param +"&page="+page_no+"&app="+base_app_code;
+			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no+"&app="+base_app_code;
 		}
 	}
 	if(load_url==undefined) {
