@@ -582,7 +582,7 @@ a:hover {
 	width: 36px;
 	margin-top: 15px;
 	border-radius: 20px;
-	background-color:rgba(240,240,240,.7);
+	/*background-color:rgba(240,240,240,.7);*/
 }
 .fixed_box a.back_top {
 	background-image: none;
