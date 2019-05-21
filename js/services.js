@@ -16,6 +16,7 @@ serv_basepath = "https://x.scode.org.cn:444/";
 var base_app_code = "guang";
 // 初始化页码
 var page_no = 1,current_page_no = 0,loaded = true;
+var wall_item_img_suffix = "_400x400.jpg";
 
 // 页面数据初始化
 $(function() {
@@ -182,7 +183,7 @@ function showItems(data) {
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item.numIid
 				+"\" buyUrl=\""+item.buyUrl+"\" tpwd=\""+item.tpwd+"\" title=\""+item.title+"\" price=\""+item.finalPriceWap
 				+"\" userType=\""+item.userType+"\" coupon=\""+item.couponInfo+"\" >"
-				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl+"_250x250q90.jpg\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" />"
+				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl + wall_item_img_suffix+"\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" />"
 				+"</div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+item.finalPriceWap+"</span>"
 				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
@@ -350,7 +351,7 @@ function doBuy(a) {
 		});
 	}
 	// 设置窗口背景图片
-	// var pic_url = $(a).find("img:first-child").attr("pic")+"_300x300q90.jpg";
+	// var pic_url = $(a).find("img:first-child").attr("pic")+"_300x300.jpg";
 	// $(tpwd_dgContent).css("background-image","url("+pic_url+")");
 	// 点击内容一键拷贝
 	var clipboard = new ClipboardJS("div[clipboard='true']", {
