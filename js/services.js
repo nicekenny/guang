@@ -215,7 +215,7 @@ function showItems(data) {
 				var tmp_category = current_category;
 				if(current_category.length>20)
 					tmp_category = current_category.substring(0,20)+"...";
-				var category_li = "<li class=\"current\"><a>"+ tmp_category +"</a></li>";
+				var category_li = "<li class=\"query_title current\"><a>"+ tmp_category +"</a></li>";
 				$("#category_list").append(category_li);
 			}
 		}
