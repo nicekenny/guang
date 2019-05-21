@@ -128,9 +128,16 @@ function loadIndex() {
 			load_url = "taobao/item/ajaxSearch.html?q="+ search_q +"&page="+page_no+"&app="+base_app_code;
 		} else if(from=="material") {
 			var search_q = getQueryString("q");
-			var material_id = getQueryString("material_id");
 			search_q = decodeURI(search_q);
-			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + "&material_id="+material_id+"&page="+page_no+"&app="+base_app_code;
+			var material_param = "";
+			var material_id = getQueryString("material_id");
+			if(material_id!=undefined)
+				material_param = "&material_id="+material_id;
+			var sort_param = "";
+			var sort = getQueryString("sort");
+			if(sort!=undefined)
+				sort_param = "&sort="+sort;
+			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + material_param + sort_param +"&page="+page_no+"&app="+base_app_code;
 		}
 	}
 	if(load_url==undefined) {
