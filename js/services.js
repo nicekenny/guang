@@ -125,7 +125,7 @@ function loadIndex() {
 		if(from=="search") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
-			load_url = "taobao/item/ajaxSearch.html?q="+search_q+"&page="+page_no+"&app="+base_app_code;
+			load_url = "taobao/item/ajaxSearch.html?q="+search_q+"&material_id=9660&page="+page_no+"&app="+base_app_code;
 		}
 	}
 	if(load_url==undefined) {
@@ -210,7 +210,7 @@ function showItems(data) {
 				var tmp_category = current_category;
 				if(current_category.length>20)
 					tmp_category = current_category.substring(0,20)+"...";
-				var category_li = "<li class=\"current\"><a style=\"overflow:hidden;\">"+ tmp_category +"</a></li>";
+				var category_li = "<li class=\"current\"><a>"+ tmp_category +"</a></li>";
 				$("#category_list").append(category_li);
 			}
 		}
