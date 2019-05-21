@@ -303,9 +303,9 @@ a:hover {
 }
 .category_box {
 	position: relative;
+	padding-top: 5px;
 }
 .cc_nav_box {
-	padding-top: 5px;
 	height: 40px;
 }
 .cc_nav_box li {
