@@ -222,8 +222,12 @@ function showItems(data) {
 		if(data.from=="material") {
 			var query = data.query;
 			if(query!=undefined) {
+				var category_option;
 				var title_li = "<li class=\"current\"><a>"+ query.keyword +"</a></li>";
-				$("#category_list").append(title_li);
+				category_option = title_li + "<li><a href=\"\">综合排序</a></li>"
+					+"<li><a href=\"\">销量</a></li>"
+					+"<li><a href=\"\">价格</a></li>";
+				$("#category_list").append(category_option);
 			}
 		}
 	}
