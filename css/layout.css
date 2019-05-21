@@ -661,10 +661,11 @@ a:hover {
 	margin-bottom: 5px;
 }
 .tao_pwd .tpwd_content .ti_coupon_tag {
-	font-size: 15px;
-	line-height: 15px;
+	font-size: 14px;
+	line-height: 20px;
 	color: #FF6570;
 	padding-left: 5px;
+	width: 16px;
 }
 .tao_pwd .item_qrcode {
 	height: 160px;
