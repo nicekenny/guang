@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>每日必逛 - 逛街啦</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no" media="(device-height: 568px)" />
+
+<meta name="keywords" content="Source Code Laboratory">
+<meta name="description" content="Source Code Laboratory">
+<link rel="shortcut icon" href="images/favicon.ico" />
+<link rel="icon" type="image/gif" href="images/favicon.ico" />
+
+<link href="css/layout.css" rel="stylesheet" type="text/css" />
+<link href="css/item.css" rel="stylesheet" type="text/css" />
+<link href="css/dialog.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="js/jquery-min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/base64.js"></script>
+<script type="text/javascript" src="js/dialog.js"></script>
+<script type="text/javascript" src="js/services.js"></script>
+<script type="text/javascript" src="js/item-function.js"></script>
+<script type="text/javascript" src="js/clipboard-min.js"></script>
+
+</head>
+
+<body>
+
+	<div class="screen_wrap">
+    
+    	<div class="detail_img">
+            <!--
+            <div class="detail_head_bar">
+                <a href="#" class="back_link">返回</a>
+                <a href="#" class="home_link">首页</a>
+            </div>
+            -->
+            <!-- Image-box -->
+            <div class="showcase">
+				<!--宝贝图片-->
+			</div>
+            <!-- end -->
+        </div>
+        <div class="detail_info clearfix">
+        	<div class="di_right">
+            	<img class="qr_code_img" src="images/qr_code.png" />
+            </div>
+        	<div class="di_left">
+                <div class="detail_title"><!--宝贝标题--></div>
+                <div class="d_price"></div>
+                <div class="di_likes"></div>
+            </div>
+        </div>
+        <div class="detail_notes">～长按识别二维码～</div>
+        <div class="detail_buy">
+            <div id="copy_tpwd_button" class="d_tpwd">淘口令<em id="tao_pwd_view">载入中...</em>一键拷贝</div>
+        </div>
+        
+        <!--推荐宝贝-->
+        <div class="detail_recoms">
+			<div class="drs_title"><a name="recoms"></a>～再逛一逛～</div>
+			<div class="drs_content">
+            	<!--Products-->
+				<div id="product_walls" class="product_box clearfix" style="display: none;">
+                    <ul class="wall_wrap"></ul>
+                    <ul class="wall_wrap"></ul>
+                </div>
+				<div id="wall_loading" class="wall_loading" style="display: none;">
+					<img src="images/loading_icon.gif"/>
+					Loading......
+				</div>
+				<div id="warning_box" class="warning_box" style="display: none;">
+					<h2>哎～没得逛了！</h2>
+					<p>真的抱歉，没有找到更好的宝贝了，就去买它吧！</p>
+				</div>
+			</div>
+		</div>
+        
+	</div>
+    
+	<div class="footer">
+		<div class="copyright">
+			Powered by
+			<a href="" scl="guang">Guang.scode.org.cn</a>
+			©2019-2029
+			<span id="browser_version">Loading...</span>
+		</div>
+	</div>
+    <!-- mask -->
+	<div id="m_ui_mask" class="ui_mask" style="display: none;"></div>
+	<!--悬浮工具栏-->
+	<div class="fixed_box">
+		<a class="font_icon back_top" href="javascript:void(0);">&#xf0aa;</a>
+	</div>
+    
+</body>
+</html>

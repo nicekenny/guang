@@ -10,8 +10,12 @@
 // 定义全局变量
 var basepath = "https://guang.scode.org.cn/";
 var serv_basepath = "http://x.scode.org.cn:81/";
-// serv_basepath = "http://localhost/scodelab/";
+// https server
 serv_basepath = "https://x.scode.org.cn:444/";
+// test server-----------------------
+// basepath = "http://192.168.0.10/";
+// serv_basepath = "http://192.168.0.10/scodelab/";
+//-----------------------------------
 // 定义AppCode
 var base_app_code = "guang";
 // 初始化页码
@@ -65,7 +69,15 @@ $(function() {
 		$(this).attr("action",action);
 		return true;
 	});
-	
+	$("#set_options_link").click(function() {
+		if($(this).attr("status")=="hide") {
+			$("div.item_open").show();
+			$(this).attr("status","show").html("&#xe80a;");
+		} else if($(this).attr("status")=="show") {
+			$("div.item_open").hide();
+			$(this).attr("status","hide").html("&#xe80b;");
+		}
+	});
 	var pathname = window.location.pathname;
 	// alert(pathname);
 	if(pathname=="" || pathname=="/" || pathname=="/index.html") {
@@ -180,11 +192,9 @@ function showItems(data) {
 		for(var i=0;i<items.length;i++) {
 			var item = items[i];
 
-			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item.numIid
-				+"\" buyUrl=\""+item.buyUrl+"\" tpwd=\""+item.tpwd+"\" title=\""+item.title+"\" price=\""+item.finalPriceWap
-				+"\" userType=\""+item.userType+"\" coupon=\""+item.couponInfo+"\" >"
+			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item.numIid+"\" data=\""+item.dataString+"\" >"
 				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl + wall_item_img_suffix+"\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" />"
-				+"</div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
+				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+item.finalPriceWap+"</span>"
 				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
 				+"<span class=\"item_info_likes\">"+item.volume+"</span>"
@@ -201,10 +211,10 @@ function showItems(data) {
 			});
 			var wall_item = $(item_li)
 			pw_min.append(wall_item);
-			// 绑定长按事件
-			wall_item.find("img[pic^='http']").on("taphold",function() {
+			// 绑定事件-打开宝贝
+			wall_item.find(".item_open").click(function() {
 				var link = $(this).parent().parent();
-				showDetail(link);
+				openItem(link);
 			});
 		}
 		// 全局页码翻页
@@ -282,14 +292,25 @@ function sortItems(a) {
 }
 // 去购买（淘口令）
 function doBuy(a) {
-	var itemId = $(a).attr("itemId");
-	var buyUrl = $(a).attr("buyUrl");
+	// 变量定义
+	var itemId,buyUrl,title,price,coupon,userType;
+
+	var item_data = $(a).attr("data");
+	if(item_data!=undefined && item_data!="null" && $.trim(item_data)!="") {
+		// 数据解包
+		var jsonStr = new Base64().decode(item_data);
+		var json = Json.parse(jsonStr);
+		if(json!=undefined) {
+			itemId = json.itemId;
+			buyUrl = json.buyUrl;
+			title = json.title;
+			price = json.finalPrice;
+			coupon = json.couponInfo;
+			userType = json.userType;
+		}
+	}
 	var tpwd = $(a).attr("tpwd");
-	var title = $(a).attr("title");
-	var price = $(a).attr("price");
-	var coupon = $(a).attr("coupon");
 	var coupon_txt = "";
-	var userType = $(a).attr("userType");
 	var userType_txt = "";
 
 	var price_name = "折扣价：";
@@ -305,20 +326,12 @@ function doBuy(a) {
 
 	var tpwd_dialog = new dialogLayer();
 	var tpwd_dgContent = tpwd_dialog.open("淘口令/二维码，快速淘好货！",250,330);
-
-	// 调用接口，获取淘口令
-	$.ajax({
-		url: serv_basepath + "taobao/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)+"&app="+base_app_code,
-		type: 'GET',
-		dataType: "jsonp",
-		success: function (data) {
-			$(tpwd_dgContent).find("span[info='tpwd']").html(data);
-		}
-	});
-	
 	var tpwd_html = "<div class=\"tao_pwd\">"
-		+"<div class=\"tpwd_content\" clipboard=\"true\"><p class=\"ti_title\">"+title+"</p><p class=\"ti_price\">"+price_name+"<span style=\"color:#d52f37;\">¥<span style=\"font-size:18px;\">"+price+"</span></span>"+coupon_txt+"</p><p style=\"color:#0099CC;\">淘口令：<span info=\"tpwd\">载入中...</span></p></div>"
-		+"<div class=\"item_qrcode\" style=\"display:none;\"><img src=\"http://qr.liantu.com/api.php?bg=ffffff&el=l&w=200&m=5&text="+encodeURIComponent(buyUrl)+"\" style=\"width:160px;height:160px;\"/></div>"
+		+"<div class=\"tpwd_content\" clipboard=\"true\"><p class=\"ti_title\">"+title+"</p><p class=\"ti_price\">"+price_name
+		+"<span style=\"color:#d52f37;\">¥<span style=\"font-size:18px;\">"+price+"</span></span>"+coupon_txt
+		+"</p><p style=\"color:#0099CC;\">淘口令：<span info=\"tpwd\">载入中...</span></p></div>"
+		+"<div class=\"item_qrcode\" style=\"display:none;\"><img src=\"http://qr.liantu.com/api.php?bg=ffffff&el=l&w=200&m=5&text="+encodeURIComponent(buyUrl)
+		+"\" style=\"width:160px;height:160px;\"/></div>"
 		+"<div class=\"tpwd_info\">复制淘口令，打开"+userType_txt+"APP购买</div>"
 		+"<div class=\"tpwd_links\">"
 		+"<a href=\""+buyUrl+"\" target=\"_blank\" class=\"tpwd_buylink\">直达连接</a>"
@@ -327,6 +340,22 @@ function doBuy(a) {
 		+"</div></div>";
 
 	$(tpwd_dgContent).html(tpwd_html);
+
+	if(tpwd!=undefined && $.trim(tpwd)!="" && $.trim(tpwd)!="undefined") {
+		$(tpwd_dgContent).find("span[info='tpwd']").html(tpwd);
+	} else {
+		// 调用接口，获取淘口令
+		$.ajax({
+			url: serv_basepath + "taobao/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)+"&app="+base_app_code,
+			type: 'GET',
+			dataType: "jsonp",
+			success: function (data) {
+				$(tpwd_dgContent).find("span[info='tpwd']").html(data);
+				$("a[itemId='"+itemId+"']").attr("tpwd",data);
+			}
+		});
+	}
+
 	$(tpwd_dialog.getDialog()).fadeIn(300);
 
 	$(tpwd_dgContent).find(".tpwd_close").click(function() {
@@ -373,10 +402,7 @@ function doBuy(a) {
     });
 }
 // 弹出详情内容窗口
-function showDetail(link) {
-	var detail_dialog = new dialogLayer();
-	var detail_dgContent = tpwd_dialog.open("宝贝详情",250,330);
-	
-	$(detail_dgContent).html("test");
-	$(detail_dialog.getDialog()).fadeIn(300);
+function openItem(link) {
+	var data = link.attr("data");
+	window.open(basepath+"item.html?d="+data); 
 }

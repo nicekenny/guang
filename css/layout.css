@@ -139,16 +139,17 @@ a:hover {
 .head_bar .hb_left {
 	position: absolute;
 	height: 40px;
-	width: 40px;
+	width: 80px;
 	left: 0px;
 	top: 0px;
 }
 .head_bar .hb_right {
 	position: absolute;
 	height: 40px;
-	width: 40px;
+	width: 80px;
 	top: 0px;
 	right: 0px;
+	text-align: right;
 }
 .head_bar .hb_center {
 	margin-right: 45px;
@@ -443,10 +444,11 @@ a:hover {
 	background-repeat: no-repeat;
 	background-position: center center;
 	min-height: 60px;
+	position: relative;
 }
 .wall_item .item_img img {
 	width: 100%;
-	/*
+	/* 屏蔽长按菜单 
 	pointer-events: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
@@ -454,6 +456,19 @@ a:hover {
 	-o-user-select:none;
 	user-select:none; 
 	*/
+}
+.wall_item .item_img .item_open {
+	position: absolute;
+	height: 30px;
+	width: 30px;
+	bottom: 0px;
+	font-size: 20px;
+	line-height: 30px;
+	text-align: center;
+	background-color:rgba(240,240,240,.7);
+	left: 0px;
+	border-radius: 15px;
+	display: none;
 }
 .wall_item .item_title {
 	font-size: 12px;

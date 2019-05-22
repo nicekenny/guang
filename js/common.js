@@ -135,3 +135,14 @@ function dateYmdhm(time) {
 	var td_ms = tmp_date.getMinutes();
 	return td_yyyy+"-"+td_mm+"-"+td_dd+" "+td_hh+":"+td_ms;
 }
+// Json数据转换
+function Json() {
+	this.parse = function(string) {
+		return Json.parse(string);
+	}
+}
+Json.parse = function(string) {
+	if (string == "")
+		return undefined;
+	return eval("(" + string + ")");
+}
