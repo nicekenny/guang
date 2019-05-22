@@ -199,8 +199,13 @@ function showItems(data) {
 					pw_min = $(this);
 				}
 			});
-			pw_min.append(item_li);
-
+			var wall_item = $(item_li)
+			pw_min.append(wall_item);
+			// 绑定长按事件
+			wall_item.find("img[pic]").on("taphold",function() {
+				var link = $(this).parent().parent();
+				showDetail(link);
+			});
 		}
 		// 全局页码翻页
 		page_no = page_no + 1;
@@ -275,7 +280,6 @@ function sortItems(a) {
 	// Default sort
 	changeParamReload("sort",sort+"_des");
 }
-
 // 去购买（淘口令）
 function doBuy(a) {
 	var itemId = $(a).attr("itemId");
@@ -368,4 +372,11 @@ function doBuy(a) {
         // 提示失败，手工拷贝
     });
 }
-
+// 弹出详情内容窗口
+function showDetail(link) {
+	var detail_dialog = new dialogLayer();
+	var detail_dgContent = tpwd_dialog.open("宝贝详情",250,330);
+	
+	$(detail_dgContent).html("test");
+	$(detail_dialog.getDialog()).fadeIn(300);
+}
