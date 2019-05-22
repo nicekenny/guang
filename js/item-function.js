@@ -13,7 +13,7 @@ var global_item_id;
 $(function() {
 	var pathname = window.location.pathname;
 	// alert(pathname);
-	if(pathname=="tpwd.html") {
+	if(pathname=="/tpwd.html") {
 		// 复制淘口令页面
 		global_item_id = getQueryString("id");
 		var tpwd = getQueryString("pwd");
@@ -21,7 +21,7 @@ $(function() {
 		if(from=="item") {
 			$("#tao_pwd_view").text(tpwd);
 		}
-	} else if(pathname=="item.html") {
+	} else if(pathname=="/item.html") {
 		// 获取宝贝数据包
 		var data = getQueryString("d");
 		if(data!=undefined && data!="null" && $.trim(data)!="") {
