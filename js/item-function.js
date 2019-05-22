@@ -31,6 +31,8 @@ $(function() {
 			if(json!=undefined) {
 				// 全局变量：宝贝ID
 				global_item_id = json.itemId;
+				// 设置title
+				$(document).attr("title", json.title + " - 逛街啦");
 
 				var itemBlock_imgs = $("div.showcase");
 				var pic_main = json.pictUrl + item_img_suffix;
