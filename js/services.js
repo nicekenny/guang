@@ -21,6 +21,7 @@ var base_app_code = "guang";
 // 初始化页码
 var page_no = 1,current_page_no = 0,loaded = true;
 var wall_item_img_suffix = "_400x400.jpg";
+var items_share_status = false;
 
 // 页面数据初始化
 $(function() {
@@ -73,9 +74,11 @@ $(function() {
 		if($(this).attr("status")=="hide") {
 			$("div.item_open").show();
 			$(this).attr("status","show").html("&#xe80a;");
+			items_share_status = true;
 		} else if($(this).attr("status")=="show") {
 			$("div.item_open").hide();
 			$(this).attr("status","hide").html("&#xe80b;");
+			items_share_status = false;
 		}
 	});
 	var pathname = window.location.pathname;
@@ -211,6 +214,9 @@ function showItems(data) {
 			});
 			var wall_item = $(item_li)
 			pw_min.append(wall_item);
+			if(items_share_status) {
+				wall_item.find(".item_open").show();
+			}
 			// 绑定事件-打开宝贝
 			wall_item.find(".item_open").click(function() {
 				var link = $(this).parent().parent();
