@@ -241,7 +241,6 @@
 	width: 100%;
 }
 .detail_recoms {
-	background-color: #FFFFFF;
 	margin-top: 20px;
 }
 .detail_recoms .drs_title {
@@ -253,6 +252,7 @@
 	border-bottom-color: #DCDCDC;
 	padding-left: 10px;
 	text-align: center;
+	background-color: #FFFFFF;
 }
 .detail_recoms .drs_content {
 	padding: 0px;
