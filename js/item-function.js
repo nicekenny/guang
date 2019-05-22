@@ -19,7 +19,7 @@ $(function() {
 		var tpwd = getQueryString("pwd");
 		var from = getQueryString("from");
 		if(from=="item") {
-			$("#tao_pwd_view").text(tpwd);
+			$("#tao_pwd_view").text("("+tpwd+")");
 		}
 	} else if(pathname=="/item.html") {
 		// 获取宝贝数据包
@@ -98,7 +98,8 @@ $(function() {
 					dataType: "jsonp",
 					success: function (data) {
 						$("#tao_pwd_view").text(data);
-						var doQrCodeUrl = basepath + "tpwd.html?id="+global_item_id+"&pwd="+data+"&from=item";
+						var tpwd = data.replace("￥","");
+						var doQrCodeUrl = basepath + "tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item";
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
 					}
