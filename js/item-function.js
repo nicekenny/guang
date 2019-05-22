@@ -98,7 +98,7 @@ $(function() {
 					dataType: "jsonp",
 					success: function (data) {
 						$("#tao_pwd_view").text(data);
-						var tpwd = data.replace("￥","");
+						var tpwd = data.replace("/￥/g","");
 						var doQrCodeUrl = basepath + "tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item";
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
