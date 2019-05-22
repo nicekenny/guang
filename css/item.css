@@ -83,7 +83,7 @@
 .detail_info .d_price em {
 	font-size: 14px;
 	line-height: 35px;
-	font-weight: lighter;
+	font-weight: normal;
 	color: #999999;
 	text-decoration: line-through;
 	font-style: normal;
