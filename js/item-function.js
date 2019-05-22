@@ -107,7 +107,7 @@ $(function() {
 						var doQrCodeUrl = basepath + "tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item";
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
-						$("#item_share_text").val(item_share_text+"#复制本条("+tpwd+")去[淘.寶]即可把我带回家。");
+						$("#item_share_text").val(item_share_text+"#复制本条("+tpwd+")去[淘.宝]即可把我带回家。");
 					}
 				});
 				
