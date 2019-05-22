@@ -357,6 +357,12 @@
 	padding: 10px;
 	font-size: 14px;
 	line-height: 30px;
+	-webkit-appearance: none;
+	-webkit-user-select: text;
+}
+.copy_tpwd_panel .ctp_content * {
+	-webkit-appearance: none;
+	-webkit-user-select: text;
 }
 .copy_tpwd_panel .ctp_content em {
 	font-size: 16px;
@@ -365,4 +371,6 @@
 	font-style: normal;
 	margin-right: 10px;
 	margin-left: 10px;
+	-webkit-appearance: none;
+	-webkit-user-select: text;
 }
