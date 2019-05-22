@@ -92,6 +92,9 @@ $(function() {
 				$("div.d_price").html("¥"+json.finalPrice+"<em>¥"+del_price+"</em>");
 				$("div.di_likes").html(json.volume);
 				
+				// 分享文案
+				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【跟我逛】¥"+json.finalPrice+"元\r\n------------～逛街啦～-----------\r\n";
+
 				var buyUrl = encodeURIComponent(json.buyUrl);
 				// 调用接口，获取淘口令
 				$.ajax({
@@ -104,6 +107,7 @@ $(function() {
 						var doQrCodeUrl = basepath + "tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item";
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
+						$("#item_share_text").val(item_share_text+"#复制本条("+tpwd+")去[淘寶]即可把我带回家。");
 					}
 				});
 				
@@ -124,8 +128,26 @@ $(function() {
 	});
 	clipboard.on("error", function(e) {
 		// 提示失败，手工拷贝
+		$(e.trigger).append("(失败)");
 	});
-
+	// 一键复制分享文案
+	var clipboard_share = new ClipboardJS("#copy_item_share_text_button", {
+		text: function(content) {
+			return $("#item_share_text").val();
+		}
+	});
+	clipboard_share.on("success", function(e) {
+		// 拷贝成功
+		if(!$(e.trigger).hasClass("purple")) {
+			if($(e.trigger).hasClass("blue"))
+				$(e.trigger).removeClass("blue");
+			$(e.trigger).addClass("purple").append("(OK)");
+		}
+	});
+	clipboard_share.on("error", function(e) {
+		// 提示失败，手工拷贝
+		$(e.trigger).append("(失败)");
+	});
 	// 加载推荐宝贝
 	loadRecommends();
 	// 滚动条加载商品数据

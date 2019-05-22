@@ -119,6 +119,27 @@
 	background-color: #FFFFFF;
 	padding-bottom: 10px;
 }
+.detail_item_text {
+	background-color: #FFFFFF;
+	padding: 10px;
+}
+.input_textarea {
+	font-size: 14px;
+	line-height: 20px;
+	vertical-align: top;
+	resize: none;
+	box-shadow: 0 1px 0 #E5E5E5;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color: #FBFBFB;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	height: 200px;
+	color: #333333;
+}
 
 .detail_buy {
 	border-bottom-width: 1px;
@@ -155,6 +176,15 @@
 	color: #33CC33;
 	border: 1px solid #33CC33;
 }
+.detail_buy .blue {
+	color: #3366CC;
+	border: 1px solid #3366CC;
+}
+.detail_buy .purple {
+	color: #CC0099;
+	border: 1px solid #CC0099;
+}
+
 
 
 .detail_market {
