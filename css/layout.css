@@ -446,12 +446,14 @@ a:hover {
 }
 .wall_item .item_img img {
 	width: 100%;
+	/*
 	pointer-events: none;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select:none;
 	-o-user-select:none;
 	user-select:none; 
+	*/
 }
 .wall_item .item_title {
 	font-size: 12px;
