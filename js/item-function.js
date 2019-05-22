@@ -16,7 +16,7 @@ $(function() {
 	if(pathname=="/tpwd.html") {
 		// 复制淘口令页面
 		global_item_id = getQueryString("id");
-		var tpwd = getQueryString("pwd");
+		var tpwd = decodeURI(getQueryString("pwd"));
 		var from = getQueryString("from");
 		if(from=="item") {
 			$("#tao_pwd_view").text("("+tpwd+")");
