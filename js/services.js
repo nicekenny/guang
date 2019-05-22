@@ -202,7 +202,7 @@ function showItems(data) {
 			var wall_item = $(item_li)
 			pw_min.append(wall_item);
 			// 绑定长按事件
-			wall_item.find("img[pic]").on("taphold",function() {
+			wall_item.find("img[pic^='http']").on("taphold",function() {
 				var link = $(this).parent().parent();
 				showDetail(link);
 			});
