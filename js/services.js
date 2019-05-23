@@ -100,6 +100,8 @@ $(function() {
 	var pathname = window.location.pathname;
 	// alert(pathname);
 	if(pathname=="" || pathname=="/" || pathname=="/index.html") {
+		// 首页加载菜单项目
+		loadMenus();
 		// 载入首页
 		loadIndex();
 		// 滚动条加载商品数据
@@ -124,6 +126,7 @@ $(function() {
 			}
 
 		});
+		//---------end--------
 	}
 
 
@@ -163,6 +166,42 @@ function serverUrl(url) {
 	} else {
 		return serv_basepath + changeURLArg(url,"app",base_app_code);
 	}
+}
+// Load-Menus
+function loadMenus() {
+	// 调用接口，获取菜单项
+	$.ajax({
+		url: serverUrl("scode/base/menuItems.html"),
+		type: 'GET',
+		dataType: "jsonp",
+		success: function (data) {
+			if(data!=undefined && data.menus!=undefined && data.menus.length>0) {
+				var menu_html = "";
+				for(var m=0;m<data.menus.length;m++) {
+					var menu_item = data.menus[m];
+					var mi_href = "?from=material";
+					if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
+						mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
+					}
+					if(menu_item.categorys!=undefined && $.trim(menu_item.categorys)!=""){
+						mi_href = mi_href + "&cate="+menu_item.categorys;
+					}
+					if(menu_item.materialId!=undefined && $.trim(menu_item.materialId)!=""){
+						mi_href = mi_href + "&material_id="+menu_item.materialId;
+					}
+					if(menu_item.other!=undefined && $.trim(menu_item.other)!=""){
+						mi_href = mi_href + menu_item.other;
+					}
+					var mi_icon_css = "";
+					if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
+						mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
+					}
+					menu_html = menu_html + "<li><a href=\""+guangUrl(encodeURI(mi_href))+"\"><i"+mi_icon_css+"></i>"+menu_item.title+"</a></li>";
+				}
+				$("#hb_menus_box").empty().append(menu_html);
+			}
+		}
+	});
 }
 // index.html页面数据加载
 function loadIndex() {
