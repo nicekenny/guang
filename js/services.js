@@ -380,7 +380,10 @@ function sortItems(a) {
 		return changeParamReload("sort",sort+"_asc");
 	}
 	// Default sort
-	changeParamReload("sort",sort+"_des");
+	var default_sort = "_des";
+	if(sort=="price")
+		default_sort = "_asc";
+	changeParamReload("sort",sort+default_sort);
 }
 // 去购买（淘口令）
 function doBuy(a) {
