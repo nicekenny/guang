@@ -275,7 +275,7 @@ function showItems(data) {
 			if(item_id==undefined)
 				item_id = item.itemId;
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item.dataString+"\" >"
-				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl + wall_item_img_suffix+"\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" />"
+				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl + wall_item_img_suffix+"\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+item.finalPriceWap+"</span>"
 				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
@@ -361,6 +361,10 @@ function showItems(data) {
 		}
 	}
 	
+}
+// 图片加载完后调用
+function imgLoaded(img) {
+	$(img).css("background-image","none");
 }
 // 排序跳转
 function sortItems(a) {
