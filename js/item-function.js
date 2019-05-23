@@ -98,13 +98,13 @@ $(function() {
 				var buyUrl = encodeURIComponent(json.buyUrl);
 				// 调用接口，获取淘口令
 				$.ajax({
-					url: serv_basepath + "taobao/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl+"&app="+base_app_code,
+					url: serverUrl("taobao/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
 					type: 'GET',
 					dataType: "jsonp",
 					success: function (data) {
 						$("#tao_pwd_view").text(data);
 						var tpwd = data.replace(/￥/g,"");
-						var doQrCodeUrl = basepath + "tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item";
+						var doQrCodeUrl = guangUrl("tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item");
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
 						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开[淘.宝]即可把我带回家。");
@@ -176,9 +176,9 @@ function loadRecommends() {
 	// 设置加载中
 	loaded = false;
 	$("#wall_loading").show();
-	var load_url = "taobao/item/ajaxRecommends.html?material_id=3756&item_id="+ global_item_id +"&page="+page_no+"&app="+base_app_code;
+	var load_url = "taobao/item/ajaxRecommends.html?material_id=3756&item_id="+ global_item_id +"&page="+page_no;
 	$.ajax({
-		url: serv_basepath + load_url,
+		url: serverUrl(load_url),
 		type: 'GET',
 		dataType: "jsonp",
 		jsonpCallback: "showItems",

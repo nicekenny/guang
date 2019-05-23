@@ -13,11 +13,11 @@ var serv_basepath = "http://x.scode.org.cn:81/";
 // https server
 serv_basepath = "https://x.scode.org.cn:444/";
 // test server-----------------------
-//basepath = "http://192.168.0.10/";
-//serv_basepath = "http://192.168.0.10/scodelab/";
+// basepath = "http://192.168.0.10/";
+// serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
 // 定义AppCode
-var base_app_code = "guang";
+var base_app_code = "guang",base_app_change = false;
 // 初始化页码
 var page_no = 1,current_page_no = 0,loaded = true;
 var wall_item_img_suffix = "_400x400.jpg";
@@ -27,13 +27,14 @@ var items_share_status = false;
 $(function() {
 	// 初始全局APP代码
 	var tmp_app_code = getQueryString("app");
-	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="") {
+	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="" && tmp_app_code!=base_app_code) {
 		base_app_code = tmp_app_code;
+		base_app_change = true;
 	}
 
 	$("a[scl='guang']").each(function(){
 		var tmp_href = $(this).attr("href");
-		$(this).attr("href", basepath + tmp_href);
+		$(this).attr("href", guangUrl(tmp_href));
 	});
 	$("a[scl='x_scode']").each(function(){
 		var tmp_href = $(this).attr("href");
@@ -71,7 +72,9 @@ $(function() {
 		if(keyword=="")
 			return false;
 		$("#hb_search_q").val(encodeURI(keyword));
-		var action = basepath; //+"?q="+encodeURI(keyword);
+		if(base_app_change)
+			$("#hb_search_app").val(base_app_code);
+		var action = guangUrl(); //+"?q="+encodeURI(keyword);
 		$(this).attr("action",action);
 		return true;
 	});
@@ -125,6 +128,7 @@ $(function() {
 
 
 });
+// 关闭搜索、类目等弹出层，并且关闭遮罩层
 function resetBox() {
 	if($("#m_ui_mask").is(":hidden"))
 		return;
@@ -138,7 +142,28 @@ function resetBox() {
 	}
 	$("#m_ui_mask").hide();
 }
-
+// 完善处理Guang.scode连接地址
+function guangUrl(url) {
+	if(url==undefined || $.trim(url)=="" || url=="null" || url=="undefined") {
+		if(base_app_change)
+			return basepath + "?app=" + base_app_code;
+		else
+			return basepath;
+	} else {
+		if(base_app_change)
+			return basepath + changeURLArg(url,"app",base_app_code);
+		else
+			return basepath + url;
+	}
+}
+// 完善处理x.scode连接地址
+function serverUrl(url) {
+	if(url==undefined || $.trim(url)=="" || url=="null" || url=="undefined") {
+		return serv_basepath + "?app=" + base_app_code;
+	} else {
+		return serv_basepath + changeURLArg(url,"app",base_app_code);
+	}
+}
 // index.html页面数据加载
 function loadIndex() {
 	if(page_no<=current_page_no)
@@ -154,7 +179,7 @@ function loadIndex() {
 		if(from=="search") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
-			load_url = "taobao/item/ajaxSearch.html?q="+ search_q +"&page="+page_no+"&app="+base_app_code;
+			load_url = "taobao/item/ajaxSearch.html?q="+ search_q +"&page="+page_no;
 		} else if(from=="material") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
@@ -171,15 +196,15 @@ function loadIndex() {
 			if(sort!=undefined)
 				sort_param = "&sort="+sort;
 			
-			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no+"&app="+base_app_code;
+			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no;
 		}
 	}
 	if(load_url==undefined) {
 		var categoryId = getQueryString("cate");
-		load_url = "taobao/item/ajaxItems.html?cate="+categoryId+"&page="+page_no+"&app="+base_app_code;
+		load_url = "taobao/item/ajaxItems.html?cate="+categoryId+"&page="+page_no;
 	}
 	$.ajax({
-		url: serv_basepath + load_url,
+		url: serverUrl(load_url),
 		type: 'GET',
 		dataType: "jsonp",
 		jsonpCallback: "showItems",
@@ -258,7 +283,7 @@ function showItems(data) {
 					current_li = " class=\"current\"";
 				}
 
-				var category_li = "<li"+current_li+"><a href=\""+basepath+"?cate="+category.favoritesId+ "\" >"+ category.favoritesTitle+"</a></li>";
+				var category_li = "<li"+current_li+"><a href=\""+guangUrl("?cate="+category.favoritesId)+ "\" >"+ category.favoritesTitle+"</a></li>";
 
 				$("#category_list").append(category_li);
 			}
@@ -370,7 +395,7 @@ function doBuy(a) {
 	} else {
 		// 调用接口，获取淘口令
 		$.ajax({
-			url: serv_basepath + "taobao/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)+"&app="+base_app_code,
+			url: serverUrl("taobao/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)),
 			type: 'GET',
 			dataType: "jsonp",
 			success: function (data) {
@@ -428,5 +453,5 @@ function doBuy(a) {
 // 弹出详情内容窗口
 function openItem(link) {
 	var data = link.attr("data");
-	window.open(basepath+"item.html?d="+data);
+	window.open(guangUrl("item.html?d="+data));
 }
