@@ -216,3 +216,8 @@ function delCookie(name) {
 	if (cval != null)
 		document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();
 }
+
+//阻止浏览器的默认行为 
+function stopDefault(event) {
+    event.stopPropagation();
+}

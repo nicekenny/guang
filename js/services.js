@@ -13,8 +13,8 @@ var serv_basepath = "http://x.scode.org.cn:81/";
 // https server
 serv_basepath = "https://x.scode.org.cn:444/";
 // test server-----------------------
-// basepath = "http://192.168.0.10/";
-// serv_basepath = "http://192.168.0.10/scodelab/";
+//basepath = "http://192.168.0.10/";
+//serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
 // 定义AppCode
 var base_app_code = "guang";
@@ -229,11 +229,14 @@ function showItems(data) {
 			});
 			var wall_item = $(item_li)
 			pw_min.append(wall_item);
+			// 分享功能是否打开
 			if(items_share_status) {
 				wall_item.find(".item_open").show();
 			}
 			// 绑定事件-打开宝贝
-			wall_item.find(".item_open").click(function() {
+			wall_item.find(".item_open").click(function(event) {
+				// 阻止任何父类事件的执行
+				event.stopPropagation();
 				var link = $(this).parent().parent();
 				openItem(link);
 			});
@@ -425,5 +428,5 @@ function doBuy(a) {
 // 弹出详情内容窗口
 function openItem(link) {
 	var data = link.attr("data");
-	window.open(basepath+"item.html?d="+data); 
+	window.open(basepath+"item.html?d="+data);
 }
