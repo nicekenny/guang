@@ -662,6 +662,9 @@ a:hover {
 	overflow: hidden;
 	-webkit-appearance: none;
 	-webkit-user-select: text;
+	background-image: url(images/click_bgicon.png);
+	background-repeat: no-repeat;
+	background-position: right bottom;
 }
 .tao_pwd .tpwd_content * {
 	-webkit-appearance: none;
