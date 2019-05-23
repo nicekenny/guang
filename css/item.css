@@ -351,11 +351,14 @@
 }
 .copy_tpwd_panel .ctp_content {
 	text-align: center;
-	padding: 10px;
 	font-size: 14px;
 	line-height: 30px;
 	-webkit-appearance: none;
 	-webkit-user-select: text;
+	padding-top: 20px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	padding-left: 10px;
 }
 .copy_tpwd_panel .ctp_content * {
 	-webkit-appearance: none;
