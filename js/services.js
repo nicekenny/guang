@@ -364,7 +364,7 @@ function showItems(data) {
 }
 // 图片加载完后调用
 function imgLoaded(img) {
-	$(img).css("background-image","none");
+	$(img).parent().css("background-image","none");
 }
 // 排序跳转
 function sortItems(a) {
