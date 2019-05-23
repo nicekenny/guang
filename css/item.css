@@ -6,10 +6,6 @@
 	max-height: 1200px;
 	overflow: hidden;
 	position: relative;
-	background-color: #FFFFFF;
-	background-image: url(images/picture_bg.png);
-	background-repeat: no-repeat;
-	background-position: center center;
 }
 .detail_head_bar {
 	position: absolute;
@@ -297,6 +293,11 @@
     position: absolute;
     top: 0;
     max-height: 100%;
+	/* Bg-Img */
+	background-color: #FFFFFF;
+	background-image: url(images/picture_bg.png);
+	background-repeat: no-repeat;
+	background-position: center center;
 }
 .showcase .scroller .itbox .item:before {
     content: '\20';
