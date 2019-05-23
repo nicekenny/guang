@@ -42,12 +42,12 @@ $(function() {
 				if(pic_list!=undefined && pic_list.length>0) {
 					for(var i=0;i<pic_list.length;i++) {
 						var tmp_pic = pic_list[i] + item_img_suffix;
-						imgList_html = imgList_html + "<div class=\"itbox\"><a class=\"item\"><img src=\""+tmp_pic+"\"/></a></div>";
+						imgList_html = imgList_html + "<div class=\"itbox\"><a class=\"item\"><img src=\""+tmp_pic+"\" onload=\"imgLoaded(this)\"/></a></div>";
 						imgList_nav = imgList_nav + "<i></i>";
 					}
 				}
 
-				var imgs_html = "<div class=\"scroller\">"+"<div class=\"itbox main\"><a class=\"item\"><img src=\""+pic_main+"\"/></a></div>"+imgList_html
+				var imgs_html = "<div class=\"scroller\">"+"<div class=\"itbox main\"><a class=\"item\"><img src=\""+pic_main+"\" onload=\"imgLoaded(this)\"/></a></div>"+imgList_html
 					+"</div><div class=\"nav-container\"><i class=\"current\"></i>"+imgList_nav+"</div>";
 
 				itemBlock_imgs.empty().append(imgs_html);
