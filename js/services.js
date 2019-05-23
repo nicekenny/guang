@@ -25,7 +25,12 @@ var items_share_status = false;
 
 // 页面数据初始化
 $(function() {
-	
+	// 初始全局APP代码
+	var tmp_app_code = getQueryString("app");
+	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="") {
+		base_app_code = tmp_app_code;
+	}
+
 	$("a[scl='guang']").each(function(){
 		var tmp_href = $(this).attr("href");
 		$(this).attr("href", basepath + tmp_href);
@@ -75,12 +80,20 @@ $(function() {
 			$("div.item_open").show();
 			$(this).attr("status","show").html("&#xe80a;");
 			items_share_status = true;
+			setCookie("items_share_status","true");
 		} else if($(this).attr("status")=="show") {
 			$("div.item_open").hide();
 			$(this).attr("status","hide").html("&#xe80b;");
 			items_share_status = false;
+			setCookie("items_share_status","false");
 		}
 	});
+	// 获取cookie中记录的选项
+	if(getCookie("items_share_status")=="true") {
+		$("div.item_open").show();
+		$("#set_options_link").attr("status","show").html("&#xe80a;");
+		items_share_status = true;
+	}
 	var pathname = window.location.pathname;
 	// alert(pathname);
 	if(pathname=="" || pathname=="/" || pathname=="/index.html") {
@@ -194,8 +207,10 @@ function showItems(data) {
 		}
 		for(var i=0;i<items.length;i++) {
 			var item = items[i];
-
-			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item.numIid+"\" data=\""+item.dataString+"\" >"
+			var item_id = item.numIid;
+			if(item_id==undefined)
+				item_id = item.itemId;
+			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item.dataString+"\" >"
 				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl + wall_item_img_suffix+"\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+item.finalPriceWap+"</span>"

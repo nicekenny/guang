@@ -93,7 +93,7 @@ $(function() {
 				$("div.di_likes").html(json.volume);
 				
 				// 分享文案
-				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【跟我逛】¥"+json.finalPrice+"元\r\n------------～逛街啦～-----------\r\n";
+				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【逛着买】¥"+json.finalPrice+"元\r\n------------～逛街啦～-----------\r\n";
 
 				var buyUrl = encodeURIComponent(json.buyUrl);
 				// 调用接口，获取淘口令
@@ -148,15 +148,18 @@ $(function() {
 		// 提示失败，手工拷贝
 		$(e.trigger).append("(失败)");
 	});
-	// 加载推荐宝贝
-	loadRecommends();
+	// 加载推荐宝贝(延时加载)
+	setTimeout(function(){loadRecommends();},2000);
 	// 滚动条加载商品数据
 	$(window).scroll(function() {
 		var items_box = $("#product_walls");
 		var window_top = $(window).scrollTop();
 		
 		if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
-			loadRecommends();
+			if(page_no==1)
+				setTimeout(function(){loadRecommends();},2000);
+			else
+				loadRecommends();
 		}
 
 	});
