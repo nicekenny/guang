@@ -381,7 +381,7 @@ function sortItems(a) {
 // 去购买（淘口令）
 function doBuy(a) {
 	// 变量定义
-	var itemId,buyUrl,title,price,coupon,userType;
+	var itemId,buyUrl,title,price,coupon,coupon_amount,userType;
 
 	var item_data = $(a).attr("data");
 	if(item_data!=undefined && item_data!="null" && $.trim(item_data)!="") {
@@ -394,6 +394,7 @@ function doBuy(a) {
 			title = json.title;
 			price = json.finalPrice;
 			coupon = json.couponInfo;
+			coupon_amount = json.couponAmount;
 			userType = json.userType;
 		}
 	}
@@ -402,7 +403,7 @@ function doBuy(a) {
 	var userType_txt = "";
 
 	var price_name = "折扣价：";
-	if(coupon!=undefined && coupon!="undefined" && coupon!="") {
+	if(coupon!=undefined || coupon_amount!=undefined) {
 		coupon_txt = "<span class=\"font_icon ti_coupon_tag\">&#xe820;</span>";
 		price_name = "券后价：";
 	}
