@@ -329,8 +329,8 @@ function showItems(data) {
 		} else {
 			if(current_category!=undefined) {
 				var tmp_category = current_category;
-				if(current_category.length>20)
-					tmp_category = current_category.substring(0,20)+"...";
+				if(current_category.length>10)
+					tmp_category = current_category.substring(0,10)+"...";
 				var category_li = "<li class=\"query_title current\"><a>"+ tmp_category +"</a></li>";
 				$("#category_list").append(category_li);
 			}
