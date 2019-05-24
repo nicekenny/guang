@@ -428,11 +428,11 @@ function doBuy(a) {
 		+"</p><p style=\"color:#0099CC;\">淘口令：<span info=\"tpwd\">载入中...</span></p></div>"
 		+"<div class=\"item_qrcode\" style=\"display:none;\"><img src=\"http://qr.liantu.com/api.php?bg=ffffff&el=l&w=200&m=5&text="+encodeURIComponent(buyUrl)
 		+"\" style=\"width:160px;height:160px;\"/></div>"
-		+"<div class=\"tpwd_info\">复制淘口令，打开"+userType_txt+"APP购买</div>"
+		+"<div class=\"tpwd_info\">拷贝淘口令，打开"+userType_txt+"APP购买</div>"
 		+"<div class=\"tpwd_links\">"
 		+"<a class=\"tpwd_qrcode\">二维码</a>"
-		+"<a class=\"tpwd_buylink\">一键复制</a>" //href=\""+buyUrl+"\" target=\"_blank\"
-		+"<a class=\"tpwd_close\">再逛逛</a>"
+		+"<a class=\"tpwd_buylink\">一键拷贝</a>" //href=\""+buyUrl+"\" target=\"_blank\"
+		+"<a class=\"tpwd_close\">~再逛逛~</a>"
 		+"</div></div>";
 
 	$(tpwd_dgContent).html(tpwd_html);
@@ -489,7 +489,7 @@ function doBuy(a) {
 		});
 		clipboard_buy.on("success", function(e) {
 			// 拷贝成功
-			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已复制</span>，打开"+userType_txt+"APP购买");
+			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已拷贝</span>，打开"+userType_txt+"APP购买");
 			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#f7fff1");
 		});
 		clipboard_buy.on("error", function(e) {
@@ -507,7 +507,7 @@ function doBuy(a) {
     });
     clipboard.on("success", function(e) {
         // 拷贝成功
-		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已复制</span>，打开"+userType_txt+"APP购买");
+		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已拷贝</span>，打开"+userType_txt+"APP购买");
 		$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#f7fff1");
     });
     clipboard.on("error", function(e) {
