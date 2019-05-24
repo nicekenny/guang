@@ -120,7 +120,7 @@ a:hover {
 }
 .screen_wrap {
 	max-width: 800px;
-	min-height: 1024px;
+	min-height: 800px;
 	margin-right: auto;
 	margin-left: auto;
 	background-color: #EFEFEF;
