@@ -718,14 +718,18 @@ a:hover {
 	border-radius: 3px;
 }
 .tao_pwd .tpwd_links .tpwd_buylink {
-	background-color: #FF6570;
+	background-color: #FBFBFB;
 	display: inline-block;
 	width: 47%;
+	border: 1px solid #FF6570;
+	color: #FF6570;
 }
 .tao_pwd .tpwd_links .tpwd_qrcode {
-	background-color: #FF6570;
+	background-color: #FBFBFB;
 	display: inline-block;
 	width: 47%;
+	border: 1px solid #FF6570;
+	color: #FF6570;
 	float: right;
 }
 .tao_pwd .tpwd_links .tpwd_close {
