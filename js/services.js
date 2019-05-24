@@ -71,7 +71,7 @@ $(function() {
 		var keyword = $.trim($("#hb_search_text").val());
 		if(keyword=="")
 			return false;
-		$("#hb_search_q").val(encodeURI(keyword));
+		$("#hb_search_q").val(encodeURIComponent(keyword));
 		if(base_app_change)
 			$("#hb_search_app").val(base_app_code);
 		var action = guangUrl(); //+"?q="+encodeURI(keyword);
