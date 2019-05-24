@@ -483,7 +483,8 @@ function doBuy(a) {
 		// 一键拷贝
 		var clipboard_buy = new ClipboardJS("a.tpwd_buylink", {
 			text: function(content) {
-				return $(content).parent().prev(".tpwd_content").text();
+				var tmp_content = $(content).parent().prev("div.tpwd_content");
+				return tmp_content.text();
 			}
 		});
 		clipboard_buy.on("success", function(e) {
