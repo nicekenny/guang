@@ -472,7 +472,7 @@ function doBuy(a) {
 		}
 	});
 	
-	// 微信浏览器中优先显示二维码
+	// PC端显示直达连接按钮
 	if(current_browser=="PC" && current_browser_platform=="PC") {
 		$(tpwd_dgContent).find(".tpwd_buylink").attr("href",buyUrl).attr("target","_blank").text("直达连接");
 	} else {
