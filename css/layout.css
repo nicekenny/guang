@@ -723,6 +723,7 @@ a:hover {
 	width: 47%;
 	border: 1px solid #FF6570;
 	color: #FF6570;
+	float: right;
 }
 .tao_pwd .tpwd_links .tpwd_qrcode {
 	background-color: #FBFBFB;
@@ -730,7 +731,6 @@ a:hover {
 	width: 47%;
 	border: 1px solid #FF6570;
 	color: #FF6570;
-	float: right;
 }
 .tao_pwd .tpwd_links .tpwd_close {
 	background-color: #fff2f3;

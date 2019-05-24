@@ -430,8 +430,8 @@ function doBuy(a) {
 		+"\" style=\"width:160px;height:160px;\"/></div>"
 		+"<div class=\"tpwd_info\">复制淘口令，打开"+userType_txt+"APP购买</div>"
 		+"<div class=\"tpwd_links\">"
-		+"<a href=\""+buyUrl+"\" target=\"_blank\" class=\"tpwd_buylink\">直达连接</a>"
 		+"<a class=\"tpwd_qrcode\">二维码</a>"
+		+"<a class=\"tpwd_buylink\">一键复制</a>" //href=\""+buyUrl+"\" target=\"_blank\"
 		+"<a class=\"tpwd_close\">再逛逛</a>"
 		+"</div></div>";
 
@@ -473,10 +473,26 @@ function doBuy(a) {
 	});
 	
 	// 微信浏览器中优先显示二维码
-	if(current_browser=="WeiXin") {
-		$(tpwd_dgContent).find(".tpwd_buylink").removeAttr("href");
-		$(tpwd_dgContent).find(".tpwd_buylink").click(function() {
-			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制淘口令</span>，打开"+userType_txt+"APP购买");
+	if(current_browser=="PC" && current_browser_platform=="PC") {
+		$(tpwd_dgContent).find(".tpwd_buylink").attr("href",buyUrl).attr("target","_blank").text("直达连接");
+	} else {
+		// 提示拷贝
+		//$(tpwd_dgContent).find(".tpwd_buylink").click(function() {
+		//	$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制淘口令</span>，打开"+userType_txt+"APP购买");
+		//});
+		// 一键拷贝
+		var clipboard_buy = new ClipboardJS("a.tpwd_buylink", {
+			text: function(content) {
+				return $(content).parent().prev(".tpwd_content").text();
+			}
+		});
+		clipboard_buy.on("success", function(e) {
+			// 拷贝成功
+			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已复制</span>，打开"+userType_txt+"APP购买");
+			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#f7fff1");
+		});
+		clipboard_buy.on("error", function(e) {
+			// 提示失败，手工拷贝
 		});
 	}
 	// 设置窗口背景图片

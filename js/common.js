@@ -49,7 +49,6 @@ $(function() {
 	} else {
 		//否则就是PC浏览器打开
 		current_browser = "PC";
-		current_browser_platform = "PC";
 	}
 	$("#browser_version").html("Browser["+current_browser+"]");
 });
