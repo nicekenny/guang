@@ -31,6 +31,16 @@ $(function() {
 		base_app_code = tmp_app_code;
 		base_app_change = true;
 	}
+	// 根据设备尺寸重设img后缀
+	var win_width = $(window).width();
+	if(win_width<=400)
+		wall_item_img_suffix = "_200x200.jpg";
+	else if(win_width<=500)
+		wall_item_img_suffix = "_250x250.jpg";
+	else if(win_width<=600)
+		wall_item_img_suffix = "_300x300.jpg";
+	else if(win_width<=700)
+		wall_item_img_suffix = "_350x350.jpg";
 
 	$("a[scl='guang']").each(function(){
 		var tmp_href = $(this).attr("href");

@@ -11,6 +11,15 @@ var item_img_suffix = "_800x800.jpg";
 var global_item_id;
 
 $(function() {
+	// 根据设备尺寸重设img后缀
+	var win_width = $(window).width();
+	if(win_width<=400)
+		item_img_suffix = "_400x400.jpg";
+	else if(win_width<=500)
+		item_img_suffix = "_500x500.jpg";
+	else if(win_width<=600)
+		item_img_suffix = "_600x600.jpg";
+
 	var pathname = window.location.pathname;
 	// alert(pathname);
 	if(pathname=="/tpwd.html") {
