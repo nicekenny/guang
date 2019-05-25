@@ -786,7 +786,7 @@ a:hover {
 .article_title h1 {
 	font-size: 18px;
 	line-height: 40px;
-	color: #666666;
+	color: #333333;
 	font-style: normal;
 	font-weight: 500;
 	text-decoration: none;
@@ -799,11 +799,14 @@ a:hover {
 	padding-left: 10px;
 	font-size: 16px;
 	line-height: 30px;
-	color: #666666;
+	color: #333333;
 	background-color: #FBFBFB;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	border-top-width: 1px;
 	border-top-style: solid;
 	border-top-color: #F0F0F0;
+}
+.article_content img {
+	width: 100%;
 }
