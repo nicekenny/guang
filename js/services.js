@@ -417,7 +417,7 @@ function doBuy(a) {
 	}
 	var tpwd = $(a).attr("tpwd");
 	var coupon_txt = "";
-	var userType_txt = "";
+	var userType_txt = "购物";
 
 	var price_name = "折扣价：";
 	if(coupon!=undefined || coupon_amount!=undefined) {
@@ -427,10 +427,12 @@ function doBuy(a) {
 		price_name = "券后价：";
 	}
 
-	if(userType==0)
-		userType_txt = "购物";
-	else if(userType==1)
-		userType_txt = "购物"; //tmall&taobao
+	if(userType==0) {
+		//userType_txt = "购物";
+	} else if(userType==1) {
+		//userType_txt = "购物"; 
+		//tmall&taobao
+	}
 
 	var tpwd_dialog = new dialogLayer();
 	var tpwd_dgContent = tpwd_dialog.open("口令/二维码，快速淘好货！",260,330);
@@ -500,7 +502,7 @@ function doBuy(a) {
 		});
 		clipboard_buy.on("success", function(e) {
 			// 拷贝成功
-			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
+			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开购物APP购买");
 			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#f7fff1");
 		});
 		clipboard_buy.on("error", function(e) {
