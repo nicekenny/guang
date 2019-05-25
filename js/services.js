@@ -348,6 +348,7 @@ function showItems(data) {
 		if(data.from=="material") {
 			var query = data.query;
 			if(query!=undefined) {
+				$(document).attr("title", query.keyword + " - 逛街啦");
 				var sort_vol_up = "",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
 				var sort = query.sort;
 				if(sort=="total_sales_asc") {

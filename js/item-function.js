@@ -100,7 +100,7 @@ $(function() {
 					del_price = json.zkFinalPrice;
 				$("div.d_price").html("¥"+json.finalPrice+"<em>¥"+del_price+"</em>");
 				if(json.couponAmount!=undefined) {
-					$("div.d_coupon").html("<i>券</i>"+json.couponAmount);
+					$("div.d_coupon").html("<i>券</i>"+json.couponAmount).show();
 				}
 				$("div.di_likes").html(json.volume);
 				
