@@ -112,17 +112,27 @@ $(function() {
 	if(pathname=="" || pathname=="/" || pathname=="/index.html") {
 		// 首页加载菜单项目
 		loadMenus();
-		// 载入首页
-		loadIndex();
+		var load_index_status = false;
+		var from = getQueryString("from");
+		if(from=="article") {
+			// 载入文章
+			var article_id = getQueryString("id");
+			loadArticle(article_id);
+		} else {
+			// 载入首页
+			loadIndex();
+			load_index_status = true;
+		}
 		// 滚动条加载商品数据
 		$(window).scroll(function() {
-			var items_box = $("#product_walls");
 			var window_top = $(window).scrollTop();
-			
-			if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
-				loadIndex();
+			// loadIndex after
+			if(load_index_status) {
+				var items_box = $("#product_walls");
+				if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
+					loadIndex();
+				}
 			}
-
 			// 固定导航条
 			var category_box = $("#category_box");
 			if(window_top>45) {
@@ -322,6 +332,8 @@ function showItems(data) {
 		$("#warning_box").show();
 	}
 	if(current_page_no<=1) {
+		// 显示类目列表
+		$("#category_list").show();
 		var categorys = data.categorys;
 		if(categorys!=undefined) {
 			for(var i=0;i<categorys.length;i++) {
@@ -532,4 +544,36 @@ function doBuy(a) {
 function openItem(link) {
 	var data = link.attr("data");
 	window.open(guangUrl("item.html?d="+data));
+}
+// 载入文章内容
+function loadArticle(id) {
+	$("#wall_loading").show();
+	$.ajax({
+		url: serverUrl("article/ajax/"+id+".html"),
+		type: 'GET',
+		dataType: "jsonp",
+		jsonpCallback: "showArticle",
+		success: function (data) {
+			//console.info("success");
+		}
+	});
+}
+// Article回调函数
+function showArticle(data) {
+	var article = data.article;
+	if(article!=undefined) {
+		// html - title
+		$(document).attr("title",article.title + " - 文章 - 逛街啦");
+		$("meta[name='keywords']").eq(0).attr("content",article.keywords);
+		$("meta[name='description']").eq(0).attr("content",article.description);
+		// 设置文章内容
+		$("#article_title_h1").empty().html(article.title).parent().show();
+		//$("#article_author").html(data.author);
+		//$("#article_time").html(dateYmdhm(article.createTime));
+		$("#article_content").empty().html(article.content).fadeIn(300);
+		// 隐藏Welcome-box
+		$("#welcome_box").hide();
+		$("#wall_loading").hide();
+	}
+
 }

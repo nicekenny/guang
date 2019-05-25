@@ -777,3 +777,33 @@ a:hover {
 	border: 1px solid #FF6570;
 	color: #FF6570;
 }
+.article_title {
+	height: 40px;
+	padding-right: 5px;
+	padding-left: 5px;
+	overflow: hidden;
+}
+.article_title h1 {
+	font-size: 14px;
+	line-height: 40px;
+	color: #666666;
+	font-style: normal;
+	font-weight: 500;
+	text-decoration: none;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+	overflow: hidden;
+}
+.article_content {
+	padding-right: 10px;
+	padding-left: 10px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #666666;
+	background-color: #FBFBFB;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #F0F0F0;
+}
