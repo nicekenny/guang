@@ -784,7 +784,7 @@ a:hover {
 	overflow: hidden;
 }
 .article_title h1 {
-	font-size: 16px;
+	font-size: 18px;
 	line-height: 40px;
 	color: #666666;
 	font-style: normal;
@@ -797,8 +797,8 @@ a:hover {
 .article_content {
 	padding-right: 10px;
 	padding-left: 10px;
-	font-size: 14px;
-	line-height: 20px;
+	font-size: 16px;
+	line-height: 30px;
 	color: #666666;
 	background-color: #FBFBFB;
 	padding-top: 20px;
