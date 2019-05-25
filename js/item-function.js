@@ -14,7 +14,7 @@ $(function() {
 	var pathname = window.location.pathname;
 	// alert(pathname);
 	if(pathname=="/tpwd.html") {
-		// 复制淘口令页面
+		// 复制口令页面
 		global_item_id = getQueryString("id");
 		var tpwd = decodeURI(getQueryString("pwd"));
 		var from = getQueryString("from");
@@ -90,15 +90,18 @@ $(function() {
 				if(json.finalPrice<json.zkFinalPrice)
 					del_price = json.zkFinalPrice;
 				$("div.d_price").html("¥"+json.finalPrice+"<em>¥"+del_price+"</em>");
+				if(json.couponAmount!=undefined) {
+					$("div.d_coupon").html("<i>券</i>"+json.couponAmount);
+				}
 				$("div.di_likes").html(json.volume);
 				
 				// 分享文案
 				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【逛着买】¥"+json.finalPrice+"元\r\n------------～逛街啦～-----------\r\n";
 
 				var buyUrl = encodeURIComponent(json.buyUrl);
-				// 调用接口，获取淘口令
+				// 调用接口，获取口令
 				$.ajax({
-					url: serverUrl("taobao/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
+					url: serverUrl("guang/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
 					type: 'GET',
 					dataType: "jsonp",
 					success: function (data) {
@@ -107,14 +110,14 @@ $(function() {
 						var doQrCodeUrl = guangUrl("tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item");
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
-						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开[淘.宝]即可把我带回家。");
+						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
 					}
 				});
 				
 			}
 		}
 	}
-	// 一键复制淘口令
+	// 一键复制口令
 	var clipboard = new ClipboardJS("#copy_tpwd_button", {
 		text: function(content) {
 			return $("#tao_pwd_view").text();
@@ -176,7 +179,7 @@ function loadRecommends() {
 	// 设置加载中
 	loaded = false;
 	$("#wall_loading").show();
-	var load_url = "taobao/item/ajaxRecommends.html?material_id=3756&item_id="+ global_item_id +"&page="+page_no;
+	var load_url = "guang/item/ajaxRecommends.html?material_id=3756&item_id="+ global_item_id +"&page="+page_no;
 	$.ajax({
 		url: serverUrl(load_url),
 		type: 'GET',

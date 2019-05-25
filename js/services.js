@@ -171,7 +171,7 @@ function serverUrl(url) {
 function loadMenus() {
 	// 调用接口，获取菜单项
 	$.ajax({
-		url: serverUrl("scode/base/menuItems.html"),
+		url: serverUrl("guang/base/menuItems.html"),
 		type: 'GET',
 		dataType: "jsonp",
 		success: function (data) {
@@ -218,7 +218,7 @@ function loadIndex() {
 		if(from=="search") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
-			load_url = "taobao/item/ajaxSearch.html?q="+ search_q +"&page="+page_no;
+			load_url = "guang/item/ajaxSearch.html?q="+ search_q +"&page="+page_no;
 		} else if(from=="material") {
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
@@ -235,12 +235,12 @@ function loadIndex() {
 			if(sort!=undefined)
 				sort_param = "&sort="+sort;
 			
-			load_url = "taobao/item/ajaxMaterial.html?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no;
+			load_url = "guang/item/ajaxMaterial.html?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no;
 		}
 	}
 	if(load_url==undefined) {
 		var categoryId = getQueryString("cate");
-		load_url = "taobao/item/ajaxItems.html?cate="+categoryId+"&page="+page_no;
+		load_url = "guang/item/ajaxItems.html?cate="+categoryId+"&page="+page_no;
 	}
 	$.ajax({
 		url: serverUrl(load_url),
@@ -385,7 +385,7 @@ function sortItems(a) {
 		default_sort = "_asc";
 	changeParamReload("sort",sort+default_sort);
 }
-// 去购买（淘口令）
+// 去购买（口令）
 function doBuy(a) {
 	// 变量定义
 	var itemId,buyUrl,title,price,coupon,coupon_amount,userType;
@@ -411,27 +411,28 @@ function doBuy(a) {
 
 	var price_name = "折扣价：";
 	if(coupon!=undefined || coupon_amount!=undefined) {
-		coupon_txt = "<span class=\"font_icon ti_coupon_tag\">&#xe820;</span>";
+		coupon_txt = "<span class=\"ti_coupon_tag r3\">";
+		if(coupon_amount!=undefined)
+			coupon_txt = coupon_txt + "<i>券</i>"+coupon_amount+"</span>";
 		price_name = "券后价：";
 	}
 
 	if(userType==0)
-		userType_txt = "淘宝";
+		userType_txt = "购物";
 	else if(userType==1)
-		userType_txt = "天猫/淘宝";
+		userType_txt = "购物"; //tmall&taobao
 
 	var tpwd_dialog = new dialogLayer();
-	var tpwd_dgContent = tpwd_dialog.open("淘口令/二维码，快速淘好货！",250,330);
+	var tpwd_dgContent = tpwd_dialog.open("口令/二维码，快速淘好货！",260,330);
 	var tpwd_html = "<div class=\"tao_pwd\">"
 		+"<div class=\"tpwd_content\" clipboard=\"true\"><p class=\"ti_title\">"+title+"</p><p class=\"ti_price\">"+price_name
-		+"<span style=\"color:#d52f37;\">¥<span style=\"font-size:18px;\">"+price+"</span></span>"+coupon_txt
-		+"</p><p style=\"color:#0099CC;\">淘口令：<span info=\"tpwd\">载入中...</span></p></div>"
+		+"<span class=\"tip_block\"><i>¥</i>"+price+"</span>"+coupon_txt+"</p><p style=\"color:#0099CC;\">口令：<span info=\"tpwd\">载入中...</span></p></div>"
 		+"<div class=\"item_qrcode\" style=\"display:none;\"><img src=\"http://qr.liantu.com/api.php?bg=ffffff&el=l&w=200&m=5&text="+encodeURIComponent(buyUrl)
 		+"\" style=\"width:160px;height:160px;\"/></div>"
-		+"<div class=\"tpwd_info\">拷贝淘口令，打开"+userType_txt+"APP购买</div>"
+		+"<div class=\"tpwd_info\">拷贝口令，打开"+userType_txt+"APP购买</div>"
 		+"<div class=\"tpwd_links\">"
 		+"<a class=\"tpwd_qrcode\">二维码</a>"
-		+"<a class=\"tpwd_buylink\">一键拷贝</a>" //href=\""+buyUrl+"\" target=\"_blank\"
+		+"<a class=\"tpwd_buylink\">一键拷贝</a>"
 		+"<a class=\"tpwd_close\">~再逛逛~</a>"
 		+"</div></div>";
 
@@ -440,9 +441,9 @@ function doBuy(a) {
 	if(tpwd!=undefined && $.trim(tpwd)!="" && $.trim(tpwd)!="undefined") {
 		$(tpwd_dgContent).find("span[info='tpwd']").html(tpwd);
 	} else {
-		// 调用接口，获取淘口令
+		// 调用接口，获取口令
 		$.ajax({
-			url: serverUrl("taobao/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)),
+			url: serverUrl("guang/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)),
 			type: 'GET',
 			dataType: "jsonp",
 			success: function (data) {
@@ -463,7 +464,7 @@ function doBuy(a) {
 			$(tpwd_dgContent).find(".tpwd_content").hide();
 			$(tpwd_dgContent).find(".tpwd_info").hide();
 			$(tpwd_dgContent).find(".item_qrcode").show();
-			tmp_link.text("淘口令");
+			tmp_link.text("口令");
 		} else {
 			$(tpwd_dgContent).find(".item_qrcode").hide();
 			$(tpwd_dgContent).find(".tpwd_content").show();
@@ -478,18 +479,18 @@ function doBuy(a) {
 	} else {
 		// 提示拷贝
 		//$(tpwd_dgContent).find(".tpwd_buylink").click(function() {
-		//	$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制淘口令</span>，打开"+userType_txt+"APP购买");
+		//	$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制口令</span>，打开"+userType_txt+"APP购买");
 		//});
 		// 一键拷贝
 		var clipboard_buy = new ClipboardJS("a.tpwd_buylink", {
 			text: function(content) {
-				var tmp_content = $(tpwd_dgContent).find(".tpwd_content");
+				var tmp_content = $(tpwd_dgContent).find("span[info='tpwd']");
 				return tmp_content.text();
 			}
 		});
 		clipboard_buy.on("success", function(e) {
 			// 拷贝成功
-			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已拷贝</span>，打开"+userType_txt+"APP购买");
+			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
 			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#f7fff1");
 		});
 		clipboard_buy.on("error", function(e) {
@@ -502,12 +503,12 @@ function doBuy(a) {
 	// 点击内容一键拷贝
 	var clipboard = new ClipboardJS("div[clipboard='true']", {
         text: function(content) {
-            return $(content).find("span[info='tpwd']").text();
+            return $(content).text();
         }
     });
     clipboard.on("success", function(e) {
         // 拷贝成功
-		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">淘口令已拷贝</span>，打开"+userType_txt+"APP购买");
+		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
 		$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#f7fff1");
     });
     clipboard.on("error", function(e) {

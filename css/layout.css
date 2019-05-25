@@ -681,19 +681,58 @@ a:hover {
 }
 .tao_pwd .tpwd_content .ti_price {
 	font-size: 14px;
-	line-height: 20px;
+	line-height: 22px;
 	color: #333333;
-	height: 20px;
+	height: 22px;
 	overflow: hidden;
 	margin-bottom: 5px;
 }
+.tao_pwd .tpwd_content .tip_block {
+	display: inline-block;
+	color: #d52f37;
+	font-size: 18px;
+	line-height: 22px;
+	margin-right: 8px;
+}
+.tao_pwd .tpwd_content .tip_block i {
+	font-size: 14px;
+	font-style: normal;
+	font-weight: normal;
+	margin-right: 2px;
+}
 .tao_pwd .tpwd_content .ti_coupon_tag {
 	font-size: 12px;
-	line-height: 16px;
-	color: #999999;
-	padding-left: 3px;
-	width: 16px;
+	line-height: 14px;
+	color: #d52f37;
 	height: 16px;
+	display: inline-block;
+	border: 1px solid #999999;
+	overflow: hidden;
+	padding-top: 0px;
+	padding-right: 5px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	vertical-align: sub;
+}
+.tao_pwd .tpwd_content .ti_coupon_tag i {
+	color: #FFFFFF;
+	font-size: 11px;
+	font-style: normal;
+	line-height: 16px;
+	font-weight: normal;
+	margin-right: 4px;
+	padding-right: 3px;
+	padding-left: 3px;
+	margin-top: 0px;
+	display: inline-block;
+	height: 16px;
+	overflow: hidden;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	vertical-align: text-bottom;
+	background-color: #999999;
 }
 .tao_pwd .item_qrcode {
 	height: 160px;

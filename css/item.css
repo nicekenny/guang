@@ -62,7 +62,7 @@
 	height: 100px;
 }
 .detail_info .di_left {
-	margin-right: 110px;
+	margin-right: 105px;
 }
 .detail_info .di_right {
 	float: right;
@@ -85,6 +85,34 @@
 	font-style: normal;
 	margin-left: 10px;
 }
+.detail_info .d_coupon {
+	float: left;
+	font-size: 12px;
+	line-height: 18px;
+	font-weight: normal;
+	color: #ee323b;
+	border: 1px solid #999999;
+	overflow: hidden;
+	vertical-align: sub;
+	display: inline-block;
+	margin-left: 10px;
+	height: 18px;
+	padding-right: 5px;
+	margin-top: 8px;
+}
+.detail_info .d_coupon i {
+	font-size: 12px;
+	font-style: normal;
+	line-height: 18px;
+	font-weight: normal;
+	color: #FFFFFF;
+	background-color: #999999;
+	display: inline-block;
+	height: 18px;
+	margin-right: 3px;
+	padding-right: 2px;
+	padding-left: 2px;
+}
 .detail_info .di_likes {
 	text-align: left;
 	background-image: url(images/wall_like_icon.png);
@@ -94,7 +122,7 @@
 	float: right;
 	margin-top: 9px;
 	color: #999999;
-	padding-right: 5px;
+	padding-right: 0px;
 }
 .detail_info .qr_code_img {
 	background-image: url(images/qr_code.png);
