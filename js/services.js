@@ -22,9 +22,17 @@ var base_app_code = "guang",base_app_change = false;
 var page_no = 1,current_page_no = 0,loaded = true;
 var wall_item_img_suffix = "_400x400.jpg";
 var items_share_status = false;
+// 页面执行全局变量
+var param_gss,property_gss = "gss";
 
 // 页面数据初始化
 $(function() {
+	// 获取全局执行变量
+	param_gss = getQueryString(property_gss);
+	// OLD兼容
+	if(param_gss==undefined)
+		param_gss = getQueryString("from");
+
 	// 初始全局APP代码
 	var tmp_app_code = getQueryString("app");
 	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="" && tmp_app_code!=base_app_code) {
@@ -113,8 +121,7 @@ $(function() {
 		// 首页加载菜单项目
 		loadMenus();
 		var load_index_status = false;
-		var from = getQueryString("from");
-		if(from=="article") {
+		if(param_gss=="article") {
 			// 载入文章
 			var article_id = getQueryString("id");
 			loadArticle(article_id);
@@ -199,7 +206,7 @@ function loadMenus() {
 				var menu_html = "";
 				for(var m=0;m<data.menus.length;m++) {
 					var menu_item = data.menus[m];
-					var mi_href = "?from=material";
+					var mi_href = "?"+property_gss+"=material";
 					if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
 						mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
 					}
@@ -233,13 +240,14 @@ function loadIndex() {
 	loaded = false;
 	$("#wall_loading").show();
 	var load_url;
-	var from = getQueryString("from");
-	if(from!=undefined && from!="") {
-		if(from=="search") {
+	if(param_gss!=undefined && param_gss!="") {
+		if(param_gss=="search") {
+			// 搜索载入
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
 			load_url = "guang/item/ajaxSearch.html?q="+ search_q +"&page="+page_no;
-		} else if(from=="material") {
+		} else if(param_gss=="material") {
+			// 物料载入
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
 			var cate_param = "";

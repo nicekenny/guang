@@ -21,13 +21,11 @@ $(function() {
 		item_img_suffix = "_600x600.jpg";
 
 	var pathname = window.location.pathname;
-	// alert(pathname);
 	if(pathname=="/tpwd.html") {
 		// 复制口令页面
 		global_item_id = getQueryString("id");
 		var tpwd = decodeURI(getQueryString("pwd"));
-		var from = getQueryString("from");
-		if(from=="item") {
+		if(param_gss=="item") {
 			$("#tao_pwd_view").text("("+tpwd+")");
 		}
 	} else if(pathname=="/item.html") {
@@ -116,7 +114,7 @@ $(function() {
 					success: function (data) {
 						$("#tao_pwd_view").text(data);
 						var tpwd = data.replace(/￥/g,"");
-						var doQrCodeUrl = guangUrl("tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&from=item");
+						var doQrCodeUrl = guangUrl("tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item");
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
 						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
