@@ -10,8 +10,6 @@
 // 定义全局变量
 var basepath = "http://guang.scode.org.cn/";
 var serv_basepath = "http://x.scode.org.cn:81/";
-// https server
-// serv_basepath = "https://x.scode.org.cn:444/";
 // test server-----------------------
 // basepath = "http://192.168.0.10/";
 // serv_basepath = "http://192.168.0.10/scodelab/";
