@@ -527,7 +527,7 @@ function doBuy(a) {
 		clipboard_buy.on("success", function(e) {
 			// 拷贝成功
 			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
-			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#fbfff8");
+			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#fcfffa");
 		});
 		clipboard_buy.on("error", function(e) {
 			// 提示失败，手工拷贝
@@ -545,7 +545,7 @@ function doBuy(a) {
     clipboard.on("success", function(e) {
         // 拷贝成功
 		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
-		$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#fbfff8");
+		$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#fcfffa");
     });
     clipboard.on("error", function(e) {
         // 提示失败，手工拷贝
