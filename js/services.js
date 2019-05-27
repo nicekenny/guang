@@ -8,10 +8,10 @@
  */
 
 // 定义全局变量
-var basepath = "https://guang.scode.org.cn/";
+var basepath = "http://guang.scode.org.cn/";
 var serv_basepath = "http://x.scode.org.cn:81/";
 // https server
-serv_basepath = "https://x.scode.org.cn:444/";
+// serv_basepath = "https://x.scode.org.cn:444/";
 // test server-----------------------
 // basepath = "http://192.168.0.10/";
 // serv_basepath = "http://192.168.0.10/scodelab/";
@@ -27,6 +27,11 @@ var param_gss,property_gss = "gss";
 
 // 页面数据初始化
 $(function() {
+	var protocol = window.location.protocol;
+	if(protocol=="https:") {
+		basepath = "https://guang.scode.org.cn/";
+		serv_basepath = "https://x.scode.org.cn:444/";
+	}
 	// 获取全局执行变量
 	param_gss = getQueryString(property_gss);
 	// OLD兼容
