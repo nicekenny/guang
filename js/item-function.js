@@ -111,6 +111,7 @@ $(function() {
 				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【逛着买】¥"+json.finalPrice+"元\r\n------------～逛街啦～-----------\r\n";
 
 				var buyUrl = encodeURIComponent(json.buyUrl);
+				var picUrl = encodeURIComponent(json.pictUrl);
 				// 调用接口，获取口令
 				$.ajax({
 					url: serverUrl("guang/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
@@ -119,7 +120,7 @@ $(function() {
 					success: function (data) {
 						$("#tao_pwd_view").text(data);
 						var tpwd = data.replace(/￥/g,"");
-						var doQrCodeUrl = guangUrl("tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item");
+						var doQrCodeUrl = guangUrl("tpwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item&pic="+picUrl);
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 						$(".qr_code_img").attr("src",qr_code_url);
 						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
