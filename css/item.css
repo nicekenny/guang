@@ -366,7 +366,7 @@
 	background-color: #FFFFFF;
 	padding-top: 10px;
 	padding-right: 10px;
-	padding-bottom: 20px;
+	padding-bottom: 5px;
 	padding-left: 10px;
 }
 .copy_tpwd_panel .ctp_title {
@@ -386,7 +386,7 @@
 	-webkit-user-select: text;
 	padding-top: 20px;
 	padding-right: 10px;
-	padding-bottom: 10px;
+	padding-bottom: 5px;
 	padding-left: 10px;
 }
 .copy_tpwd_panel .ctp_content * {
