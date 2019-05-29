@@ -25,13 +25,13 @@ $(function() {
 		// 复制口令页面
 		global_item_id = getQueryString("id");
 		var tpwd = decodeURI(getQueryString("pwd"));
-		if(param_gss=="item" || param_gss=="weixin") {
+		if(tpwd!=undefined) {
 			$("#tao_pwd_view").text("("+tpwd+")");
-			var item_pic = getQueryString("pic");
-			if(item_pic!=undefined) {
-				item_pic = decodeURIComponent(item_pic);
-				$("#item_picture").attr("src",item_pic + item_img_suffix).parent().show();
-			}
+		}
+		var item_pic = getQueryString("pic");
+		if(item_pic!=undefined) {
+			item_pic = decodeURIComponent(item_pic);
+			$("#item_picture").attr("src",item_pic + item_img_suffix).parent().show();
 		}
 	} else if(pathname=="/item.html") {
 		// 获取宝贝数据包
