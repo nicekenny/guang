@@ -123,7 +123,7 @@ $(function() {
 				var item_share_coupon = "";
 				if(json.couponAmount!=undefined) {
 					$("div.d_coupon").html("<i>券</i>"+json.couponAmount).show();
-					item_share_coupon = "(优惠"+json.couponAmount+"元)";
+					item_share_coupon = " (优惠"+json.couponAmount+"元)";
 				}
 				$("div.di_likes").html(json.volume);
 				
