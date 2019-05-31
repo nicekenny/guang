@@ -120,13 +120,15 @@ $(function() {
 				if(json.finalPrice<json.zkFinalPrice)
 					del_price = json.zkFinalPrice;
 				$("div.d_price").html("¥"+json.finalPrice+"<em>¥"+del_price+"</em>");
+				var item_share_coupon = "";
 				if(json.couponAmount!=undefined) {
 					$("div.d_coupon").html("<i>券</i>"+json.couponAmount).show();
+					item_share_coupon = "(优惠"+json.couponAmount+"元)";
 				}
 				$("div.di_likes").html(json.volume);
 				
 				// 分享文案
-				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【逛着买】¥"+json.finalPrice+"元\r\n------------～逛街啦～-----------\r\n";
+				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【券后价】¥"+json.finalPrice+"元"+item_share_coupon+"\r\n------------～逛街啦～------------\r\n";
 
 				var buyUrl = encodeURIComponent(json.buyUrl);
 				var picUrl = encodeURIComponent(json.pictUrl);
