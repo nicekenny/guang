@@ -403,11 +403,13 @@
 	-webkit-user-select: text;
 }
 .item_pic {
-	margin-top: 0px;
-	margin-right: 50px;
-	margin-bottom: 0px;
-	margin-left: 50px;
 	overflow: hidden;
+	margin: 0px;
+	padding-right: 50px;
+	padding-left: 50px;
+	background-color: #FFFFFF;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 .item_pic img {
 	width: 100%;
