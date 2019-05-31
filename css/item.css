@@ -403,9 +403,9 @@
 	-webkit-user-select: text;
 }
 .item_pic {
-	margin-top: 20px;
+	margin-top: 0px;
 	margin-right: 50px;
-	margin-bottom: 20px;
+	margin-bottom: 0px;
 	margin-left: 50px;
 	overflow: hidden;
 }
