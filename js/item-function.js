@@ -21,7 +21,7 @@ $(function() {
 		item_img_suffix = "_600x600.jpg";
 
 	var pathname = window.location.pathname;
-	if(pathname=="/tpwd.html") {
+	if(pathname=="/tpwd.html" || pathname=="/pwd.html") {
 		// 复制口令页面
 		global_item_id = getQueryString("id");
 		var tpwd = decodeURI(getQueryString("pwd"));
@@ -29,9 +29,27 @@ $(function() {
 			$("#tao_pwd_view").text("("+tpwd+")");
 		}
 		var item_pic = getQueryString("pic");
-		if(item_pic!=undefined) {
+		if(item_pic!=undefined && $.trim(item_pic)!="") {
 			item_pic = decodeURIComponent(item_pic);
-			$("#item_picture").attr("src",item_pic + item_img_suffix).parent().show();
+			var pic_box = $("#item_picture").attr("src",item_pic + item_img_suffix).parent();
+			// pic_box.css("height",pic_box.width()+"px");
+			pic_box.show();
+		} else {
+			// 调用接口，获取商品图片
+			$.ajax({
+				url: serverUrl("guang/item/ajaxItemInfo.html?id="+global_item_id),
+				type: 'GET',
+				dataType: "jsonp",
+				success: function (data) {
+					if(data!=undefined && data.item!=undefined) {
+						var tmp_pic = data.item.pictUrl;
+						if(tmp_pic!=undefined && $.trim(tmp_pic)!="") {
+							var tmp_pic_box = $("#item_picture").attr("src",tmp_pic + item_img_suffix).parent();
+							tmp_pic_box.show();
+						}
+					}
+				}
+			});
 		}
 	} else if(pathname=="/item.html") {
 		// 获取宝贝数据包
@@ -139,12 +157,17 @@ $(function() {
 	clipboard.on("success", function(e) {
 		// 拷贝成功
 		if(!$(e.trigger).hasClass("green")) {
-			$(e.trigger).addClass("green").append("(OK)");
+			var cache_text = $(e.trigger).html();
+			$(e.trigger).addClass("green").html("拷贝成功，打开购物APP购买");
+			// 3秒后恢复
+			setTimeout(function(){
+				$(e.trigger).removeClass("green").html(cache_text);
+			},3000);
 		}
 	});
 	clipboard.on("error", function(e) {
 		// 提示失败，手工拷贝
-		$(e.trigger).append("(失败)");
+		// $(e.trigger).append("(失败)");
 	});
 	// 一键复制分享文案
 	var clipboard_share = new ClipboardJS("#copy_item_share_text_button", {
@@ -155,31 +178,39 @@ $(function() {
 	clipboard_share.on("success", function(e) {
 		// 拷贝成功
 		if(!$(e.trigger).hasClass("purple")) {
+			var cache_text = $(e.trigger).html();
 			if($(e.trigger).hasClass("blue"))
 				$(e.trigger).removeClass("blue");
-			$(e.trigger).addClass("purple").append("(OK)");
+			$(e.trigger).addClass("purple").html("拷贝成功，去粘贴分享文案");
+			// 3秒后恢复
+			setTimeout(function(){
+				$(e.trigger).removeClass("purple").addClass("blue").html(cache_text);
+			},3000);
 		}
 	});
 	clipboard_share.on("error", function(e) {
 		// 提示失败，手工拷贝
-		$(e.trigger).append("(失败)");
+		// $(e.trigger).append("(失败)");
 	});
-	// 加载推荐宝贝(延时加载)
-	setTimeout(function(){loadRecommends();},2000);
-	// 滚动条加载商品数据
-	$(window).scroll(function() {
-		var items_box = $("#product_walls");
-		var window_top = $(window).scrollTop();
-		
-		if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
-			if(page_no==1)
-				setTimeout(function(){loadRecommends();},2000);
-			else
-				loadRecommends();
-		}
+	if(pathname=="/item.html" || pathname=="/tpwd.html") {
+		$(".detail_recoms").show();
+		// 加载推荐宝贝(延时加载)
+		setTimeout(function(){loadRecommends();},2000);
+		// 滚动条加载商品数据
+		$(window).scroll(function() {
+			var items_box = $("#product_walls");
+			var window_top = $(window).scrollTop();
+			
+			if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
+				if(page_no==1)
+					setTimeout(function(){loadRecommends();},2000);
+				else
+					loadRecommends();
+			}
 
-	});
-	// 推荐结束-----------------------
+		});
+		// 推荐结束-----------------------
+	}
 	
 });
 

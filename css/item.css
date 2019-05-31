@@ -402,3 +402,13 @@
 	-webkit-appearance: none;
 	-webkit-user-select: text;
 }
+.item_pic {
+	margin-top: 20px;
+	margin-right: 50px;
+	margin-bottom: 20px;
+	margin-left: 50px;
+	overflow: hidden;
+}
+.item_pic img {
+	width: 100%;
+}
