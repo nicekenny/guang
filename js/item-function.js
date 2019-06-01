@@ -142,7 +142,9 @@ $(function() {
 						var tpwd = data.replace(/￥/g,"");
 						var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
 						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
-						$(".qr_code_img").attr("src",qr_code_url);
+						$(".qr_code_img").attr("src",qr_code_url).click(function(){
+							window.open(doQrCodeUrl);
+						});
 						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
 					}
 				});
