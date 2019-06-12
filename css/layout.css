@@ -598,25 +598,24 @@ a:hover {
 	z-index: 1000;
 }
 .fixed_box a {
-	background-image: url(images/fixed_box_icons.png);
-	background-repeat: no-repeat;
-	text-indent: -9999px;
-	display: block;
-	height: 36px;
-	width: 36px;
-	margin-top: 15px;
-	border-radius: 20px;
-	background-color:rgba(240,240,240,.7);
-}
-.fixed_box a.back_top {
-	background-image: none;
 	text-align: center;
 	text-indent: 0px;
-	font-size: 35px;
+	display: block;
+	font-size: 20px;
 	line-height: 36px;
 	opacity: 0.9;
 	filter:alpha(Opacity=90);
 	-moz-opacity:0.9;
+	
+	height: 36px;
+	width: 36px;
+	margin-top: 15px;
+	border-radius: 20px;
+	background-color:rgba(50,50,50,.7);
+	color: #FFFFFF;
+}
+.fixed_box a.back_top {
+	
 }
 
 .welcome_box {

@@ -11,7 +11,8 @@ $(function() {
 	if($(window).scrollTop()<=10)
 		$(".fixed_box .back_top").hide();
 	$(".fixed_box .back_top").click(function() {
-		$(window).scrollTop(0);
+		// $(window).scrollTop(0);
+		$("body,html").animate({ scrollTop: 0 }, 800);
 	});
 	$(window).scroll(function() {
 		var window_top = $(window).scrollTop();
@@ -24,6 +25,9 @@ $(function() {
 				$(".fixed_box .back_top").hide();
 			}
 		}
+	});
+	$(".fixed_box .refresh").click(function() {
+		window.location.reload();
 	});
 	//判断是否是移动设备打开。
 	if (browser.versions.mobile) {
