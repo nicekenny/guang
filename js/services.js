@@ -22,6 +22,8 @@ var wall_item_img_suffix = "_400x400.jpg";
 var items_share_status = false;
 // 页面执行全局变量
 var param_gss,property_gss = "gss";
+// 显示隐藏效果时间
+var fade_time = 100;
 
 // 页面数据初始化
 $(function() {
@@ -69,8 +71,8 @@ $(function() {
 		if($(this).attr("status")=="close") {
 			resetBox();
 			$(this).html("&#xe81b;");
-			$("#hb_search_box").show();
-			$("#m_ui_mask").show();
+			$("#hb_search_box").fadeIn(fade_time);
+			$("#m_ui_mask").fadeIn(fade_time);
 			$("#hb_search_text").focus();
 			$(this).attr("status","open");
 		} else if($(this).attr("status")=="open") {
@@ -82,8 +84,8 @@ $(function() {
 		if($(this).attr("show_box")!="1") {
 			resetBox();
 			$(this).attr("show_box","1");
-			$("#hb_category_box").show();
-			$("#m_ui_mask").show();
+			$("#hb_category_box").fadeIn(fade_time);
+			$("#m_ui_mask").fadeIn(fade_time);
 		} else if($(this).attr("show_box")=="1") {
 			resetBox();
 		}
@@ -97,16 +99,18 @@ $(function() {
 			$("#hb_search_app").val(base_app_code);
 		var action = guangUrl(); //+"?q="+encodeURI(keyword);
 		$(this).attr("action",action);
+		// 提交跳转后隐藏悬浮
+		resetBox();
 		return true;
 	});
 	$("#set_options_link").click(function() {
 		if($(this).attr("status")=="hide") {
-			$("div.item_open").show();
+			$("div.item_open").fadeIn(fade_time);
 			$(this).attr("status","show").html("&#xe80a;");
 			items_share_status = true;
 			setCookie("items_share_status","true");
 		} else if($(this).attr("status")=="show") {
-			$("div.item_open").hide();
+			$("div.item_open").fadeOut(fade_time);
 			$(this).attr("status","hide").html("&#xe80b;");
 			items_share_status = false;
 			setCookie("items_share_status","false");
@@ -114,7 +118,7 @@ $(function() {
 	});
 	// 获取cookie中记录的选项
 	if(getCookie("items_share_status")=="true") {
-		$("div.item_open").show();
+		$("div.item_open").fadeIn(fade_time);
 		$("#set_options_link").attr("status","show").html("&#xe80a;");
 		items_share_status = true;
 	}
@@ -166,14 +170,14 @@ function resetBox() {
 	if($("#m_ui_mask").is(":hidden"))
 		return;
 	if(!$("#hb_search_box").is(":hidden")) {
-		$("#hb_search_box").hide();
+		$("#hb_search_box").fadeOut(fade_time);
 		$("#hd_search_link").html("&#xe834;");
 	}
 	if(!$("#hb_category_box").is(":hidden")) {
-		$("#hb_category_box").hide();
+		$("#hb_category_box").fadeOut(fade_time);
 		$("#hd_category_link").removeAttr("show_box");
 	}
-	$("#m_ui_mask").hide();
+	$("#m_ui_mask").fadeOut(fade_time);
 }
 // 完善处理Guang.scode连接地址
 function guangUrl(url) {
