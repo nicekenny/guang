@@ -23,7 +23,7 @@ var items_share_status = false;
 // 页面执行全局变量
 var param_gss,property_gss = "gss";
 // 显示隐藏效果时间
-var fade_time = 100;
+var fade_time = 200;
 
 // 页面数据初始化
 $(function() {
