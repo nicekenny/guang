@@ -230,12 +230,17 @@ function loadMenus() {
 					if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
 						mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
 					}
-					menu_html = menu_html + "<li><a href=\""+guangUrl(encodeURI(mi_href))+"\"><i"+mi_icon_css+"></i>"+menu_item.title+"</a></li>";
+					menu_html = menu_html + "<li><a href=\""+guangUrl(encodeURI(mi_href))+"\" onclick=\"menuClick(this);\"><i"+mi_icon_css+"></i>"+menu_item.title+"</a></li>";
 				}
 				$("#hb_menus_box").empty().append(menu_html);
 			}
 		}
 	});
+}
+// 菜单链接点击事件
+function menuClick(link) {
+	// 关闭悬浮层
+	resetBox();
 }
 // index.html页面数据加载
 function loadIndex() {
