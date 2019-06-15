@@ -77,7 +77,6 @@ $(function() {
 			$(this).attr("status","open");
 		} else if($(this).attr("status")=="open") {
 			resetBox();
-			$(this).attr("status","close");
 		}
 	});
 	$("#hd_category_link").click(function() {
@@ -172,6 +171,7 @@ function resetBox() {
 	if(!$("#hb_search_box").is(":hidden")) {
 		$("#hb_search_box").fadeOut(fade_time);
 		$("#hd_search_link").html("&#xe834;");
+		$("#hd_search_link").attr("status","close");
 	}
 	if(!$("#hb_category_box").is(":hidden")) {
 		$("#hb_category_box").fadeOut(fade_time);
