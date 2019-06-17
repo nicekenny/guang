@@ -311,13 +311,12 @@ function showItems(data) {
 		}
 		for(var i=0;i<items.length;i++) {
 			var item = items[i];
-			var item_id = item.numIid;
-			if(item_id==undefined)
-				item_id = item.itemId;
-			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item.dataString+"\" >"
-				+"<div class=\"item_img\">"+"<img src=\""+item.pictUrl + wall_item_img_suffix+"\" pic=\""+item.pictUrl+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" />"
+			var item_id = item.id;
+			var item_dataStr = item.dataString;
+			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" >"
+				+"<div class=\"item_img\">"+"<img src=\""+item.pic + wall_item_img_suffix+"\" pic=\""+item.pic+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
-				+"<span class=\"item_info_price\"><i>¥</i>"+item.finalPriceWap+"</span>"
+				+"<span class=\"item_info_price\"><i>¥</i>"+item.price+"</span>"
 				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
 				+"<span class=\"item_info_likes\">"+item.volume+"</span>"
 				//+"<span class=\"item_info_provcity\">"+item.provcity+"</span>"
@@ -431,40 +430,29 @@ function sortItems(a) {
 // 去购买（口令）
 function doBuy(a) {
 	// 变量定义
-	var itemId,buyUrl,title,price,coupon,coupon_amount,userType;
+	var itemId,buyUrl,title,price,coupon_amount;
 
 	var item_data = $(a).attr("data");
 	if(item_data!=undefined && item_data!="null" && $.trim(item_data)!="") {
 		// 数据解包
 		var jsonStr = new Base64().decode(item_data);
-		var json = Json.parse(jsonStr);
-		if(json!=undefined) {
-			itemId = json.itemId;
-			buyUrl = json.buyUrl;
-			title = json.title;
-			price = json.finalPrice;
-			coupon = json.couponInfo;
-			coupon_amount = json.couponAmount;
-			userType = json.userType;
+		var item = Json.parse(jsonStr);
+		if(item!=undefined) {
+			itemId = item.id;
+			buyUrl = item.buyUrl;
+			title = item.title;
+			price = item.price;
+			coupon_amount = item.couponAmount;
 		}
 	}
 	var tpwd = $(a).attr("tpwd");
 	var coupon_txt = "";
-	var userType_txt = "购物";
+	var shop_app_txt = "购物";
 
 	var price_name = "折扣价：";
-	if(coupon!=undefined || coupon_amount!=undefined) {
-		coupon_txt = "<span class=\"ti_coupon_tag r3\">";
-		if(coupon_amount!=undefined)
-			coupon_txt = coupon_txt + "<i>券</i>"+coupon_amount+"</span>";
+	if(coupon_amount!=undefined && coupon_amount>0) {
+		coupon_txt = "<span class=\"ti_coupon_tag r3\"><i>券</i>"+coupon_amount+"</span>";
 		price_name = "券后价：";
-	}
-
-	if(userType==0) {
-		//userType_txt = "购物";
-	} else if(userType==1) {
-		//userType_txt = "购物"; 
-		//tmall&taobao
 	}
 
 	var tpwd_dialog = new dialogLayer();
@@ -474,7 +462,7 @@ function doBuy(a) {
 		+"<span class=\"tip_block\"><i>¥</i>"+price+"</span>"+coupon_txt+"</p><p style=\"color:#0099CC;\">口令：<span info=\"tpwd\">载入中...</span></p></div>"
 		+"<div class=\"item_qrcode\" style=\"display:none;\"><img src=\"http://qr.liantu.com/api.php?bg=ffffff&el=l&w=200&m=5&text="+encodeURIComponent(buyUrl)
 		+"\" style=\"width:160px;height:160px;\"/></div>"
-		+"<div class=\"tpwd_info\">拷贝口令，打开"+userType_txt+"APP购买</div>"
+		+"<div class=\"tpwd_info\">拷贝口令，打开"+shop_app_txt+"APP购买</div>"
 		+"<div class=\"tpwd_links\">"
 		+"<a class=\"tpwd_qrcode\">二维码</a>"
 		+"<a class=\"tpwd_buylink\">一键拷贝</a>"
@@ -524,7 +512,7 @@ function doBuy(a) {
 	} else {
 		// 提示拷贝
 		//$(tpwd_dgContent).find(".tpwd_buylink").click(function() {
-		//	$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制口令</span>，打开"+userType_txt+"APP购买");
+		//	$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制口令</span>，打开"+shop_app_txt+"APP购买");
 		//});
 		// 一键拷贝
 		var clipboard_buy = new ClipboardJS("a.tpwd_buylink", {
@@ -535,7 +523,7 @@ function doBuy(a) {
 		});
 		clipboard_buy.on("success", function(e) {
 			// 拷贝成功
-			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
+			$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+shop_app_txt+"APP购买");
 			$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#fcfffa");
 		});
 		clipboard_buy.on("error", function(e) {
@@ -553,7 +541,7 @@ function doBuy(a) {
     });
     clipboard.on("success", function(e) {
         // 拷贝成功
-		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+userType_txt+"APP购买");
+		$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">口令已拷贝</span>，打开"+shop_app_txt+"APP购买");
 		$(tpwd_dgContent).find(".tpwd_content").css("border", "1px dashed #66CC33").css("background-color", "#fcfffa");
     });
     clipboard.on("error", function(e) {

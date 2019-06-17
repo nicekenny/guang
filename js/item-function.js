@@ -42,7 +42,7 @@ $(function() {
 				dataType: "jsonp",
 				success: function (data) {
 					if(data!=undefined && data.item!=undefined) {
-						var tmp_pic = data.item.pictUrl;
+						var tmp_pic = data.item.pic;
 						if(tmp_pic!=undefined && $.trim(tmp_pic)!="") {
 							var tmp_pic_box = $("#item_picture").attr("src",tmp_pic + item_img_suffix).parent();
 							tmp_pic_box.show();
@@ -57,17 +57,17 @@ $(function() {
 		if(data!=undefined && data!="null" && $.trim(data)!="") {
 			// 数据解包
 			var jsonStr = new Base64().decode(data);
-			var json = Json.parse(jsonStr);
-			if(json!=undefined) {
+			var item = Json.parse(jsonStr);
+			if(item!=undefined) {
 				// 全局变量：宝贝ID
-				global_item_id = json.itemId;
+				global_item_id = item.id;
 				// 设置title
-				$(document).attr("title", json.title + " - 逛街啦");
+				$(document).attr("title", item.title + " - 逛街啦");
 
 				var itemBlock_imgs = $("div.showcase");
-				var pic_main = json.pictUrl + item_img_suffix;
+				var pic_main = item.picUrl + item_img_suffix;
 				
-				var pic_list = json.smallImages;
+				var pic_list = item.picUrls;
 				var imgList_html = "",imgList_nav = "";
 				if(pic_list!=undefined && pic_list.length>0) {
 					for(var i=0;i<pic_list.length;i++) {
@@ -115,23 +115,23 @@ $(function() {
 				};
 
 				//----------------------
-				$("div.detail_title").html(json.title);
-				var del_price = json.reservePrice;
-				if(json.finalPrice<json.zkFinalPrice)
-					del_price = json.zkFinalPrice;
-				$("div.d_price").html("¥"+json.finalPrice+"<em>¥"+del_price+"</em>");
+				$("div.detail_title").html(item.title);
+				var del_price = item.reservePrice;
+				if(item.price<item.zkPrice)
+					del_price = item.zkPrice;
+				$("div.d_price").html("¥"+item.price+"<em>¥"+del_price+"</em>");
 				var item_share_coupon = "";
-				if(json.couponAmount!=undefined) {
-					$("div.d_coupon").html("<i>券</i>"+json.couponAmount).show();
-					item_share_coupon = " (优惠"+json.couponAmount+"元)";
+				if(item.couponAmount!=undefined && item.couponAmount>0) {
+					$("div.d_coupon").html("<i>券</i>"+item.couponAmount).show();
+					item_share_coupon = " (优惠"+item.couponAmount+"元)";
 				}
-				$("div.di_likes").html(json.volume);
+				$("div.di_likes").html(item.volume);
 				
 				// 分享文案
-				var item_share_text = "【"+json.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【券后价】¥"+json.finalPrice+"元"+item_share_coupon+"\r\n------------～逛街啦～------------\r\n";
+				var item_share_text = "【"+item.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【券后价】¥"+item.price+"元"+item_share_coupon+"\r\n------------～逛街啦～------------\r\n";
 
-				var buyUrl = encodeURIComponent(json.buyUrl);
-				var picUrl = encodeURIComponent(json.pictUrl);
+				var buyUrl = encodeURIComponent(item.buyUrl);
+				var picUrl = encodeURIComponent(item.picUrl);
 				// 调用接口，获取口令
 				$.ajax({
 					url: serverUrl("guang/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
