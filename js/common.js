@@ -27,9 +27,10 @@ $(function() {
 		}
 	});
 	$(".fixed_box .refresh").click(function() {
-		// $(window).scrollTop(0);
-		// window.location.reload();
-		reloadIndex();
+		if(!reloadIndex()) {
+			$(window).scrollTop(0);
+			window.location.reload();
+		}
 	});
 	//判断是否是移动设备打开。
 	if (browser.versions.mobile) {

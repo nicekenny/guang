@@ -264,7 +264,7 @@ function menuClick(link) {
 // index.html重新加载数据
 function reloadIndex() {
 	if(page_reload)
-		return;
+		return false;
 	$(window).scrollTop(0);
 	var tmp_page_no = page_no;
 	var tmp_current_page_no = current_page_no;
@@ -281,6 +281,7 @@ function reloadIndex() {
 	current_page_no = 0;
 	page_reload = true;
 	loadIndex();
+	return true;
 }
 // index.html页面数据加载
 function loadIndex() {
