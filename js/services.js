@@ -160,7 +160,7 @@ $(function() {
 		});
 		//---------end--------
 		// 下拉加载
-		var tmp_scroller_y,tmp_start_y;
+		var tmp_scroller_y = 0,tmp_start_y = 0;
 		items_box.on('touchstart',function(e){
 			var _touch = e.originalEvent.targetTouches[0];
 			tmp_start_y= _touch.pageY;
@@ -173,6 +173,7 @@ $(function() {
 		items_box.on('touchend',function(e){
 			if(tmp_scroller_y>100) {
 				reloadIndex();
+				tmp_scroller_y = 0;
 			}
 		});
 	}
@@ -259,10 +260,13 @@ function menuClick(link) {
 }
 // index.html重新加载数据
 function reloadIndex() {
+	if(page_reload)
+		return;
 	$("#top_loading").fadeIn(fade_time);
 	// 等待5秒后关闭加载
 	setTimeout(function(){
 		$("#top_loading").fadeOut(fade_time);
+		page_reload = false;
 	},5000);
 	// 重置全局变量，加载数据
 	page_no = 1;
