@@ -17,7 +17,7 @@ var serv_basepath = "http://x.scode.org.cn:81/";
 // 定义AppCode
 var base_app_code = "guang",base_app_change = false;
 // 初始化页码
-var page_no = 1,current_page_no = 0,loaded = true;
+var page_no = 1,current_page_no = 0,loaded = true,page_reload = false;;
 var wall_item_img_suffix = "_400x400.jpg";
 var items_share_status = false;
 // 页面执行全局变量
@@ -137,18 +137,18 @@ $(function() {
 			load_index_status = true;
 		}
 		// 滚动条加载商品数据
+		var items_box = $("#product_walls");
 		$(window).scroll(function() {
-			var window_top = $(window).scrollTop();
+			var scroll_top = $(window).scrollTop();
 			// loadIndex after
 			if(load_index_status) {
-				var items_box = $("#product_walls");
-				if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
+				if(scroll_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
 					loadIndex();
 				}
 			}
 			// 固定导航条
 			var category_box = $("#category_box");
-			if(window_top>45) {
+			if(scroll_top>45) {
 				if(!category_box.hasClass("nav_fixed")) {
 					category_box.addClass("nav_fixed");
 				}
@@ -157,9 +157,24 @@ $(function() {
 					category_box.removeClass("nav_fixed");
 				}
 			}
-
 		});
 		//---------end--------
+		// 下拉加载
+		var tmp_scroller_y,tmp_start_y;
+		items_box.on('touchstart',function(e){
+			var _touch = e.originalEvent.targetTouches[0];
+			tmp_start_y= _touch.pageY;
+		});
+		items_box.on('touchmove',function(e){
+			var _touch = e.originalEvent.targetTouches[0];
+			var _y= _touch.pageY;
+			tmp_scroller_y =  (_y - tmp_start_y);
+		});
+		items_box.on('touchend',function(e){
+			if(tmp_scroller_y>100) {
+				reloadIndex();
+			}
+		});
 	}
 
 
@@ -242,6 +257,19 @@ function menuClick(link) {
 	// 关闭悬浮层
 	resetBox();
 }
+// index.html重新加载数据
+function reloadIndex() {
+	$("#top_loading").fadeIn(fade_time);
+	// 等待5秒后关闭加载
+	setTimeout(function(){
+		$("#top_loading").fadeOut(fade_time);
+	},5000);
+	// 重置全局变量，加载数据
+	page_no = 1;
+	current_page_no = 0;
+	page_reload = true;
+	loadIndex();
+}
 // index.html页面数据加载
 function loadIndex() {
 	if(page_no<=current_page_no)
@@ -250,7 +278,8 @@ function loadIndex() {
 	current_page_no = page_no;
 	// 设置加载中
 	loaded = false;
-	$("#wall_loading").show();
+	if(!page_reload)
+		$("#wall_loading").show();
 	var load_url;
 	if(param_gss!=undefined && param_gss!="") {
 		if(param_gss=="search") {
@@ -299,15 +328,23 @@ function showItems(data) {
 	if(current_category!=undefined) {
 		$(document).attr("title", current_category + " - 逛街啦");
 	}
-	$("#wall_loading").hide();
+	if(!$("#top_loading").is(":hidden"))
+		$("#top_loading").fadeOut(fade_time);
+	if(!$("#wall_loading").is(":hidden"))
+		$("#wall_loading").fadeOut(fade_time);
 	if(page_no==1) {
-		$("#head_box").show();
+		if(!page_reload)
+			$("#head_box").show();
 	}
 	var items = data.items;
 	if(items!=undefined && items.length>0) {
 		if(page_no==1) {
-			$("#product_walls").show();
-			$("#welcome_box").hide();
+			if(!page_reload) {
+				$("#product_walls").show();
+				$("#welcome_box").hide();
+			} else {
+				$("#product_walls .wall_wrap").empty();
+			}
 		}
 		for(var i=0;i<items.length;i++) {
 			var item = items[i];
@@ -350,7 +387,7 @@ function showItems(data) {
 	} else if(page_no==1) {
 		$("#warning_box").show();
 	}
-	if(current_page_no<=1) {
+	if(current_page_no<=1 && !page_reload) {
 		// 显示类目列表
 		$("#category_list").show();
 		var categorys = data.categorys;
@@ -402,6 +439,9 @@ function showItems(data) {
 			}
 		}
 	}
+	// 加载完成后重置reload状态
+	if(page_reload)
+		page_reload = false;
 	
 }
 // 图片加载完后调用
@@ -551,7 +591,8 @@ function doBuy(a) {
 // 弹出详情内容窗口
 function openItem(link) {
 	var data = link.attr("data");
-	window.open(guangUrl("item.html?d="+data));
+	// window.open(guangUrl("item.html?d="+data));
+	window.location.href = guangUrl("item.html?d="+data);
 }
 // 载入文章内容
 function loadArticle(id) {

@@ -215,7 +215,27 @@ $(function() {
 		});
 		// 推荐结束-----------------------
 	}
-	
+	// 图片滚动区域点击事件
+	$(".detail_img").click(function() {
+		if($(".detail_head_bar").is(":hidden")) {
+			$(".detail_head_bar").fadeIn(fade_time);
+			$(".nav-container").fadeIn(fade_time);
+		} else {
+			$(".detail_head_bar").fadeOut(fade_time);
+			$(".nav-container").fadeOut(fade_time);
+		}
+	});
+	// 详情头部工具栏事件
+	$(".detail_head_bar .back_link").click(function(event){
+		// 阻止任何父类事件的执行
+		event.stopPropagation();
+		window.history.go(-1);
+	});
+	$(".detail_head_bar .home_link").click(function(event){
+		// 阻止任何父类事件的执行
+		event.stopPropagation();
+		addFavorite();
+	});
 });
 
 // load 相关宝贝推荐

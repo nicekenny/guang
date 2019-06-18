@@ -18,26 +18,26 @@
 .detail_head_bar .back_link {
 	display: block;
 	float: left;
-	height: 40px;
-	width: 40px;
-	background-color:rgba(240,240,240,.7);
-	text-indent: -9999px;
+	height: 35px;
+	width: 35px;
+	background-color:rgba(50,50,50,.7);
 	border-radius: 20px;
-	background-image: url(images/detail_head_bar_icons.png);
-	background-repeat: no-repeat;
-	background-position: -5px -2px;
+	color: #FFFFFF;
+	font-size: 28px;
+	line-height: 35px;
+	vertical-align: middle;
 }
 .detail_head_bar .home_link {
 	display: block;
 	float: right;
-	height: 40px;
-	width: 40px;
-	background-color:rgba(240,240,240,.7);
-	text-indent: -9999px;
+	height: 35px;
+	width: 35px;
+	background-color:rgba(50,50,50,.7);
 	border-radius: 20px;
-	background-image: url(images/detail_head_bar_icons.png);
-	background-repeat: no-repeat;
-	background-position: -5px -78px;
+	color: #FFFFFF;
+	font-size: 20px;
+	line-height: 35px;
+	vertical-align: middle;
 }
 .detail_img img {
 	width: 100%;
