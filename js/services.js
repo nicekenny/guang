@@ -264,11 +264,15 @@ function menuClick(link) {
 function reloadIndex() {
 	if(page_reload)
 		return;
+	var tmp_page_no = page_no;
+	var tmp_current_page_no = current_page_no;
 	$("#top_loading").fadeIn(fade_time);
 	// 等待5秒后关闭加载
 	setTimeout(function(){
 		$("#top_loading").fadeOut(fade_time);
 		page_reload = false;
+		page_no = tmp_page_no;
+		current_page_no = tmp_current_page_no;
 	},5000);
 	// 重置全局变量，加载数据
 	page_no = 1;
