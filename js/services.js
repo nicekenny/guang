@@ -172,7 +172,7 @@ $(function() {
 				tmp_scroller_y =  (_y - tmp_start_y);
 			});
 			items_box.on('touchend',function(e){
-				if(tmp_scroller_y>100) {
+				if(tmp_scroller_y>200) {
 					tmp_scroller_y = 0;
 					// 重载数据
 					reloadIndex();
