@@ -265,6 +265,7 @@ function menuClick(link) {
 function reloadIndex() {
 	if(page_reload)
 		return;
+	$(window).scrollTop(0);
 	var tmp_page_no = page_no;
 	var tmp_current_page_no = current_page_no;
 	$("#top_loading").fadeIn(fade_time);

@@ -27,7 +27,7 @@ $(function() {
 		}
 	});
 	$(".fixed_box .refresh").click(function() {
-		$(window).scrollTop(0);
+		// $(window).scrollTop(0);
 		// window.location.reload();
 		reloadIndex();
 	});
