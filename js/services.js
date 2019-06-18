@@ -160,22 +160,24 @@ $(function() {
 		});
 		//---------end--------
 		// 下拉加载
-		var tmp_scroller_y = 0,tmp_start_y = 0;
-		items_box.on('touchstart',function(e){
-			var _touch = e.originalEvent.targetTouches[0];
-			tmp_start_y= _touch.pageY;
-		});
-		items_box.on('touchmove',function(e){
-			var _touch = e.originalEvent.targetTouches[0];
-			var _y= _touch.pageY;
-			tmp_scroller_y =  (_y - tmp_start_y);
-		});
-		items_box.on('touchend',function(e){
-			if(tmp_scroller_y>100) {
-				reloadIndex();
-				tmp_scroller_y = 0;
-			}
-		});
+		if($(window).scrollTop()==0) {
+			var tmp_scroller_y = 0,tmp_start_y = 0;
+			items_box.on('touchstart',function(e){
+				var _touch = e.originalEvent.targetTouches[0];
+				tmp_start_y= _touch.pageY;
+			});
+			items_box.on('touchmove',function(e){
+				var _touch = e.originalEvent.targetTouches[0];
+				var _y= _touch.pageY;
+				tmp_scroller_y =  (_y - tmp_start_y);
+			});
+			items_box.on('touchend',function(e){
+				if(tmp_scroller_y>100) {
+					reloadIndex();
+					tmp_scroller_y = 0;
+				}
+			});
+		}
 	}
 
 
