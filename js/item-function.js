@@ -120,15 +120,16 @@ $(function() {
 				if(item.price<item.zkPrice)
 					del_price = item.zkPrice;
 				$("div.d_price").html("¥"+item.price+"<em>¥"+del_price+"</em>");
-				var item_share_coupon = "";
+				var item_share_coupon = "",is_price_title = "折扣价";
 				if(item.couponAmount!=undefined && item.couponAmount>0) {
 					$("div.d_coupon").html("<i>券</i>"+item.couponAmount).show();
 					item_share_coupon = " (优惠"+item.couponAmount+"元)";
+					is_price_title = "券后价"
 				}
 				$("div.di_likes").html(item.volume);
 				
 				// 分享文案
-				var item_share_text = "【"+item.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【券后价】¥"+item.price+"元"+item_share_coupon+"\r\n------------～逛街啦～------------\r\n";
+				var item_share_text = "【"+item.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【"+is_price_title+"】¥"+item.price+"元"+item_share_coupon+"\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
 
 				var buyUrl = encodeURIComponent(item.buyUrl);
 				var picUrl = encodeURIComponent(item.picUrl);
