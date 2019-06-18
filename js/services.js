@@ -408,26 +408,25 @@ function showItems(data) {
 		// 显示类目列表
 		$("#category_list").show();
 		var categorys = data.categorys;
-		if(categorys!=undefined) {
+		if(categorys!=undefined && categorys.length>0) {
+			var category_lis = "";
 			for(var i=0;i<categorys.length;i++) {
 				var category = categorys[i];
-
 				var current_li = "";
 				if(category.favoritesId == data.currentCategoryId) {
 					current_li = " class=\"current\"";
 				}
-
-				var category_li = "<li"+current_li+"><a href=\""+guangUrl("?cate="+category.favoritesId)+ "\" >"+ category.favoritesTitle+"</a></li>";
-
-				$("#category_list").append(category_li);
+				category_lis = category_lis + "<li"+current_li+"><a href=\""+guangUrl("?cate="+category.favoritesId)+ "\" >"+ category.favoritesTitle+"</a></li>";
 			}
+			$("#category_list").empty().append(category_lis);
 		} else {
 			if(current_category!=undefined) {
 				var tmp_category = current_category;
 				if(current_category.length>10)
 					tmp_category = current_category.substring(0,10)+"...";
 				var category_li = "<li class=\"query_title current\"><a>"+ tmp_category +"</a></li>";
-				$("#category_list").append(category_li);
+
+				$("#category_list").empty().append(category_li);
 			}
 		}
 		if(data.from=="material") {
@@ -451,7 +450,8 @@ function showItems(data) {
 				category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
-				$("#category_list").append(title_li);
+				
+				$("#category_list").empty().append(title_li);
 				$("#category_options").empty().append(category_option).show();
 			}
 		}
