@@ -457,8 +457,8 @@ function showItems(data) {
 		}
 	}
 	// 加载完成后重置reload状态
-	// if(page_reload)
-	//	page_reload = false;
+	if(page_reload)
+		page_reload = false;
 	
 }
 // 图片加载完后调用
