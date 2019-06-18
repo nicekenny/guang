@@ -552,6 +552,12 @@ a:hover {
 	background-color: #FFFFFF;
 	font-size: 14px;
 	line-height: 40px;
+	
+}
+#top_loading {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #F8F8F8;
 }
 .wall_loading img {
 	vertical-align: middle;
