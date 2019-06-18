@@ -69,6 +69,11 @@ $(function() {
 				
 				var pic_list = item.picUrls;
 				var imgList_html = "",imgList_nav = "";
+				if(item.whiteImage!=undefined && $.trim(item.whiteImage)!="") {
+					var white_img = item.whiteImage + item_img_suffix;
+					imgList_html = imgList_html + "<div class=\"itbox\"><a class=\"item\"><img src=\""+white_img+"\" onload=\"imgLoaded(this)\"/></a></div>";
+					imgList_nav = imgList_nav + "<i></i>";
+				}
 				if(pic_list!=undefined && pic_list.length>0) {
 					for(var i=0;i<pic_list.length;i++) {
 						var tmp_pic = pic_list[i] + item_img_suffix;
