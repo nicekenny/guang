@@ -265,16 +265,17 @@ function menuClick(link) {
 function reloadIndex() {
 	if(page_reload)
 		return false;
-	$(window).scrollTop(0);
-	var tmp_page_no = page_no;
-	var tmp_current_page_no = current_page_no;
+	if($(window).scrollTop()!=0)
+		return false;
+	//var tmp_page_no = page_no;
+	//var tmp_current_page_no = current_page_no;
 	$("#top_loading").fadeIn(fade_time);
 	// 等待5秒后关闭加载
 	setTimeout(function(){
 		$("#top_loading").fadeOut(fade_time);
 		page_reload = false;
-		page_no = tmp_page_no;
-		current_page_no = tmp_current_page_no;
+		//page_no = tmp_page_no;
+		//current_page_no = tmp_current_page_no;
 	},5000);
 	// 重置全局变量，加载数据
 	page_no = 1;
@@ -291,8 +292,10 @@ function loadIndex() {
 	current_page_no = page_no;
 	// 设置加载中
 	loaded = false;
-	if(!page_reload)
+	if(!page_reload) {
 		$("#wall_loading").show();
+		$("#wall_loading_page").html(current_page_no);
+	}
 	var load_url;
 	if(param_gss!=undefined && param_gss!="") {
 		if(param_gss=="search") {
@@ -338,6 +341,7 @@ function loadIndex() {
 // 回调：显示Items
 function showItems(data) {
 	var current_category = data.currentCategory;
+	var data_page_no = data.currentPageNumber;
 	if(current_category!=undefined) {
 		$(document).attr("title", current_category + " - 逛街啦");
 	}
@@ -345,13 +349,13 @@ function showItems(data) {
 		$("#top_loading").fadeOut(fade_time);
 	if(!$("#wall_loading").is(":hidden"))
 		$("#wall_loading").fadeOut(fade_time);
-	if(page_no==1) {
+	if(data_page_no==1) {
 		if(!page_reload)
 			$("#head_box").show();
 	}
 	var items = data.items;
 	if(items!=undefined && items.length>0) {
-		if(page_no==1) {
+		if(data_page_no==1) {
 			if(!page_reload) {
 				$("#product_walls").show();
 				$("#welcome_box").hide();
@@ -395,9 +399,9 @@ function showItems(data) {
 			});
 		}
 		// 全局页码翻页
-		page_no = page_no + 1;
+		page_no = data_page_no + 1;
 		loaded = true;
-	} else if(page_no==1) {
+	} else if(data_page_no==1) {
 		$("#warning_box").show();
 	}
 	if(current_page_no<=1 && !page_reload) {

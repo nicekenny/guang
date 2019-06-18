@@ -27,8 +27,8 @@ $(function() {
 		}
 	});
 	$(".fixed_box .refresh").click(function() {
+		$(window).scrollTop(0);
 		if(!reloadIndex()) {
-			$(window).scrollTop(0);
 			window.location.reload();
 		}
 	});
