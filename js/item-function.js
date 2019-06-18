@@ -149,6 +149,19 @@ $(function() {
 					}
 				});
 				
+				// 历史价格数据显示
+				// historyPrices(prices,now_p,max_p,min_p);
+				$.ajax({
+					url: serverUrl("guang/item/ajaxHistoryPrices.html?id="+global_item_id),
+					type: 'GET',
+					dataType: "jsonp",
+					success: function (data) {
+						if(data.historyPrices!=undefined) {
+							historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
+						}
+					}
+				});
+				//--历史价格--end--
 			}
 		}
 	}
@@ -236,6 +249,7 @@ $(function() {
 		event.stopPropagation();
 		addFavorite();
 	});
+	
 });
 
 // load 相关宝贝推荐
@@ -262,3 +276,122 @@ function loadRecommends() {
         }
 	});
 }
+
+// 历史价格
+function historyPrices(prices,now_p,max_p,min_p) {
+	$("#history_prices").show();
+	// 数据处理
+	var y_min,y_max;
+	y_max = parseInt(parseFloat(max_p/8)*10);
+	y_min = min_p - (y_max - max_p);
+	if(y_min<0)
+		y_min = 0;
+	// 设置
+	Highcharts.setOptions({
+		global : {
+			useUTC : false
+		}
+	});
+	// 报表
+	$('#history_prices').highcharts({
+		credits:{
+			 enabled: false
+		},
+		chart : {
+			type : 'spline',
+			animation : Highcharts.svg,
+			height : 300,
+			events : {
+				
+			}
+		},
+		title : {
+			text : "最高："+max_p+"元，最低："+min_p+"元，现在："+now_p+"元",
+			style: {
+				color: "#FF6570",
+				fontWeight: "bold",
+				fontSize: "12px"
+			}
+		},
+		plotOptions : {
+			spline : {
+				lineWidth : 1.5,
+				fillOpacity : 0.2,
+				marker : {
+					enabled : true,
+					states : {
+						hover : {
+							enabled : true,
+							radius : 4
+						}
+					}
+				},
+				shadow : true
+			}
+		},
+		xAxis : {
+			type : 'datetime',
+			tickPixelInterval : 100
+		},
+		yAxis : {
+			title : {
+				text : undefined
+			},
+			plotLines : [ {
+				value : 0,
+				width : 2,
+				color : '#808080'
+			} ],
+			max : y_max,
+			min : y_min,
+			tickInterval : 10
+		},
+		tooltip : {
+			formatter : function() {
+				return '<b>' + this.series.name + '</b><br/>'
+						+ Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>'
+						+ Highcharts.numberFormat(this.y, 2) + "元";
+			}
+		},
+		legend : {
+			enabled : false,
+			align: 'center',
+			verticalAlign: 'bottom',
+			x: 0,
+			y: 0,
+			borderColor : '#FFFFFF'
+		},
+		exporting : {
+			enabled : false
+		},
+		series : [{
+			name : '历史价格',
+			color: '#666666',
+			data : (function() {
+				var data = [],time = (new Date()).getTime();
+				for (var i = -1; i <= prices.length+1; i++) {
+					var tmp_p_t,tmp_p_p;
+					if(i<0) {
+						tmp_p_t = prices[0].time;
+						tmp_p_t = tmp_p_t + (6000*i);
+						tmp_p_p = prices[0].price;
+					} else if(i>=prices.length) {
+						tmp_p_t = prices[prices.length-1].time;
+						tmp_p_t = tmp_p_t + (6000*i);
+						tmp_p_p = prices[prices.length-1].price;
+					} else {
+						tmp_p_t = prices[i].time;
+						tmp_p_p = prices[i].price;
+					}
+					data.push({
+						x : tmp_p_t,
+						y : tmp_p_p
+					});
+				}
+				return data;
+			})()
+		}]
+	});
+	//==history-prices-end==
+}
+
