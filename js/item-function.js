@@ -287,7 +287,8 @@ function loadRecommends() {
 function historyPrices(prices,now_p,max_p,min_p) {
 	$("#history_prices").show();
 	// 数据处理
-	var y_min,y_max;
+	var y_min,y_max,y_tick;
+	y_tick = parseInt(max_p/8);
 	y_max = parseInt(parseFloat(max_p/8)*10);
 	y_min = min_p - (y_max - max_p);
 	if(y_min<0)
@@ -350,7 +351,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			} ],
 			max : y_max,
 			min : y_min,
-			tickInterval : 10
+			tickInterval : y_tick
 		},
 		tooltip : {
 			formatter : function() {
