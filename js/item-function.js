@@ -355,8 +355,8 @@ function historyPrices(prices,now_p,max_p,min_p) {
 				color : '#808080'
 			} ],
 			max : y_max,
-			min : y_min,
-			tickInterval : y_tick
+			min : y_min//,
+			//tickInterval : y_tick
 		},
 		tooltip : {
 			formatter : function() {
