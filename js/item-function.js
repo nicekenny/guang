@@ -124,7 +124,7 @@ $(function() {
 				var del_price = item.reservePrice;
 				if(item.price<item.zkPrice)
 					del_price = item.zkPrice;
-				$("div.d_price").html("¥"+item.price+"<em>¥"+del_price+"</em>");
+				$("div.d_price").html("¥"+item.price+"<span class=\"font_icon icon_price\" style=\"display:none;\"></span><em>¥"+del_price+"</em>");
 				var item_share_coupon = "",is_price_title = "折扣价";
 				if(item.couponAmount!=undefined && item.couponAmount>0) {
 					$("div.d_coupon").html("<i>券</i>"+item.couponAmount).show();
@@ -163,6 +163,11 @@ $(function() {
 					dataType: "jsonp",
 					success: function (data) {
 						if(data.historyPrices!=undefined) {
+							if(data.price<=data.minPrice) {
+								$("div.d_price .icon_price").html("&#xf149;").show();
+							} else if(data.price>=data.maxPrice) {
+								$("div.d_price .icon_price").html("&#xf148;").show();
+							}
 							historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
 						}
 					}

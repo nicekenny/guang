@@ -367,10 +367,18 @@ function showItems(data) {
 			var item = items[i];
 			var item_id = item.id;
 			var item_dataStr = item.dataString;
+			var item_price_icon = "";
+			if(item.minPrice!=undefined && item.maxPrice!=undefined) {
+				if(item.price<=item.minPrice && item.maxPrice>item.price) {
+					item_price_icon = "<span class=\"font_icon icon_price\" title=\"最低价\">&#xf149;</span>";
+				} else if(item.price>=item.maxPrice && item.minPrice<item.price) {
+					item_price_icon = "<span class=\"font_icon icon_price\" title=\"最高价\">&#xf148;</span>";
+				}
+			}
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" >"
 				+"<div class=\"item_img\">"+"<img src=\""+item.pic + wall_item_img_suffix+"\" pic=\""+item.pic+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
-				+"<span class=\"item_info_price\"><i>¥</i>"+item.price+"</span>"
+				+"<span class=\"item_info_price\"><i>¥</i>"+ item.price + item_price_icon +"</span>"
 				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
 				+"<span class=\"item_info_likes\">"+item.volume+"</span>"
 				//+"<span class=\"item_info_provcity\">"+item.provcity+"</span>"

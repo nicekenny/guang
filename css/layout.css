@@ -512,6 +512,13 @@ a:hover {
 	font-weight: 400;
 	margin-right: 1px;
 }
+.wall_item .item_info .item_info_price .icon_price {
+	font-size: 12px;
+	line-height: 20px;
+	color: #3399CC;
+	height: 20px;
+	width: 15px;
+}
 .wall_item .item_info .item_info_delprice {
 	font-size: 12px;
 	line-height: 20px;
