@@ -164,7 +164,7 @@ $(function() {
 					success: function (data) {
 						if(data.historyPrices!=undefined) {
 							if(data.price<=data.minPrice) {
-								$("div.d_price .icon_price").html("&#xf149;").css("color","#42ea00").show();
+								$("div.d_price .icon_price").html("&#xf149;").css("color","#3cd500").show();
 							} else if(data.price>=data.maxPrice) {
 								$("div.d_price .icon_price").html("&#xf148;").show();
 							}

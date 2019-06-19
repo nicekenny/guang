@@ -370,7 +370,7 @@ function showItems(data) {
 			var item_price_icon = "";
 			if(item.minPrice!=undefined && item.maxPrice!=undefined) {
 				if(item.price<=item.minPrice && item.maxPrice>item.price) {
-					item_price_icon = "<span class=\"font_icon icon_price\" style=\"color:#42ea00;\" title=\"最低价\">&#xf149;</span>";
+					item_price_icon = "<span class=\"font_icon icon_price\" style=\"color:#3cd500;\" title=\"最低价\">&#xf149;</span>";
 				} else if(item.price>=item.maxPrice && item.minPrice<item.price) {
 					item_price_icon = "<span class=\"font_icon icon_price\" title=\"最高价\">&#xf148;</span>";
 				}
