@@ -338,7 +338,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 		},
 		xAxis : {
 			type : 'datetime',
-			tickPixelInterval : 100
+			tickPixelInterval : 30*60*1000
 		},
 		yAxis : {
 			title : {
