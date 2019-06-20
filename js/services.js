@@ -298,12 +298,7 @@ function loadIndex() {
 	}
 	var load_url;
 	if(param_gss!=undefined && param_gss!="") {
-		if(param_gss=="search") {
-			// 搜索载入
-			var search_q = getQueryString("q");
-			search_q = decodeURI(search_q);
-			load_url = "guang/item/ajaxSearch.html?q="+ search_q +"&page="+page_no;
-		} else if(param_gss=="material") {
+		if(param_gss=="material" || param_gss=="search") {
 			// 物料载入
 			var search_q = getQueryString("q");
 			search_q = decodeURI(search_q);
@@ -320,7 +315,13 @@ function loadIndex() {
 			if(sort!=undefined)
 				sort_param = "&sort="+sort;
 			
-			load_url = "guang/item/ajaxMaterial.html?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no;
+			var method_name = "guang/item/ajaxSearch.html";
+			if(param_gss=="search")
+				method_name = "guang/item/ajaxSearch.html";
+			else if(param_gss=="material")
+				method_name = "guang/item/ajaxMaterial.html";
+
+			load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no;
 		}
 	}
 	if(load_url==undefined) {
@@ -427,17 +428,8 @@ function showItems(data) {
 				category_lis = category_lis + "<li"+current_li+"><a href=\""+guangUrl("?cate="+category.favoritesId)+ "\" >"+ category.favoritesTitle+"</a></li>";
 			}
 			$("#category_list").empty().append(category_lis);
-		} else {
-			if(current_category!=undefined) {
-				var tmp_category = current_category;
-				if(current_category.length>10)
-					tmp_category = current_category.substring(0,10)+"...";
-				var category_li = "<li class=\"query_title current\"><a>"+ tmp_category +"</a></li>";
-
-				$("#category_list").empty().append(category_li);
-			}
 		}
-		if(data.from=="material") {
+		if(data.from=="material" || data.from=="search") {
 			var query = data.query;
 			if(query!=undefined) {
 				$(document).attr("title", query.keyword + " - 逛街啦");
@@ -453,13 +445,18 @@ function showItems(data) {
 					sort_price_down = "current"
 				}
 
-				var category_option;
-				var title_li = "<li class=\"query_title current\"><a>"+ query.keyword +"</a></li>";
-				category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
+				var tmp_title = query.keyword;
+				if(tmp_title.length>10)
+					tmp_title = tmp_title.substring(0,10)+"...";
+
+				var title_li = "<li class=\"query_title current\"><a>"+ tmp_title +"</a></li>";
+
+				$("#category_list").empty().append(title_li);
+
+				var category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
-				
-				$("#category_list").empty().append(title_li);
+
 				$("#category_options").empty().append(category_option).show();
 			}
 		}

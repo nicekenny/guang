@@ -9,6 +9,7 @@
 // 定义全局变量
 var item_img_suffix = "_800x800.jpg";
 var global_item_id;
+var again_load = false;
 
 $(function() {
 	// 根据设备尺寸重设img后缀
@@ -121,6 +122,9 @@ $(function() {
 
 				//----------------------
 				$("div.detail_title").html(item.title);
+				if(item.categoryName!=undefined) {
+					$("#item_category_name").text(item.categoryName);
+				}
 				var del_price = item.reservePrice;
 				if(item.price<item.zkPrice)
 					del_price = item.zkPrice;
@@ -221,19 +225,13 @@ $(function() {
 		// $(e.trigger).append("(失败)");
 	});
 	if(pathname=="/item.html" || pathname=="/tpwd.html") {
-		$(".detail_recoms").show();
-		// 加载推荐宝贝(延时加载)
-		setTimeout(function(){loadRecommends();},2000);
 		// 滚动条加载商品数据
 		$(window).scroll(function() {
 			var items_box = $("#product_walls");
 			var window_top = $(window).scrollTop();
 			
-			if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded) {
-				if(page_no==1)
-					setTimeout(function(){loadRecommends();},2000);
-				else
-					loadRecommends();
+			if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded && again_load) {
+				loadRecommends();
 			}
 
 		});
@@ -260,19 +258,28 @@ $(function() {
 		event.stopPropagation();
 		addFavorite();
 	});
-	
+	// 再逛一逛-加载
+	$("#again_load_button").click(function() {
+		$(this).parent().remove();
+		$("div.detail_recoms").fadeIn(fade_time);
+		loadRecommends();
+	});
 });
 
 // load 相关宝贝推荐
 function loadRecommends() {
 	if(page_no<=current_page_no)
 		return;
+	var keyword = $("div.detail_title").text();
+	var categoryName = $("#item_category_name").text();
+	if($.trim(categoryName)!="")
+		keyword = categoryName;
 	// 设置当前页码
 	current_page_no = page_no;
 	// 设置加载中
 	loaded = false;
 	$("#wall_loading").show();
-	var load_url = "guang/item/ajaxRecommends.html?material_id=3756&item_id="+ global_item_id +"&page="+page_no;
+	var load_url = "guang/item/ajaxRecommends.html?kw="+ encodeURI(keyword) +"&page="+page_no; //&item_id=global_item_id
 	$.ajax({
 		url: serverUrl(load_url),
 		type: 'GET',
@@ -280,7 +287,8 @@ function loadRecommends() {
 		jsonpCallback: "showItems",
 		success: function (data) {
 			//console.info("success");
-			$("div.detail_recoms").show();
+			//$("div.detail_recoms").show();
+			again_load = true;
 		},
 		error:function() {
 			//error
