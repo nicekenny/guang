@@ -261,7 +261,7 @@ $(function() {
 	// 再逛一逛-加载
 	$("#again_load_button").click(function() {
 		$(this).parent().remove();
-		$("div.detail_recoms").fadeIn(fade_time);
+		$("div.detail_recoms").show();
 		loadRecommends();
 	});
 });
