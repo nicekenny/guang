@@ -233,7 +233,7 @@ function loadMenus() {
 					var menu_item = data.menus[m];
 					var mi_href = "?"+property_gss+"=";
 					if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="") {
-						if($.trim(menu_item.gss)=="jdGoods" && current_browser!="WeiXin") {
+						if($.trim(menu_item.gss)=="jdGoods" && !(current_browser=="WeiXin" || current_browser=="PC")) {
 							// 非微信浏览器不显示此菜单项
 							continue;
 						}
