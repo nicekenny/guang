@@ -232,10 +232,15 @@ function loadMenus() {
 				for(var m=0;m<data.menus.length;m++) {
 					var menu_item = data.menus[m];
 					var mi_href = "?"+property_gss+"=";
-					if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="")
+					if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="") {
+						if($.trim(menu_item.gss)=="jdGoods" && current_browser!="WeiXin") {
+							// 非微信浏览器不显示此菜单项
+							continue;
+						}
 						mi_href = mi_href + $.trim(menu_item.gss);
-					else
+					} else {
 						mi_href = mi_href + "material";
+					}
 					if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
 						mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
 					}
