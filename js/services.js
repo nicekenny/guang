@@ -180,8 +180,7 @@ $(function() {
 			});
 		}
 	}
-
-
+	//============加载结束=============
 });
 // 关闭搜索、类目等弹出层，并且关闭遮罩层
 function resetBox() {
@@ -232,7 +231,11 @@ function loadMenus() {
 				var menu_html = "";
 				for(var m=0;m<data.menus.length;m++) {
 					var menu_item = data.menus[m];
-					var mi_href = "?"+property_gss+"=material";
+					var mi_href = "?"+property_gss+"=";
+					if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="")
+						mi_href = mi_href + $.trim(menu_item.gss);
+					else
+						mi_href = mi_href + "material";
 					if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
 						mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
 					}
@@ -241,9 +244,6 @@ function loadMenus() {
 					}
 					if(menu_item.materialId!=undefined && $.trim(menu_item.materialId)!=""){
 						mi_href = mi_href + "&material_id="+menu_item.materialId;
-					}
-					if(menu_item.other!=undefined && $.trim(menu_item.other)!=""){
-						mi_href = mi_href + menu_item.other;
 					}
 					var mi_icon_css = "";
 					if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
@@ -298,10 +298,13 @@ function loadIndex() {
 	}
 	var load_url;
 	if(param_gss!=undefined && param_gss!="") {
-		if(param_gss=="material" || param_gss=="search") {
+		if(param_gss=="material" || param_gss=="search" || param_gss=="jdGoods") {
 			// 物料载入
 			var search_q = getQueryString("q");
-			search_q = decodeURI(search_q);
+			if(search_q!=undefined)
+				search_q = decodeURI(search_q);
+			else
+				search_q = "";
 			var cate_param = "";
 			var cate = getQueryString("cate");
 			if(cate!=undefined)
@@ -320,6 +323,8 @@ function loadIndex() {
 				method_name = "guang/item/ajaxSearch.html";
 			else if(param_gss=="material")
 				method_name = "guang/item/ajaxMaterial.html";
+			else if(param_gss=="jdGoods")
+				method_name = "guang/jditem/ajaxItems.html";
 
 			load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param +"&page="+page_no;
 		}
@@ -376,15 +381,18 @@ function showItems(data) {
 					item_price_icon = "<span class=\"font_icon icon_price\" style=\"color:#3cd500;\" title=\"最高价\">&#xf148;</span>";
 				}
 			}
-			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" >"
-				+"<div class=\"item_img\">"+"<img src=\""+item.pic + wall_item_img_suffix+"\" pic=\""+item.pic+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" />"
+			var item_pic = item.pic;
+			if(item.platform!="JD") {
+				item_pic = item_pic+wall_item_img_suffix;
+			}
+			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item.platform+"\" >"
+				+"<div class=\"item_img\">"+"<img src=\""+item_pic+"\" pic=\""+item.pic+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" onerror=\"imgReload(this)\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+ item.price + item_price_icon +"</span>"
 				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
 				+"<span class=\"item_info_likes\">"+item.volume+"</span>"
 				//+"<span class=\"item_info_provcity\">"+item.provcity+"</span>"
 				+"</div></a></li>";
-
 			var pw_h_max = $("#product_walls").height();
 			var pw_min;
 			$("#product_walls").find("ul.wall_wrap").each(function() {
@@ -429,10 +437,15 @@ function showItems(data) {
 			}
 			$("#category_list").empty().append(category_lis);
 		}
-		if(data.from=="material" || data.from=="search") {
+		if(data.from=="material" || data.from=="search" || data.from=="jdGoods") {
 			var query = data.query;
 			if(query!=undefined) {
-				$(document).attr("title", query.keyword + " - 逛街啦");
+				if(query.keyword!=undefined) {
+					var title_suffix = " - 逛街啦";
+					if(data.from=="jdGoods")
+						title_suffix = " - 京东商城";
+					$(document).attr("title", query.keyword + title_suffix);
+				}
 				var sort_vol_up = "",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
 				var sort = query.sort;
 				if(sort=="total_sales_asc") {
@@ -444,19 +457,14 @@ function showItems(data) {
 				} else if(sort=="price_des") {
 					sort_price_down = "current"
 				}
-
 				var tmp_title = query.keyword;
 				if(tmp_title.length>10)
 					tmp_title = tmp_title.substring(0,10)+"...";
-
 				var title_li = "<li class=\"query_title current\"><a>"+ tmp_title +"</a></li>";
-
 				$("#category_list").empty().append(title_li);
-
 				var category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
 					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
-
 				$("#category_options").empty().append(category_option).show();
 			}
 		}
@@ -469,6 +477,10 @@ function showItems(data) {
 // 图片加载完后调用
 function imgLoaded(img) {
 	$(img).parent().css("background-image","none");
+}
+// 图片加载失败后调用
+function imgReload(img) {
+	$(img).attr("src",$(img).attr("pic"));
 }
 // 排序跳转
 function sortItems(a) {
@@ -491,9 +503,11 @@ function sortItems(a) {
 }
 // 去购买（口令）
 function doBuy(a) {
+	var platform = $(a).attr("platform");
+	if(platform=="JD")
+		return doJdBuy(a);
 	// 变量定义
 	var itemId,buyUrl,title,price,coupon_amount;
-
 	var item_data = $(a).attr("data");
 	if(item_data!=undefined && item_data!="null" && $.trim(item_data)!="") {
 		// 数据解包
@@ -510,13 +524,11 @@ function doBuy(a) {
 	var tpwd = $(a).attr("tpwd");
 	var coupon_txt = "";
 	var shop_app_txt = "购物";
-
 	var price_name = "折扣价：";
 	if(coupon_amount!=undefined && coupon_amount>0) {
 		coupon_txt = "<span class=\"ti_coupon_tag r3\"><i>券</i>"+coupon_amount+"</span>";
 		price_name = "券后价：";
 	}
-
 	var tpwd_dialog = new dialogLayer();
 	var tpwd_dgContent = tpwd_dialog.open("口令/二维码，快速淘好货！",260,330);
 	var tpwd_html = "<div class=\"tao_pwd\">"
@@ -530,9 +542,7 @@ function doBuy(a) {
 		+"<a class=\"tpwd_buylink\">一键拷贝</a>"
 		+"<a class=\"tpwd_close\">~再逛逛~</a>"
 		+"</div></div>";
-
 	$(tpwd_dgContent).html(tpwd_html);
-
 	if(tpwd!=undefined && $.trim(tpwd)!="" && $.trim(tpwd)!="undefined") {
 		$(tpwd_dgContent).find("span[info='tpwd']").html(tpwd);
 	} else {
@@ -547,9 +557,7 @@ function doBuy(a) {
 			}
 		});
 	}
-
 	$(tpwd_dialog.getDialog()).fadeIn(300);
-
 	$(tpwd_dgContent).find(".tpwd_close").click(function() {
 		tpwd_dialog.close();
 	});
@@ -567,15 +575,10 @@ function doBuy(a) {
 			tmp_link.text("二维码");
 		}
 	});
-	
 	// PC端显示直达连接按钮
 	if(current_browser=="PC" && current_browser_platform=="PC") {
 		$(tpwd_dgContent).find(".tpwd_buylink").attr("href",buyUrl).attr("target","_blank").text("直达连接");
 	} else {
-		// 提示拷贝
-		//$(tpwd_dgContent).find(".tpwd_buylink").click(function() {
-		//	$(tpwd_dgContent).find(".tpwd_info").html("<span style=\"color:#FF6570;\">请复制口令</span>，打开"+shop_app_txt+"APP购买");
-		//});
 		// 一键拷贝
 		var clipboard_buy = new ClipboardJS("a.tpwd_buylink", {
 			text: function(content) {
@@ -592,9 +595,6 @@ function doBuy(a) {
 			// 提示失败，手工拷贝
 		});
 	}
-	// 设置窗口背景图片
-	// var pic_url = $(a).find("img:first-child").attr("pic")+"_300x300.jpg";
-	// $(tpwd_dgContent).css("background-image","url("+pic_url+")");
 	// 点击内容一键拷贝
 	var clipboard = new ClipboardJS("div[clipboard='true']", {
         text: function(content) {
@@ -610,6 +610,83 @@ function doBuy(a) {
         // 提示失败，手工拷贝
     });
 }
+
+// 京东弹窗
+function doJdBuy(a) {
+	// 变量定义
+	var itemId,itemUrl,title,price,couponInfos;
+	var item_data = $(a).attr("data");
+	if(item_data!=undefined && item_data!="null" && $.trim(item_data)!="") {
+		// 数据解包
+		var jsonStr = new Base64().decode(item_data);
+		// console.info("data:"+jsonStr);
+		var item = Json.parse(jsonStr);
+		if(item!=undefined) {
+			itemId = item.id;
+			itemUrl = item.itemUrl;
+			title = item.title;
+			price = item.price;
+			couponInfos = item.couponInfos;
+		}
+	} else {
+		return false;
+	}
+	var jd_dialog_height = 130;
+	var couponInfos_html = "";
+	if(couponInfos!=undefined && couponInfos.length>1) {
+		for(var i=0;i<couponInfos.length;i++) {
+			var couponInfo = couponInfos[i];
+			couponInfos_html = couponInfos_html+"<a id=\"jd_coupon_link_"+itemId+"_c"+i+"\"><div class=\"coupon_item\"><div class=\"ci_discount\">¥"+couponInfo.discount+"</div>"
+				+"<div class=\"ci_text\">券后："+couponInfo.price+"元</div></div></a>";
+			var param_data = new Base64().encode(itemUrl+"@"+couponInfo.url);
+			// 调用接口，获取链接
+			$.ajax({
+				url: serverUrl("guang/jditem/ajaxClickUrl.html?coupon="+itemId+"_c"+i+"&d="+param_data),
+				type: 'GET',
+				dataType: "jsonp",
+				success: function (data) {
+					$("#jd_coupon_link_"+data.coupon).attr("href",data.clickUrl);
+				}
+			});
+		}
+		jd_dialog_height += (60*couponInfos.length);
+	} else {
+		var couponUrl = "";
+		if(couponInfos!=undefined && couponInfos.length==1){
+			couponUrl = couponInfos[0].url;
+		}
+		var param_data = new Base64().encode(itemUrl+"@"+couponUrl);
+		// 调用接口，获取链接
+		$.ajax({
+			url: serverUrl("guang/jditem/ajaxClickUrl.html?d="+param_data),
+			type: 'GET',
+			dataType: "jsonp",
+			success: function (data) {
+				if(data.clickUrl!=undefined && $.trim(data.clickUrl)!="") {
+					window.location.href=data.clickUrl;
+					// window.open(data.clickUrl);
+				} else {
+					alert("抱歉，无法打开此商品！");
+				}
+			}
+		});
+		return false;
+	}
+	var jd_dialog = new dialogLayer();
+	var jd_dgContent = jd_dialog.open("京东好券，领券购物！",260,jd_dialog_height);
+	var jd_html = "<div class=\"jd_coupon\">"
+		//+"<div class=\"item_content\" clipboard=\"true\"><p class=\"ic_title\">"+title+"</p></div>"
+		+couponInfos_html
+		+"<div class=\"jd_links\">"
+		+"<a class=\"jd_close\">~再逛逛~</a>"
+		+"</div></div>";
+	$(jd_dgContent).html(jd_html);
+	$(jd_dialog.getDialog()).fadeIn(300);
+	$(jd_dgContent).find(".jd_close").click(function() {
+		jd_dialog.close();
+	});
+}
+
 // 弹出详情内容窗口
 function openItem(link) {
 	var data = link.attr("data");

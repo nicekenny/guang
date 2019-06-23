@@ -55,19 +55,24 @@ $(function() {
 	} else if(pathname=="/item.html") {
 		// 获取宝贝数据包
 		var data = getQueryString("d");
-		if(data!=undefined && data!="null" && $.trim(data)!="") {
+		if(data!=undefined && $.trim(data)!="") {
 			// 数据解包
 			var jsonStr = new Base64().decode(data);
 			var item = Json.parse(jsonStr);
 			if(item!=undefined) {
 				// 全局变量：宝贝ID
-				global_item_id = item.id;
+				global_item_id = item.id;				
+				var title_suffix = " - 逛街啦";
+				// 京东平台，清空图片后缀
+				if(item.platform=="JD") {
+					item_img_suffix = "";
+					title_suffix = " - 京东商城";
+				}
 				// 设置title
-				$(document).attr("title", item.title + " - 逛街啦");
-
+				$(document).attr("title", item.title + title_suffix);
+				//- 图片-box ===============================================
 				var itemBlock_imgs = $("div.showcase");
 				var pic_main = item.picUrl + item_img_suffix;
-				
 				var pic_list = item.picUrls;
 				var imgList_html = "",imgList_nav = "";
 				if(item.whiteImage!=undefined && $.trim(item.whiteImage)!="") {
@@ -82,10 +87,8 @@ $(function() {
 						imgList_nav = imgList_nav + "<i></i>";
 					}
 				}
-
 				var imgs_html = "<div class=\"scroller\">"+"<div class=\"itbox main\"><a class=\"item\"><img src=\""+pic_main+"\" onload=\"imgLoaded(this)\"/></a></div>"+imgList_html
 					+"</div><div class=\"nav-container\"><i class=\"current\"></i>"+imgList_nav+"</div>";
-
 				itemBlock_imgs.empty().append(imgs_html);
 				// 添加图片滚动事件
 				var scroller = itemBlock_imgs.find(".scroller"),s_nav = itemBlock_imgs.find(".nav-container");
@@ -119,8 +122,7 @@ $(function() {
 					s_nav.find("i").removeClass("current");
 					$(s_nav.find("i").get(Math.abs(tmp_len))).addClass("current");
 				};
-
-				//----------------------
+				//- 图片-box End ===============================================
 				$("div.detail_title").html(item.title);
 				if(item.categoryName!=undefined) {
 					$("#item_category_name").text(item.categoryName);
@@ -128,55 +130,142 @@ $(function() {
 				var del_price = item.reservePrice;
 				if(item.price<item.zkPrice)
 					del_price = item.zkPrice;
-				$("div.d_price").html("¥"+item.price+"<span class=\"font_icon icon_price\" style=\"display:none;\"></span><em>¥"+del_price+"</em>");
+				var del_price_html="",del_price_text="";
+				if(del_price!=undefined) {
+					del_price_html = "<em>¥"+del_price+"</em>";
+					del_price_text = "【自己买】¥"+del_price+"元\r\n";
+				}
+				$("div.d_price").html("¥"+item.price+"<span class=\"font_icon icon_price\" style=\"display:none;\"></span>"+del_price_html);
 				var item_share_coupon = "",is_price_title = "折扣价";
 				if(item.couponAmount!=undefined && item.couponAmount>0) {
 					$("div.d_coupon").html("<i>券</i>"+item.couponAmount).show();
 					item_share_coupon = " (优惠"+item.couponAmount+"元)";
-					is_price_title = "券后价"
+					is_price_title = "券后价";
 				}
 				$("div.di_likes").html(item.volume);
-				
 				// 分享文案
-				var item_share_text = "【"+item.title+"】\r\n\r\n【自己买】¥"+del_price+"元\r\n【"+is_price_title+"】¥"+item.price+"元"+item_share_coupon+"\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
-
-				var buyUrl = encodeURIComponent(item.buyUrl);
-				var picUrl = encodeURIComponent(item.picUrl);
-				// 调用接口，获取口令
-				$.ajax({
-					url: serverUrl("guang/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
-					type: 'GET',
-					dataType: "jsonp",
-					success: function (data) {
-						$("#tao_pwd_view").text(data);
-						var tpwd = data.replace(/￥/g,"");
-						var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
-						var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
-						$(".qr_code_img").attr("src",qr_code_url).click(function(){
-							window.open(doQrCodeUrl);
-						});
-						$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
-					}
-				});
-				
-				// 历史价格数据显示
-				// historyPrices(prices,now_p,max_p,min_p);
-				$.ajax({
-					url: serverUrl("guang/item/ajaxHistoryPrices.html?id="+global_item_id),
-					type: 'GET',
-					dataType: "jsonp",
-					success: function (data) {
-						if(data.historyPrices!=undefined) {
-							if(data.price<=data.minPrice) {
-								$("div.d_price .icon_price").html("&#xf149;").show();
-							} else if(data.price>=data.maxPrice) {
-								$("div.d_price .icon_price").html("&#xf148;").css("color","#3cd500").show();
-							}
-							historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
+				var item_share_text = "【"+item.title+"】\r\n\r\n"+del_price_text;
+				// 判断商品来源平台
+				if(item.platform=="JD") {
+					// =============================京东平台==================================
+					$("#coupon_info_list").show();
+					var itemUrl = item.itemUrl;
+					var couponInfos = item.couponInfos;
+					if(couponInfos!=undefined && couponInfos.length>0) {
+						for(var i=0;i<couponInfos.length;i++) {
+							var couponInfo = couponInfos[i];
+							var couponUrl = couponInfo.url;
+							if(couponUrl==undefined)
+								couponUrl = "";
+							var coupon_link_html = "<div id=\"do_jd_coupon_button_"+global_item_id+"_c"+i+"\" class=\"d_coupon\">"
+								+"优惠券【<em id=\"jd_coupon_"+global_item_id+"_c"+i+"\">¥"+couponInfo.discount+"元</em>】一键领取</div>";
+							$("#coupon_info_list").append(coupon_link_html);
+							var param_data = new Base64().encode(itemUrl+"@"+couponUrl);
+							// 调用接口，获取链接
+							$.ajax({
+								url: serverUrl("guang/jditem/ajaxClickUrl.html?coupon="+global_item_id+"_c"+i+"&d="+param_data+"&type=short"),
+								type: 'GET',
+								dataType: "jsonp",
+								success: function (data) {
+									if(data.clickUrl!=undefined) {
+										$("#do_jd_coupon_button_"+data.coupon).attr("click",data.clickUrl);
+										var tmp_ajax_share_text = $("#item_share_text").val();
+										tmp_ajax_share_text += "¥"+couponInfo.price+"元 (优惠"+couponInfo.discount+"元)\r\n";
+										tmp_ajax_share_text += data.shortUrl + "\r\n━┉┉┉┉∞┉┉┉┉━";
+										$("#item_share_text").val(tmp_ajax_share_text);
+										$("#do_jd_coupon_button_"+data.coupon).click(function() {
+											var tmp_curl = $(this).attr("click");
+											if(tmp_curl!=undefined && $.trim(tmp_curl)!="") {
+												window.location.href = tmp_curl;
+											}
+										});
+										// 二维码
+										var doQrCodeUrl = data.shortUrl;
+										var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
+										$(".qr_code_img").attr("src",qr_code_url).click(function(){
+											window.open(doQrCodeUrl);
+										});
+									} else {
+										$("#do_jd_coupon_button_"+data.coupon).remove();
+									}
+								}
+							});
 						}
+						is_price_title = "券后价";
+					} else {
+						var param_data = new Base64().encode(itemUrl);
+						// 调用接口，获取链接
+						$.ajax({
+							url: serverUrl("guang/jditem/ajaxClickUrl.html?d="+param_data+"&type=short"),
+							type: 'GET',
+							dataType: "jsonp",
+							success: function (data) {
+								var coupon_link_html = "<div id=\"do_jd_buy_button\" click=\""+data.clickUrl+"\" class=\"d_tpwd\">折扣价【<em>¥"+item.price+"元</em>】去购买</div>";
+								$("#coupon_info_list").empty().append(coupon_link_html);
+								var tmp_ajax_share_text = $("#item_share_text").val();
+								tmp_ajax_share_text += data.shortUrl;
+								$("#item_share_text").val(tmp_ajax_share_text);
+								$("#do_jd_buy_button").click(function() {
+									var tmp_curl = $(this).attr("click");
+									if(tmp_curl!=undefined && $.trim(tmp_curl)!="") {
+										window.location.href = tmp_curl;
+									}
+								});
+								// 二维码
+								var doQrCodeUrl = data.shortUrl;
+								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
+								$(".qr_code_img").attr("src",qr_code_url).click(function(){
+									window.open(doQrCodeUrl);
+								});
+							}
+						});
+						is_price_title = "折扣价";
 					}
-				});
-				//--历史价格--end--
+					item_share_text += "【"+is_price_title+"】¥"+item.price+"元\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
+					$("#item_share_text").val(item_share_text);
+					// =============================京东平台(END)==================================
+				} else {
+					// =============================淘宝/天猫平台==================================
+					$("#tao_pwd_buy").show();
+					item_share_text += "【"+is_price_title+"】¥"+item.price+"元"+item_share_coupon+"\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
+					var buyUrl = encodeURIComponent(item.buyUrl);
+					var picUrl = encodeURIComponent(item.picUrl);
+					// 调用接口，获取口令
+					$.ajax({
+						url: serverUrl("guang/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
+						type: 'GET',
+						dataType: "jsonp",
+						success: function (data) {
+							$("#tao_pwd_view").text(data);
+							var tpwd = data.replace(/￥/g,"");
+							var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
+							var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
+							$(".qr_code_img").attr("src",qr_code_url).click(function(){
+								window.open(doQrCodeUrl);
+							});
+							$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
+						}
+					});
+					// 历史价格数据显示
+					$.ajax({
+						url: serverUrl("guang/item/ajaxHistoryPrices.html?id="+global_item_id),
+						type: 'GET',
+						dataType: "jsonp",
+						success: function (data) {
+							if(data.historyPrices!=undefined) {
+								if(data.price<=data.minPrice) {
+									$("div.d_price .icon_price").html("&#xf149;").show();
+								} else if(data.price>=data.maxPrice) {
+									$("div.d_price .icon_price").html("&#xf148;").css("color","#3cd500").show();
+								}
+								historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
+							}
+						}
+					});
+					//--历史价格--end--
+					// =============================淘宝/天猫平台(END)==================================
+				}
+				
 			}
 		}
 	}

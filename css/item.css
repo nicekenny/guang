@@ -173,16 +173,14 @@
 	color: #333333;
 }
 
-.detail_buy {
-	height: 35px;
-	overflow: hidden;
+.detail_buttons {
 	background-color: #FFFFFF;
 	padding-top: 5px;
 	padding-right: 10px;
-	padding-bottom: 30px;
+	padding-bottom: 10px;
 	padding-left: 10px;
 }
-.detail_buy .d_tpwd {
+.detail_buttons .d_tpwd {
 	font-size: 14px;
 	line-height: 40px;
 	font-weight: normal;
@@ -194,26 +192,48 @@
 	border: 1px solid #FF6570;
 	box-shadow: 0px 2px 4px #D6D6D6;
 	overflow: hidden;
+	margin-bottom: 10px;
 }
-.detail_buy .d_tpwd em {
+.detail_buttons .d_tpwd em {
 	font-style: normal;
 	font-weight: 500;
 	margin-right: 5px;
 	margin-left: 5px;
 }
-.detail_buy .green {
+.detail_buttons .d_coupon {
+	font-size: 14px;
+	line-height: 40px;
+	font-weight: normal;
+	color: #FF6570;
+	background-color: #FBFBFB;
+	border-radius: 3px;
+	height: 40px;
+	text-align: center;
+	border: 1px solid #FF6570;
+	box-shadow: 0px 2px 4px #D6D6D6;
+	overflow: hidden;
+	margin-bottom: 15px;
+}
+.detail_buttons .d_coupon em {
+	font-style: normal;
+	font-weight: 500;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
+.detail_buttons .green {
 	color: #33CC33;
 	border: 1px solid #33CC33;
 }
-.detail_buy .blue {
+.detail_buttons .blue {
 	color: #3366CC;
 	border: 1px solid #3366CC;
 }
-.detail_buy .purple {
+.detail_buttons .purple {
 	color: #CC33CC;
 	border: 1px solid #CC33CC;
 }
-.detail_buy .black {
+.detail_buttons .black {
 	color: #333333;
 	border: 1px solid #333333;
 	background-color: #F8F8F8;

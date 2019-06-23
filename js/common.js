@@ -85,17 +85,17 @@ var browser = {
 function getQueryString(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	var r = window.location.search.substr(1).match(reg);
-	if (r != null)
+	if (r != undefined)
 		return unescape(r[2]);
-	return null;
+	return undefined;
 }
 // 获取浏览器地址栏静态参数（#锚）
 function getStaticParam(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	var r = window.location.hash.substr(1).match(reg);
-	if (r != null)
+	if (r != undefined)
 		return unescape(r[2]);
-	return null;
+	return undefined;
 }
 /* 
 * url 目标url 

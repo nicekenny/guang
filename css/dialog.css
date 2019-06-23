@@ -18,9 +18,10 @@
 }
 .dialogLayer .dialogTitle {
 	height: 30px;
-	padding-right: 3px;
-	padding-left: 10px;
+	padding-right: 0px;
+	padding-left: 8px;
 	cursor: move;
+	overflow: hidden;
 }
 .dialogLayer .dialogTitle .dialogTitleText {
 	font-size: 14px;
@@ -28,6 +29,11 @@
 	font-weight: bold;
 	color: #333333;
 	text-decoration: none;
+	height: 30px;
+	overflow: hidden;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+	display: block;
 }
 .dialogLayer .dialogTitle .closeDialog {
 	background-image: url(images/close-icon.png);
@@ -37,7 +43,7 @@
 	display: block;
 	float: right;
 	height: 30px;
-	width: 30px;
+	width: 34px;
 	cursor: pointer;
 }
 .dialogLayer .dialogContent {
