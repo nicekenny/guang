@@ -535,7 +535,7 @@ function doBuy(a) {
 		price_name = "券后价：";
 	}
 	var tpwd_dialog = new dialogLayer();
-	var tpwd_dgContent = tpwd_dialog.open("口令/二维码，快速淘好货！",260,340);
+	var tpwd_dgContent = tpwd_dialog.open("口令/二维码，快速淘好货！",260,335);
 	var tpwd_html = "<div class=\"tao_pwd\">"
 		+"<div class=\"tpwd_content\" clipboard=\"true\"><p class=\"ti_title\">"+title+"</p><p class=\"ti_price\">"+price_name
 		+"<span class=\"tip_block\"><i>¥</i>"+price+"</span>"+coupon_txt+"</p><p style=\"color:#0099CC;\">口令：<span info=\"tpwd\">载入中...</span></p></div>"
