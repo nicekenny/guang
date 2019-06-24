@@ -482,7 +482,7 @@ function wallImgAddSuffix(src,platform) {
 		else if(win_width<=700)
 			newSrc += "_350x350.jpg";
 	} else if(platform=="JD") {
-		var tmp_width_str = "n0";
+		var tmp_width_str = "n12";
 		if(win_width<=400)
 			tmp_width_str = "n7";
 		else if(win_width<=500)

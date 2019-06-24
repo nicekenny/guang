@@ -360,7 +360,7 @@ function itemImgAddSuffix(src,platform) {
 		else
 			newSrc += "_800x800.jpg";
 	} else if(platform=="JD") {
-		var tmp_width_str = "n0";
+		var tmp_width_str = "n12";
 		if(win_width<=280)
 			tmp_width_str = "n11";
 		else if(win_width<=350)
