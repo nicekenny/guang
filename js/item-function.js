@@ -7,20 +7,10 @@
  * Date: 2019-05-22 00:00:00
  */
 // 定义全局变量
-var item_img_suffix = "_800x800.jpg";
 var global_item_id;
 var again_load = false;
 
 $(function() {
-	// 根据设备尺寸重设img后缀
-	var win_width = $(window).width();
-	if(win_width<=400)
-		item_img_suffix = "_400x400.jpg";
-	else if(win_width<=500)
-		item_img_suffix = "_500x500.jpg";
-	else if(win_width<=600)
-		item_img_suffix = "_600x600.jpg";
-
 	var pathname = window.location.pathname;
 	if(pathname=="/tpwd.html" || pathname=="/pwd.html") {
 		// 复制口令页面
@@ -32,7 +22,7 @@ $(function() {
 		var item_pic = getQueryString("pic");
 		if(item_pic!=undefined && $.trim(item_pic)!="") {
 			item_pic = decodeURIComponent(item_pic);
-			var pic_box = $("#item_picture").attr("src",item_pic + item_img_suffix).parent();
+			var pic_box = $("#item_picture").attr("src",itemImgAddSuffix(item_pic,"TAOBAO")).parent();
 			// pic_box.css("height",pic_box.width()+"px");
 			pic_box.show();
 		} else {
@@ -45,7 +35,7 @@ $(function() {
 					if(data!=undefined && data.item!=undefined) {
 						var tmp_pic = data.item.pic;
 						if(tmp_pic!=undefined && $.trim(tmp_pic)!="") {
-							var tmp_pic_box = $("#item_picture").attr("src",tmp_pic + item_img_suffix).parent();
+							var tmp_pic_box = $("#item_picture").attr("src",itemImgAddSuffix(tmp_pic,"TAOBAO")).parent();
 							tmp_pic_box.show();
 						}
 					}
@@ -63,26 +53,25 @@ $(function() {
 				// 全局变量：宝贝ID
 				global_item_id = item.id;				
 				var title_suffix = " - 逛街啦";
-				// 京东平台，清空图片后缀
+				// 京东平台
 				if(item.platform=="JD") {
-					item_img_suffix = "";
 					title_suffix = " - 京东商城";
 				}
 				// 设置title
 				$(document).attr("title", item.title + title_suffix);
 				//- 图片-box ===============================================
 				var itemBlock_imgs = $("div.showcase");
-				var pic_main = item.picUrl + item_img_suffix;
+				var pic_main = itemImgAddSuffix(item.picUrl,item.platform);
 				var pic_list = item.picUrls;
 				var imgList_html = "",imgList_nav = "";
 				if(item.whiteImage!=undefined && $.trim(item.whiteImage)!="") {
-					var white_img = item.whiteImage + item_img_suffix;
+					var white_img = itemImgAddSuffix(item.whiteImage,item.platform);
 					imgList_html = imgList_html + "<div class=\"itbox\"><a class=\"item\"><img src=\""+white_img+"\" onload=\"imgLoaded(this)\"/></a></div>";
 					imgList_nav = imgList_nav + "<i></i>";
 				}
 				if(pic_list!=undefined && pic_list.length>0) {
 					for(var i=0;i<pic_list.length;i++) {
-						var tmp_pic = pic_list[i] + item_img_suffix;
+						var tmp_pic = itemImgAddSuffix(pic_list[i],item.platform);
 						imgList_html = imgList_html + "<div class=\"itbox\"><a class=\"item\"><img src=\""+tmp_pic+"\" onload=\"imgLoaded(this)\"/></a></div>";
 						imgList_nav = imgList_nav + "<i></i>";
 					}
@@ -171,7 +160,7 @@ $(function() {
 										$("#do_jd_coupon_button_"+data.coupon).attr("click",data.clickUrl);
 										var tmp_ajax_share_text = $("#item_share_text").val();
 										tmp_ajax_share_text += "¥"+couponInfo.price+"元 (优惠"+couponInfo.discount+"元)\r\n";
-										tmp_ajax_share_text += data.shortUrl + "\r\n━┉┉┉┉∞┉┉┉┉━";
+										tmp_ajax_share_text += data.shortUrl + "\r\n";
 										$("#item_share_text").val(tmp_ajax_share_text);
 										$("#do_jd_coupon_button_"+data.coupon).click(function() {
 											var tmp_curl = $(this).attr("click");
@@ -354,7 +343,34 @@ $(function() {
 		loadRecommends();
 	});
 });
-
+// 根据设备尺寸重设img尺寸
+function itemImgAddSuffix(src,platform) {
+	if(src==undefined)
+		return "";
+	var newSrc = src;
+	// 根据设备尺寸重设img后缀
+	var win_width = $(window).width();
+	if(platform==undefined || platform=="TAOBAO" || platform=="TMALL") {
+		if(win_width<=400)
+			newSrc += "_400x400.jpg";
+		else if(win_width<=500)
+			newSrc += "_500x500.jpg";
+		else if(win_width<=600)
+			newSrc += "_600x600.jpg";
+		else
+			newSrc += "_800x800.jpg";
+	} else if(platform=="JD") {
+		var tmp_width_str = "n0";
+		if(win_width<=280)
+			tmp_width_str = "n11";
+		else if(win_width<=350)
+			tmp_width_str = "n1";
+		if(newSrc.indexOf(".com/ads/")>0) {
+			newSrc = newSrc.replace(".com/ads/",".com/"+tmp_width_str+"/");
+		}
+	}
+	return newSrc;
+}
 // load 相关宝贝推荐
 function loadRecommends() {
 	if(page_no<=current_page_no)

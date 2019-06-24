@@ -18,7 +18,6 @@ var serv_basepath = "http://x.scode.org.cn:81/";
 var base_app_code = "guang",base_app_change = false;
 // 初始化页码
 var page_no = 1,current_page_no = 0,loaded = true,page_reload = false;;
-var wall_item_img_suffix = "_400x400.jpg";
 var items_share_status = false;
 // 页面执行全局变量
 var param_gss,property_gss = "gss";
@@ -44,16 +43,6 @@ $(function() {
 		base_app_code = tmp_app_code;
 		base_app_change = true;
 	}
-	// 根据设备尺寸重设img后缀
-	var win_width = $(window).width();
-	if(win_width<=400)
-		wall_item_img_suffix = "_200x200.jpg";
-	else if(win_width<=500)
-		wall_item_img_suffix = "_250x250.jpg";
-	else if(win_width<=600)
-		wall_item_img_suffix = "_300x300.jpg";
-	else if(win_width<=700)
-		wall_item_img_suffix = "_350x350.jpg";
 
 	$("a[scl='guang']").each(function(){
 		var tmp_href = $(this).attr("href");
@@ -386,10 +375,7 @@ function showItems(data) {
 					item_price_icon = "<span class=\"font_icon icon_price\" style=\"color:#3cd500;\" title=\"最高价\">&#xf148;</span>";
 				}
 			}
-			var item_pic = item.pic;
-			if(item.platform!="JD") {
-				item_pic = item_pic+wall_item_img_suffix;
-			}
+			var item_pic = wallImgAddSuffix(item.pic, item.platform);
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item.platform+"\" >"
 				+"<div class=\"item_img\">"+"<img src=\""+item_pic+"\" pic=\""+item.pic+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" onerror=\"imgReload(this)\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
@@ -478,6 +464,38 @@ function showItems(data) {
 	if(page_reload)
 		page_reload = false;
 	
+}
+// 根据设备尺寸重设img尺寸
+function wallImgAddSuffix(src,platform) {
+	if(src==undefined)
+		return "";
+	var newSrc = src;
+	// 根据设备尺寸重设img后缀
+	var win_width = $(window).width();
+	if(platform==undefined || platform=="TAOBAO" || platform=="TMALL") {
+		if(win_width<=400)
+			newSrc += "_200x200.jpg";
+		else if(win_width<=500)
+			newSrc += "_250x250.jpg";
+		else if(win_width<=600)
+			newSrc += "_300x300.jpg";
+		else if(win_width<=700)
+			newSrc += "_350x350.jpg";
+	} else if(platform=="JD") {
+		var tmp_width_str = "n0";
+		if(win_width<=400)
+			tmp_width_str = "n7";
+		else if(win_width<=500)
+			tmp_width_str = "n6";
+		else if(win_width<=600)
+			tmp_width_str = "n11";
+		else if(win_width<=700)
+			tmp_width_str = "n1";
+		if(newSrc.indexOf(".com/ads/")>0) {
+			newSrc = newSrc.replace(".com/ads/",".com/"+tmp_width_str+"/");
+		}
+	}
+	return newSrc;
 }
 // 图片加载完后调用
 function imgLoaded(img) {
