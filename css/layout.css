@@ -55,6 +55,9 @@ img {
 	border-left-style: none;
 	margin: 0px;
 	padding: 0px;
+
+	-webkit-transform: scale(1) rotate(0) translate3d(0,0,0);
+	transform: scale(1) rotate(0) translate3d(0,0,0);
 }
 a {
 	font-size: 12px;
