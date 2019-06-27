@@ -580,7 +580,7 @@ function doBuy(a) {
 			}
 		});
 	}
-	$(tpwd_dialog.getDialog()).fadeIn(200);
+	$(tpwd_dialog.getDialog()).fadeIn(fade_time);
 	$(tpwd_dgContent).find(".tpwd_close").click(function() {
 		tpwd_dialog.close();
 	});
@@ -704,7 +704,7 @@ function doJdBuy(a) {
 		+"<a class=\"jd_close\">~再逛逛~</a>"
 		+"</div></div>";
 	$(jd_dgContent).html(jd_html);
-	$(jd_dialog.getDialog()).fadeIn(200);
+	$(jd_dialog.getDialog()).fadeIn(fade_time);
 	$(jd_dgContent).find(".jd_close").click(function() {
 		jd_dialog.close();
 	});
