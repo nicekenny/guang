@@ -714,7 +714,14 @@ function doJdBuy(a) {
 function openItem(link) {
 	var data = link.attr("data");
 	// window.open(guangUrl("item.html?d="+data));
-	window.location.href = guangUrl("item.html?d="+data);
+	// window.location.href = guangUrl("item.html?d="+data);
+	// Android--------------------
+	if(typeof(android)=="undefined") {
+		window.location.href = guangUrl("item.html?d="+data);
+	} else {
+		android.jsClick(data);
+	}
+	// Android--------------------
 }
 // 载入文章内容
 function loadArticle(id) {
