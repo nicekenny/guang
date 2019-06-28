@@ -29,7 +29,10 @@ $(function() {
 	$(".fixed_box .refresh").click(function() {
 		$(window).scrollTop(0);
 		if(!reloadIndex()) {
-			window.location.reload();
+			if(pageContext.url==undefined)
+				window.location.reload();
+			else
+				window.location.href = pageContext.url;
 		}
 	});
 	//判断是否是移动设备打开。
@@ -89,6 +92,17 @@ function getQueryString(name) {
 		return unescape(r[2]);
 	return undefined;
 }
+// 获取url中的参数值
+function getUrlParam(url,name) {
+	if(url==undefined || $.trim(url)=="")
+		return undefined;
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	var url_params = url.substr(url.indexOf("?"));
+	var r = url_params.substr(1).match(reg);
+	if (r != undefined)
+		return unescape(r[2]);
+	return undefined;
+}
 // 获取浏览器地址栏静态参数（#锚）
 function getStaticParam(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -141,18 +155,6 @@ function dateYmdhm(time) {
 	var td_ms = tmp_date.getMinutes();
 	return td_yyyy+"-"+td_mm+"-"+td_dd+" "+td_hh+":"+td_ms;
 }
-// Json数据转换
-function Json() {
-	this.parse = function(string) {
-		return Json.parse(string);
-	}
-}
-Json.parse = function(string) {
-	if (string == "")
-		return undefined;
-	return eval("(" + string + ")");
-}
-
 // 获得coolie 的值
 function cookie(name) {
 	// 得到分割的cookie名值对

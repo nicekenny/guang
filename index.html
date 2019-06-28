@@ -46,14 +46,14 @@
             	<form id="hb_search_form" action="" method="get">
                 	<input id="hb_search_text" type="text" placeholder="请输入关键词" class="hb_sb_text"/>
                     <input type="hidden" name="q" id="hb_search_q"/>
-                    <input type="hidden" name="from" value="search" />
+                    <input type="hidden" name="gss" value="search" />
                     <input id="hb_search_app" type="hidden" name="app" />
                 </form>
             </div>
 		</div>
     	
 		<div class="category_panel">
-        	<div id="category_box" class="category_box">
+        	<div id="category_box" class="category_box" style="display: none;">
                 <ul id="category_list" class="cc_nav_box clearfix" style="display: none;">
                     <!-- Categorys -->
                 </ul>
@@ -73,7 +73,7 @@
         <!-- 顶部加载中... -->
         <div id="top_loading" class="wall_loading" style="display: none;">
 			<img src="images/loading_icon.gif"/>
-            <span>正在载入......</span>
+            <span>重新载入......</span>
 		</div>
     	<!-- Products -->
   		<div id="product_walls" class="product_box clearfix" style="display: none;">

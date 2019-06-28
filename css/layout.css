@@ -305,14 +305,22 @@ a:hover {
 .category_box {
 	position: relative;
 	padding-top: 5px;
-}
-.cc_nav_box {
 	height: 40px;
 }
+.cc_nav_box {
+	white-space: nowrap;
+	overflow-x: auto;
+	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
+	height: 50px;
+}
 .cc_nav_box li {
-	float: left;
-	padding-right: 5px;
-	padding-left: 5px;
+	display: inline-block;
+	padding-right: 0px;
+	padding-left: 0px;
+	margin-left: 10px;
+	margin-right: 10px;
+	height: 40px;
 }
 .cc_nav_box li.current {
 	
@@ -321,10 +329,10 @@ a:hover {
 	font-size: 14px;
 	line-height: 35px;
 	color: #666666;
-	padding-right: 5px;
-	padding-left: 5px;
+	padding-right: 0px;
+	padding-left: 0px;
 	display: block;
-	font-weight: 400;
+	font-weight: 500;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -349,14 +357,13 @@ a:hover {
 	overflow: hidden;
 }
 .cc_nav_box .query_title a {
-	font-weight: normal;
 	display: inline-block;
 }
 .cc_options {
 	position: absolute;
 	right: 0px;
 	text-align: right;
-	bottom: 0px;
+	bottom: 2px;
 	height: 38px;
 }
 .cc_options li {
@@ -553,13 +560,14 @@ a:hover {
 }
 .wall_loading {
 	text-align: center;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 	vertical-align: middle;
 	background-color: #FFFFFF;
 	font-size: 14px;
-	line-height: 40px;
-	
+	line-height: 50px;
+	margin: 0px;
+	overflow: hidden;
 }
 #top_loading {
 	border-top-width: 1px;
@@ -579,6 +587,7 @@ a:hover {
 	padding-bottom: 20px;
 	padding-left: 10px;
 	text-align: center;
+	margin: 0px;
 }
 .warning_box h2 {
 	font-size: 16px;

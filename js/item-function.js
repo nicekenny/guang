@@ -17,7 +17,7 @@ $(function() {
 		global_item_id = getQueryString("id");
 		var tpwd = decodeURI(getQueryString("pwd"));
 		if(tpwd!=undefined) {
-			$("#tao_pwd_view").text("("+tpwd+")");
+			$("#tao_pwd_view").text("￥"+tpwd+"￥");
 		}
 		var item_pic = getQueryString("pic");
 		if(item_pic!=undefined && $.trim(item_pic)!="") {
@@ -48,7 +48,7 @@ $(function() {
 		if(data!=undefined && $.trim(data)!="") {
 			// 数据解包
 			var jsonStr = new Base64().decode(data);
-			var item = Json.parse(jsonStr);
+			var item = JSON.parse(jsonStr);
 			if(item!=undefined) {
 				// 全局变量：宝贝ID
 				global_item_id = item.id;				
@@ -308,7 +308,7 @@ $(function() {
 			var items_box = $("#product_walls");
 			var window_top = $(window).scrollTop();
 			
-			if(window_top>(items_box.offset().top+items_box.height()-1000) && loaded && again_load) {
+			if(window_top>(items_box.offset().top+items_box.height()-1000) && pageContext.isLoaded && again_load) {
 				loadRecommends();
 			}
 
@@ -327,9 +327,15 @@ $(function() {
 	});
 	// 详情头部工具栏事件
 	$(".detail_head_bar .back_link").click(function(event){
-		// 阻止任何父类事件的执行
-		event.stopPropagation();
-		window.history.go(-1);
+		var back_status = false;
+		if(typeof(android)!="undefined") {
+			back_status = android.itemBack();
+		}
+		if(!back_status) {
+			// 阻止任何父类事件的执行
+			event.stopPropagation();
+			window.history.go(-1);
+		}
 	});
 	$(".detail_head_bar .home_link").click(function(event){
 		// 阻止任何父类事件的执行
@@ -373,18 +379,16 @@ function itemImgAddSuffix(src,platform) {
 }
 // load 相关宝贝推荐
 function loadRecommends() {
-	if(page_no<=current_page_no)
+	if(pageContext.pageNo<=pageContext.currentPageNo)
 		return;
 	var keyword = $("div.detail_title").text();
 	var categoryName = $("#item_category_name").text();
 	if($.trim(categoryName)!="")
 		keyword = categoryName;
-	// 设置当前页码
-	current_page_no = page_no;
 	// 设置加载中
-	loaded = false;
+	pageContext.isLoaded = false;
 	$("#wall_loading").show();
-	var load_url = "guang/item/ajaxRecommends.html?kw="+ encodeURI(keyword) +"&page="+page_no; //&item_id=global_item_id
+	var load_url = "guang/item/ajaxRecommends.html?kw="+ encodeURI(keyword) +"&page="+pageContext.pageNo; //&item_id=global_item_id
 	$.ajax({
 		url: serverUrl(load_url),
 		type: 'GET',
