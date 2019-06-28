@@ -169,6 +169,11 @@ $(function() {
 			$("#set_options_link").hide();
 			pageContext.isShared = false;
 		}
+	} else {
+		// 非android客户端，提示下载APP
+		if(getCookie("app_download_status")!="NO") {
+			setTimeout(function(){openDownloadApp();},5000);
+		}
 	}
 	// Android-------------
 });
@@ -874,4 +879,22 @@ function showArticle(data) {
 		$("#wall_loading").hide();
 	}
 
+}
+// APP下载弹窗
+function openDownloadApp() {
+	var app_dialog = new dialogLayer();
+	var app_dgContent = app_dialog.open("下载APP，逛得更爽！",260,280);
+	var app_html = "<div class=\"dialog_box\">"
+		+"<div class=\"app_img\"><a href=\""+guangUrl("apk/guang_stable.apk")+"\"><img src=\""+guangUrl("images/app_logo.png")+"\"/></a></div>"
+		+"<div class=\"dbc_info\"><b>逛街啦</b></div>"
+		+"<div class=\"dbc_info\">点击上方图标下载APP到手机。</div>"
+		+"<div class=\"button_links\">"
+		+"<a id=\"app_download_dialog_close\" class=\"one_center\">~不了，以后再说~</a>"
+		+"</div></div>";
+	$(app_dgContent).html(app_html);
+	$(app_dialog.getDialog()).fadeIn(fade_time);
+	$(app_dgContent).find("#app_download_dialog_close").click(function() {
+		app_dialog.close();
+		addCookie("app_download_status","NO",48);
+	});
 }
