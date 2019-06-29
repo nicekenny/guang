@@ -890,7 +890,7 @@ function openDownloadApp() {
 		+"<div class=\"dbc_info\"><b>逛街啦APP</b></div>"
 		+"<div class=\"dbc_info\">点击上方图标下载逛街啦APP到手机。</div>"
 		+"<div class=\"button_links\">"
-		+"<a id=\"app_download_dialog_close\" class=\"one_center\">~不了，以后再说~</a>"
+		+"<a id=\"app_download_dialog_close\" class=\"one_center\">不了，以后再说~</a>"
 		+"</div></div>";
 	$(app_dgContent).html(app_html);
 	$(app_dialog.getDialog()).fadeIn(fade_time);
