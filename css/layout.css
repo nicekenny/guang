@@ -938,6 +938,8 @@ a:hover {
 	margin-top: 40px;
 }
 .dialog_box .app_img img {
+	width: 72px;
+	height: 72px;
 	vertical-align: bottom;	
 }
 .dialog_box .dbc_info {
