@@ -14,6 +14,7 @@ var serv_basepath = "http://x.scode.org.cn:81/";
 // basepath = "http://192.168.0.10/";
 // serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
+var android_app_apk = "app/guang_stable.apk";
 // 定义AppCode
 var base_app_code = "guang",base_app_change = false;
 // 页面执行全局变量
@@ -885,7 +886,7 @@ function openDownloadApp() {
 	var app_dialog = new dialogLayer();
 	var app_dgContent = app_dialog.open("下载APP，逛得更爽！",260,280);
 	var app_html = "<div class=\"dialog_box\">"
-		+"<div class=\"app_img\"><a href=\""+guangUrl("apk/guang_stable.apk")+"\"><img src=\""+guangUrl("images/app_logo.png")+"\"/></a></div>"
+		+"<div class=\"app_img\"><a href=\""+guangUrl(android_app_apk)+"\"><img src=\""+guangUrl("images/app_logo.png")+"\"/></a></div>"
 		+"<div class=\"dbc_info\"><b>逛街啦APP</b></div>"
 		+"<div class=\"dbc_info\">点击上方图标下载逛街啦APP到手机。</div>"
 		+"<div class=\"button_links\">"
