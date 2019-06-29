@@ -659,10 +659,11 @@ a:hover {
 	margin: 0px;
 }
 .welcome_box .wb_logo {
-	background-image: url(images/logo_100.png);
+	background-image: url(images/logo_260.png);
 	background-repeat: no-repeat;
 	background-position: center top;
 	background-color: #FFFFFF;
+	background-size: 100px;
 	text-align: center;
 	padding-top: 105px;
 	font-size: 18px;

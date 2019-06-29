@@ -1,0 +1,100 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no" media="(device-height: 568px)" />
+<style type="text/css">
+<!--
+.load_box {
+	max-width: 800px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 80px;
+	margin-bottom: 0px;
+	min-height: 400px;
+}
+.box_logo {
+	text-align: center;
+	height: 100px;
+	width: 100px;
+	margin-top: 0px;
+	margin-right: auto;
+	margin-bottom: 20px;
+	margin-left: auto;
+}
+.box_logo img {
+	height: 100px;
+	width: 100px;
+}
+.box_content {
+	text-align: center;
+	font-size: 14px;
+	line-height: 25px;
+	color: #666666;
+}
+.box_gif {
+	text-align: center;
+	width: 200px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 25px;
+	margin-bottom: 25px;
+}
+.box_gif .gif_item {
+	background-color: #CCCCCC;
+	text-indent: -9999px;
+	display: inline-block;
+	height: 6px;
+	width: 6px;
+	margin-right: 5px;
+	margin-left: 5px;
+	border-radius: 3px;
+}
+.box_gif .gi_red {
+	background-color: #ff6570;
+}
+-->
+</style>
+<script type="text/javascript" src="js/jquery-min.js"></script>
+<script type="text/javascript">
+$(function() {
+	setInterval(function(){loadingGif();},500);
+});
+function loadingGif() {
+	var index = -1;
+	var length = $(".box_gif").find(".gif_item").length;
+	$(".box_gif").find(".gif_item").each(function(i,item) {
+		if($(item).hasClass("gi_red")){
+			$(item).removeClass("gi_red");
+			index = i;
+		}			
+	});
+	if(index>=-1 && length>0) {
+		index++;
+		if(index<length) {
+			$($(".box_gif").find(".gif_item")[index]).addClass("gi_red");
+		} else {
+			index = -1;
+		}
+	}
+	//console.info("run:"+index);
+}
+</script>
+</head>
+
+<body>
+	<div class="load_box">
+		<div class="box_logo">
+			<img src="images/logo_260.png" />
+		</div>
+        <div class="box_content"><h3>π‰Ω÷¿≤</h3></div>
+		<div class="box_content">&nbsp;&nbsp;“≥√Êº”‘ÿ÷–£¨«Î…‘∫Û...</div>
+		<div class="box_gif">
+			<div class="gif_item"></div>
+            <div class="gif_item"></div>
+            <div class="gif_item gi_red"></div>
+            <div class="gif_item"></div>
+            <div class="gif_item"></div>
+		</div>
+	</div>
+</body>
+</html>
