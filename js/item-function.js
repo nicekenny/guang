@@ -8,6 +8,7 @@
  */
 // 定义全局变量
 var global_item_id;
+var global_platform;
 var again_load = false;
 
 $(function() {
@@ -51,7 +52,8 @@ $(function() {
 			var item = JSON.parse(jsonStr);
 			if(item!=undefined) {
 				// 全局变量：宝贝ID
-				global_item_id = item.id;				
+				global_item_id = item.id;
+				global_platform = item.platform;
 				var title_suffix = " - 逛街啦";
 				// 京东平台
 				if(item.platform=="JD") {
@@ -269,6 +271,13 @@ $(function() {
 		if(!$(e.trigger).hasClass("green")) {
 			var cache_text = $(e.trigger).html();
 			$(e.trigger).addClass("green").html("拷贝成功，打开购物APP购买");
+			// 判断Android
+			if(typeof(android)!="undefined") {
+				if(global_platform!=undefined && $.trim(global_platform)!="") {
+					// 通知APP打开购物APP
+					android.openApp(global_platform);
+				}
+			}
 			// 3秒后恢复
 			setTimeout(function(){
 				$(e.trigger).removeClass("green").html(cache_text);
