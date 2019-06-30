@@ -278,6 +278,7 @@ $(function() {
 	clipboard.on("error", function(e) {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
+		$(e.trigger).removeClass("green");
 		console.info("copy_error:"+e);
 	});
 	// 一键复制分享文案
@@ -295,13 +296,14 @@ $(function() {
 			$(e.trigger).addClass("purple").html("拷贝成功，去粘贴分享文案");
 			// 3秒后恢复
 			setTimeout(function(){
-				$("#item_share_text").removeClass("purple").addClass("blue").html(cache_text);
+				$(e.trigger).removeClass("purple").addClass("blue").html(cache_text);
 			},3000);
 		}
 	});
 	clipboard_share.on("error", function(e) {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
+		$(e.trigger).removeClass("purple").addClass("blue");
 		console.info("copy_error:"+e);
 	});
 	if(pathname=="/item.html" || pathname=="/tpwd.html") {
