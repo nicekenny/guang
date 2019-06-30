@@ -384,6 +384,7 @@ function itemImgAddSuffix(src,platform) {
 function androidCallBack() {
 	var share_text = $("#item_share_text").val();
 	$("#item_share_text").val(share_text+"[Android_debug]");
+	setTimeout(function(){androidCallBack();},2000);
 }
 // load 相关宝贝推荐
 function loadRecommends() {
