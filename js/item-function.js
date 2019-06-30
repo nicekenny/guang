@@ -269,8 +269,10 @@ $(function() {
 		if(!$(e.trigger).hasClass("green")) {
 			var cache_text = $(e.trigger).html();
 			$(e.trigger).addClass("green").html("拷贝成功，打开购物APP购买");
+			console.info("copy_success:"+cache_text);
 			// 3秒后恢复
 			setTimeout(function(){
+				console.info("copy_success-恢复(3000):"+cache_text);
 				$(e.trigger).removeClass("green").html(cache_text);
 			},3000);
 		}
