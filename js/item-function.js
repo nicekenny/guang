@@ -16,6 +16,7 @@ $(function() {
 	if(pathname=="/tpwd.html" || pathname=="/pwd.html") {
 		// 复制口令页面
 		global_item_id = getQueryString("id");
+		global_platform = getQueryString("platform");
 		var tpwd = decodeURI(getQueryString("pwd"));
 		if(tpwd!=undefined) {
 			$("#tao_pwd_view").text("￥"+tpwd+"￥");
@@ -34,6 +35,7 @@ $(function() {
 				dataType: "jsonp",
 				success: function (data) {
 					if(data!=undefined && data.item!=undefined) {
+						global_platform = data.item.platform;
 						var tmp_pic = data.item.pic;
 						if(tmp_pic!=undefined && $.trim(tmp_pic)!="") {
 							var tmp_pic_box = $("#item_picture").attr("src",itemImgAddSuffix(tmp_pic,"TAOBAO")).parent();
