@@ -381,6 +381,10 @@ function itemImgAddSuffix(src,platform) {
 	}
 	return newSrc;
 }
+function androidCallBack() {
+	var share_text = $("#item_share_text").val();
+	$("#item_share_text").val(share_text+"[Android_debug]");
+}
 // load 相关宝贝推荐
 function loadRecommends() {
 	if(pageContext.pageNo<=pageContext.currentPageNo)
