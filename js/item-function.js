@@ -278,6 +278,7 @@ $(function() {
 	clipboard.on("error", function(e) {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
+		console.info("copy_error:"+e);
 	});
 	// 一键复制分享文案
 	var clipboard_share = new ClipboardJS("#copy_item_share_text_button", {
@@ -301,6 +302,7 @@ $(function() {
 	clipboard_share.on("error", function(e) {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
+		console.info("copy_error:"+e);
 	});
 	if(pathname=="/item.html" || pathname=="/tpwd.html") {
 		// 滚动条加载商品数据
