@@ -265,6 +265,7 @@ $(function() {
 		}
 	});
 	clipboard.on("success", function(e) {
+		console.info("copy_success----------------------");
 		// 拷贝成功
 		if(!$(e.trigger).hasClass("green")) {
 			var cache_text = $(e.trigger).html();
