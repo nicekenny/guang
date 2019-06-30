@@ -295,7 +295,7 @@ $(function() {
 			$(e.trigger).addClass("purple").html("拷贝成功，去粘贴分享文案");
 			// 3秒后恢复
 			setTimeout(function(){
-				$(e.trigger).removeClass("purple").addClass("blue").html(cache_text);
+				$("#item_share_text").removeClass("purple").addClass("blue").html(cache_text);
 			},3000);
 		}
 	});
