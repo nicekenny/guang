@@ -265,15 +265,12 @@ $(function() {
 		}
 	});
 	clipboard.on("success", function(e) {
-		console.info("copy_success----------------------");
 		// 拷贝成功
 		if(!$(e.trigger).hasClass("green")) {
 			var cache_text = $(e.trigger).html();
 			$(e.trigger).addClass("green").html("拷贝成功，打开购物APP购买");
-			console.info("copy_success:"+cache_text);
 			// 3秒后恢复
 			setTimeout(function(){
-				console.info("copy_success-恢复(3000):"+cache_text);
 				$(e.trigger).removeClass("green").html(cache_text);
 			},3000);
 		}
@@ -281,8 +278,8 @@ $(function() {
 	clipboard.on("error", function(e) {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
-		$(e.trigger).removeClass("green");
-		console.info("copy_error:"+e);
+		// $(e.trigger).removeClass("green");
+		// console.info("copy_error:"+e);
 	});
 	// 一键复制分享文案
 	var clipboard_share = new ClipboardJS("#copy_item_share_text_button", {
@@ -306,8 +303,8 @@ $(function() {
 	clipboard_share.on("error", function(e) {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
-		$(e.trigger).removeClass("purple").addClass("blue");
-		console.info("copy_error:"+e);
+		// $(e.trigger).removeClass("purple").addClass("blue");
+		// console.info("copy_error:"+e);
 	});
 	if(pathname=="/item.html" || pathname=="/tpwd.html") {
 		// 滚动条加载商品数据
@@ -384,10 +381,10 @@ function itemImgAddSuffix(src,platform) {
 	}
 	return newSrc;
 }
+// Android页面加载完成后调用
 function androidCallBack() {
-	var share_text = $("#item_share_text").val();
-	$("#item_share_text").val(share_text+"[Android_debug]");
-	setTimeout(function(){androidCallBack();},2000);
+	// CallBack
+
 }
 // load 相关宝贝推荐
 function loadRecommends() {
