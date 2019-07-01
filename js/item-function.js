@@ -235,7 +235,7 @@ $(function() {
 							// console.info("DoPddBuy:"+JSON.stringify(data));
 							if(data!=undefined && data.clickUrl!=undefined) {
 								var coupon_link = "<div id=\"do_pdd_coupon_button_"+global_item_id+"\" class=\"d_coupon\" mobile_url=\""+data.clickUrl.mobileShortUrl+"\" _url=\""+data.clickUrl.url+"\">"
-									+"领券【<em id=\"pdd_coupon_"+global_item_id+"\">¥"+item.couponAmount+"元</em>】去拼多多购买</div>";
+									+ is_price_title +"【<em id=\"pdd_coupon_"+global_item_id+"\">¥"+item.price+"元</em>】去拼多多购买</div>";
 								$("#coupon_info_list").append(coupon_link);
 								$("#do_pdd_coupon_button_"+global_item_id).click(function() {
 									var mobile_url = $(this).attr("mobile_url");
@@ -431,7 +431,7 @@ function adapt_sharetext_height() {
 	setTimeout(function(){
 		var contextHeight = $("#item_share_text")[0].scrollHeight;
 		$("#item_share_text").css("height",contextHeight);
-	},500);
+	},1000);
 }
 // 根据设备尺寸重设img尺寸
 function itemImgAddSuffix(src,platform) {
