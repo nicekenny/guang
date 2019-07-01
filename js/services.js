@@ -939,6 +939,6 @@ function openDownloadApp() {
 	$(app_dialog.getDialog()).fadeIn(fade_time);
 	$(app_dgContent).find("#app_download_dialog_close").click(function() {
 		app_dialog.close();
-		addCookie("app_download_status","NO",48);
+		addCookie("app_download_status","NO",72);
 	});
 }
