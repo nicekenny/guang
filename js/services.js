@@ -379,7 +379,7 @@ function loadIndex() {
 	doLoadIndex();
 }
 function doLoadIndex() {
-	console.info("CONTEXT:"+JSON.stringify(pageContext));
+	// console.info("CONTEXT:"+JSON.stringify(pageContext));
 	if(!pageContext.isLoaded)
 		return;
 	if(pageContext.pageNo<=pageContext.currentPageNo)
@@ -401,7 +401,7 @@ function doLoadIndex() {
 		$("#article_content").hide();
 	}
 	var load_url;
-	if(pageContext.gss=="material" || pageContext.gss=="search" || pageContext.gss=="jdGoods") {
+	if(pageContext.gss=="material" || pageContext.gss=="search" || pageContext.gss=="jdGoods" || pageContext.gss=="pddGoods") {
 		// 物料载入
 		var search_q = pageContext.title;
 		if(search_q!=undefined)
@@ -422,12 +422,14 @@ function doLoadIndex() {
 			sort_param = "&sort="+sort;
 		
 		var method_name = "guang/item/ajaxSearch.html";
-		if(pageContext.gss=="search")
+		if(pageContext.gss=="search")// Search
 			method_name = "guang/item/ajaxSearch.html";
-		else if(pageContext.gss=="material")
+		else if(pageContext.gss=="material")// TaoBao-Material
 			method_name = "guang/item/ajaxMaterial.html";
-		else if(pageContext.gss=="jdGoods")
+		else if(pageContext.gss=="jdGoods")// JD
 			method_name = "guang/jditem/ajaxItems.html";
+		else if(pageContext.gss=="pddGoods")// PDD
+			method_name = "guang/pdditem/ajaxItems.html";
 
 		load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param +"&page="+pageContext.pageNo;
 	}
@@ -439,7 +441,7 @@ function doLoadIndex() {
 		}
 		load_url = "guang/item/ajaxItems.html?page="+pageContext.pageNo + cate_param;
 	}
-	console.info("LOAD-URL:"+load_url);
+	// console.info("LOAD-URL:"+load_url);
 	$.ajax({
 		url: serverUrl(load_url),
 		type: 'GET',
@@ -543,13 +545,15 @@ function showItems(data) {
 			}
 			$("#category_list").empty().append(category_lis).show();
 		}
-		if(data.from=="material" || data.from=="search" || data.from=="jdGoods") {
+		if(data.from=="material" || data.from=="search" || data.from=="jdGoods" || data.from=="pddGoods") {
 			var query = data.query;
 			if(query!=undefined) {
 				if(query.keyword!=undefined) {
 					var title_suffix = " - 逛街啦";
 					if(data.from=="jdGoods")
 						title_suffix = " - 京东商城";
+					else if(data.from=="pddGoods")
+						title_suffix = " - 拼多多";
 					$(document).attr("title", query.keyword + title_suffix);
 				}
 				var sort_vol_up = "",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
@@ -564,8 +568,12 @@ function showItems(data) {
 					sort_price_down = "current"
 				}
 				var tmp_title = query.keyword;
-				if(tmp_title.length>10)
-					tmp_title = tmp_title.substring(0,10)+"...";
+				if(tmp_title!=undefined) {
+					if(tmp_title.length>10)
+						tmp_title = tmp_title.substring(0,10)+"...";
+				} else {
+					tmp_title = "逛街啦";
+				}
 				var title_li = "<li class=\"query_title current\"><a>"+ tmp_title +"</a></li>";
 				$("#category_list").empty().append(title_li).show();
 				var category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
@@ -578,7 +586,7 @@ function showItems(data) {
 	// 加载完成后重置状态
 	pageContext.isReload = false;
 	pageContext.isLoaded = true;
-	console.info("CALL_BACK:"+JSON.stringify(pageContext));
+	// console.info("CALL_BACK:"+JSON.stringify(pageContext));
 }
 // 根据设备尺寸重设img尺寸
 function wallImgAddSuffix(src,platform) {
@@ -626,6 +634,8 @@ function doBuy(a) {
 	var platform = $(a).attr("platform");
 	if(platform=="JD")
 		return doJdBuy(a);
+	else if(platform=="PDD")
+		return doPddBuy(a);
 	// 变量定义
 	var item_data = $(a).attr("data");
 	var itemId,buyUrl,title,price,coupon_amount;
@@ -821,6 +831,30 @@ function doJdBuy(a) {
 		jd_dialog.close();
 	});
 }
+// 拼多多弹窗
+function doPddBuy(a) {
+	var itemId = $(a).attr("itemid");
+	if(itemId==undefined)
+		return false;
+	// 调用接口，获取Url
+	$.ajax({
+		url: serverUrl("guang/pdditem/ajaxClickUrl.html?id="+itemId),
+		type: 'GET',
+		dataType: "jsonp",
+		success: function (data) {
+			// print log
+			// console.info("DoPddBuy:"+JSON.stringify(data));
+			if(data!=undefined && data.clickUrl!=undefined) {
+				// Android
+				if(typeof(android)!="undefined") {
+					android.openUrl(data.clickUrl.mobileUrl);
+				} else{
+					window.location.href=data.clickUrl.mobileUrl;
+				}
+			}
+		}
+	});
+}
 // 打开含有link属性的url
 function openLink(link) {
 	var link_url = $(link).attr("link");
@@ -856,7 +890,7 @@ function loadArticle(id) {
 		dataType: "jsonp",
 		jsonpCallback: "showArticle",
 		success: function (data) {
-			//console.info("success");
+			// console.info("success");
 		}
 	});
 }
