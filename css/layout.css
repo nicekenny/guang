@@ -195,10 +195,15 @@ a:hover {
 	top: 50px;
 	right: 0px;
 	background-color: #FFFFFF;
-	padding-top: 10px;
+	margin-top: 0px;
+	padding-top: 0px;
 	padding-right: 10px;
 	padding-bottom: 5px;
 	padding-left: 10px;
+}
+.head_bar .hb_cate_box_fixed {
+	position: fixed;
+	top: 44px;
 }
 .head_bar .hb_category_box li {
 	border-top: 1px dashed #dfdfdf;

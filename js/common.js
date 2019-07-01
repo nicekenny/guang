@@ -14,15 +14,34 @@ $(function() {
 		// $(window).scrollTop(0);
 		$("body,html").animate({ scrollTop: 0 }, 800);
 	});
+	$(".fixed_box .nav_menu").click(function() {
+		var cate_box = $("#hd_category_link");
+		if(cate_box.length==0)
+			return false;
+		if(cate_box.attr("show_box")!="1") {
+			resetBox();
+			cate_box.attr("show_box","1");
+			$("#hb_category_box").fadeIn(fade_time);
+			$("#m_ui_mask").fadeIn(fade_time);
+		} else if(cate_box.attr("show_box")=="1") {
+			resetBox();
+		}
+	});
 	$(window).scroll(function() {
 		var window_top = $(window).scrollTop();
-		if(window_top>10) {
+		if(window_top>50) {
 			if($(".fixed_box .back_top").is(":hidden")) {
 				$(".fixed_box .back_top").show();
+			}
+			if($(".fixed_box .nav_menu").is(":hidden")) {
+				$(".fixed_box .nav_menu").show();
 			}
 		} else {
 			if(!$(".fixed_box .back_top").is(":hidden")) {
 				$(".fixed_box .back_top").hide();
+			}
+			if(!$(".fixed_box .nav_menu").is(":hidden")) {
+				$(".fixed_box .nav_menu").hide();
 			}
 		}
 	});

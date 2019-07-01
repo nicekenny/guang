@@ -128,13 +128,20 @@ $(function() {
 			}
 			// 固定导航条
 			var category_box = $("#category_box");
+			var hb_category_box = $("#hb_category_box");
 			if(scroll_top>45) {
 				if(!category_box.hasClass("nav_fixed")) {
 					category_box.addClass("nav_fixed");
 				}
+				if(!hb_category_box.hasClass("hb_cate_box_fixed")) {
+					hb_category_box.addClass("hb_cate_box_fixed");
+				}
 			} else {
 				if(category_box.hasClass("nav_fixed")) {
 					category_box.removeClass("nav_fixed");
+				}
+				if(hb_category_box.hasClass("hb_cate_box_fixed")) {
+					hb_category_box.removeClass("hb_cate_box_fixed");
 				}
 			}
 		});
