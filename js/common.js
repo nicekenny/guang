@@ -8,8 +8,10 @@
  */
 
 $(function() {
-	if($(window).scrollTop()<=10)
+	if($(window).scrollTop()<=50) {
 		$(".fixed_box .back_top").hide();
+		$(".fixed_box .nav_menu").hide();
+	}
 	$(".fixed_box .back_top").click(function() {
 		// $(window).scrollTop(0);
 		$("body,html").animate({ scrollTop: 0 }, 800);
