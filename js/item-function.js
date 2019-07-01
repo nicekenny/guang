@@ -269,7 +269,7 @@ $(function() {
 							}
 						}
 					});
-					item_share_text += "【"+is_price_title+"】¥"+item.price+"元\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
+					item_share_text += "【"+is_price_title+"】¥"+item.price+"元"+item_share_coupon+"\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
 					$("#item_share_text").val(item_share_text);
 					adapt_sharetext_height();
 					// =============================拼多多平台(END)==================================
