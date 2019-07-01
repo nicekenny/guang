@@ -847,9 +847,9 @@ function doPddBuy(a) {
 			if(data!=undefined && data.clickUrl!=undefined) {
 				// Android
 				if(typeof(android)!="undefined") {
-					android.openUrl(data.clickUrl.mobileUrl);
+					android.openUrl(data.clickUrl.url);
 				} else{
-					window.location.href=data.clickUrl.mobileUrl;
+					window.location.href=data.clickUrl.url;
 				}
 			}
 		}
