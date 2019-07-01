@@ -836,6 +836,15 @@ function doPddBuy(a) {
 	var itemId = $(a).attr("itemid");
 	if(itemId==undefined)
 		return false;
+	// 变量定义
+	var item_data = $(a).attr("data");
+	if(item_data!=undefined && item_data!="null" && $.trim(item_data)!="") {
+		// Android-----------------
+		if(typeof(android)!="undefined") {
+			return android.showItem(item_data);
+		}
+		// Android-----------------
+	}
 	// 调用接口，获取Url
 	$.ajax({
 		url: serverUrl("guang/pdditem/ajaxClickUrl.html?id="+itemId),

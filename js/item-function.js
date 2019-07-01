@@ -60,6 +60,8 @@ $(function() {
 				// 京东平台
 				if(item.platform=="JD") {
 					title_suffix = " - 京东商城";
+				} else if(item.platform=="PDD") {
+					title_suffix = " - 拼多多";
 				}
 				// 设置title
 				$(document).attr("title", item.title + title_suffix);
@@ -208,7 +210,9 @@ $(function() {
 								var doQrCodeUrl = data.shortUrl;
 								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 								$(".qr_code_img").attr("src",qr_code_url).click(function(){
-									window.open(doQrCodeUrl);
+									if(typeof(android)=="undefined") {
+										window.open(doQrCodeUrl);
+									}
 								});
 							}
 						});
@@ -216,7 +220,59 @@ $(function() {
 					}
 					item_share_text += "【"+is_price_title+"】¥"+item.price+"元\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
 					$("#item_share_text").val(item_share_text);
+					adapt_sharetext_height();
 					// =============================京东平台(END)==================================
+				} else if(item.platform=="PDD") {
+					// =============================拼多多平台==================================
+					$("#coupon_info_list").show();
+					// 调用接口，获取Url
+					$.ajax({
+						url: serverUrl("guang/pdditem/ajaxClickUrl.html?id="+global_item_id),
+						type: 'GET',
+						dataType: "jsonp",
+						success: function (data) {
+							// print log
+							// console.info("DoPddBuy:"+JSON.stringify(data));
+							if(data!=undefined && data.clickUrl!=undefined) {
+								var coupon_link = "<div id=\"do_pdd_coupon_button_"+global_item_id+"\" class=\"d_coupon\" mobile_url=\""+data.clickUrl.mobileShortUrl+"\" _url=\""+data.clickUrl.url+"\">"
+									+"领券【<em id=\"pdd_coupon_"+global_item_id+"\">¥"+item.couponAmount+"元</em>】去拼多多购买</div>";
+								$("#coupon_info_list").append(coupon_link);
+								$("#do_pdd_coupon_button_"+global_item_id).click(function() {
+									var mobile_url = $(this).attr("mobile_url");
+									// Android
+									if(typeof(android)!="undefined") {
+										android.openUrl(mobile_url);
+									} else {
+										var url = $(this).attr("_url");
+										window.open(url);
+									}
+								});
+								// 二维码
+								var doQrCodeUrl = data.clickUrl.mobileShortUrl;
+								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
+								$(".qr_code_img").attr("src",qr_code_url).click(function(){
+									if(typeof(android)=="undefined") {
+										window.open(doQrCodeUrl);
+									}
+								});
+								// 分享文案
+								var tmp_ajax_share_text = $("#item_share_text").val();
+								tmp_ajax_share_text += "微信链接：\r\n";
+								tmp_ajax_share_text += data.clickUrl.weAppWebViewShortUrl + "\r\n";
+								tmp_ajax_share_text += "微博链接：\r\n";
+								tmp_ajax_share_text += data.clickUrl.weiboAppWebViewShortUrl + "\r\n";
+								tmp_ajax_share_text += "拼多多APP：\r\n";
+								tmp_ajax_share_text += data.clickUrl.mobileShortUrl + "\r\n";
+								tmp_ajax_share_text += "购买链接：\r\n";
+								tmp_ajax_share_text += data.clickUrl.shortUrl + "\r\n";
+								$("#item_share_text").val(tmp_ajax_share_text);
+							}
+						}
+					});
+					item_share_text += "【"+is_price_title+"】¥"+item.price+"元\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
+					$("#item_share_text").val(item_share_text);
+					adapt_sharetext_height();
+					// =============================拼多多平台(END)==================================
 				} else {
 					// =============================淘宝/天猫平台==================================
 					$("#tao_pwd_buy").show();
@@ -234,9 +290,12 @@ $(function() {
 							var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
 							var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 							$(".qr_code_img").attr("src",qr_code_url).click(function(){
-								window.open(doQrCodeUrl);
+								if(typeof(android)=="undefined") {
+									window.open(doQrCodeUrl);
+								}
 							});
 							$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
+							adapt_sharetext_height();
 						}
 					});
 					// 历史价格数据显示
@@ -261,6 +320,8 @@ $(function() {
 				
 			}
 		}
+		// textArea高度适应
+		adapt_sharetext_height();
 	}
 	// 一键复制口令
 	var clipboard = new ClipboardJS("#copy_tpwd_button", {
@@ -364,6 +425,14 @@ $(function() {
 		loadRecommends();
 	});
 });
+// itemShare textArea高度适应
+function adapt_sharetext_height() {
+	// 延时设置
+	setTimeout(function(){
+		var contextHeight = $("#item_share_text")[0].scrollHeight;
+		$("#item_share_text").css("height",contextHeight);
+	},500);
+}
 // 根据设备尺寸重设img尺寸
 function itemImgAddSuffix(src,platform) {
 	if(src==undefined)
