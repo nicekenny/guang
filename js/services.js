@@ -448,6 +448,7 @@ function doLoadIndex() {
 		}
 		load_url = "guang/item/ajaxItems.html?page="+pageContext.pageNo + cate_param;
 	}
+	pageContext.serverLoadUrl = load_url;
 	// console.info("LOAD-URL:"+load_url);
 	$.ajax({
 		url: serverUrl(load_url),
@@ -460,9 +461,12 @@ function doLoadIndex() {
 	});
 	// 设置超时后执行刷新
 	setTimeout(function(){
+		var last_server_load_url = load_url;
 		// console.info("LOAD-TIMEOUT:"+JSON.stringify(pageContext));
 		// 如果已经加载完，不执行超时
 		if(pageContext.isLoaded)
+			return;
+		else if(last_server_load_url!=pageContext.serverLoadUrl)
 			return;
 		var timeout_refresh_count = 0;
 		var query_refresh = getQueryString("refresh");
