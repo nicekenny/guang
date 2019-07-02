@@ -10,7 +10,7 @@
 $(function() {
 	if($(window).scrollTop()<=50) {
 		$(".fixed_box .back_top").hide();
-		$(".fixed_box .nav_menu").hide();
+		// $(".fixed_box .nav_menu").hide();
 	}
 	$(".fixed_box .back_top").click(function() {
 		// $(window).scrollTop(0);
@@ -35,16 +35,16 @@ $(function() {
 			if($(".fixed_box .back_top").is(":hidden")) {
 				$(".fixed_box .back_top").show();
 			}
-			if($(".fixed_box .nav_menu").is(":hidden")) {
-				$(".fixed_box .nav_menu").show();
-			}
+			//if($(".fixed_box .nav_menu").is(":hidden")) {
+			//	$(".fixed_box .nav_menu").show();
+			//}
 		} else {
 			if(!$(".fixed_box .back_top").is(":hidden")) {
 				$(".fixed_box .back_top").hide();
 			}
-			if(!$(".fixed_box .nav_menu").is(":hidden")) {
-				$(".fixed_box .nav_menu").hide();
-			}
+			//if(!$(".fixed_box .nav_menu").is(":hidden")) {
+			//	$(".fixed_box .nav_menu").hide();
+			//}
 		}
 	});
 	$(".fixed_box .refresh").click(function() {
