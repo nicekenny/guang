@@ -458,6 +458,50 @@ function doLoadIndex() {
 			//console.info("success");
 		}
 	});
+	// 设置超时后执行刷新
+	setTimeout(function(){
+		// console.info("LOAD-TIMEOUT:"+JSON.stringify(pageContext));
+		// 如果已经加载完，不执行超时
+		if(pageContext.isLoaded)
+			return;
+		var timeout_refresh_count = 0;
+		var query_refresh = getQueryString("refresh");
+		if(query_refresh!=undefined && $.trim(query_refresh).length>0) {
+			timeout_refresh_count = parseInt(query_refresh);
+		}
+		// 尝试3次刷新后报无数据
+		if(timeout_refresh_count>=3) {
+			$("#wall_loading").hide();
+			$("#welcome_box").hide();
+			$("#warning_box").show();
+			return;
+		}
+		var refresh_timeout_url = "", url_params = "";
+		var param_q = pageContext.title;
+		var param_cate = pageContext.category;
+		var param_material_id = pageContext.material;
+		var param_sort = pageContext.sort;
+		var param_page = pageContext.pageNo;
+		if(param_q!=undefined && $.trim(param_q).length>0)
+			url_params = url_params+"&q="+encodeURI(param_q);
+		if(param_cate!=undefined && $.trim(param_cate).length>0)
+			url_params = url_params+"&cate="+param_cate;
+		if(param_material_id!=undefined && param_material_id>0)
+			url_params = url_params+"&material_id="+param_material_id;
+		if(param_sort!=undefined && $.trim(param_sort).length>0)
+			url_params = url_params+"&sort="+param_sort;
+		if(param_page!=undefined && param_page>0)
+			url_params = url_params+"&page="+param_page;
+		url_params = url_params+"&refresh="+(timeout_refresh_count+1);
+		if(pageContext.gss==undefined) {
+			if(url_params.length>0)
+				refresh_timeout_url = "?"+url_params.substring(1);
+		} else {
+			refresh_timeout_url = "?"+property_gss+"="+pageContext.gss+url_params;
+		}
+		// console.info("REFRESH-TIMEOUT-URL:"+guangUrl(refresh_timeout_url));
+		window.location.href = guangUrl(refresh_timeout_url);
+	}, 5000);// 等待加载5秒后执行超时方法
 }
 
 // 回调：显示Items
