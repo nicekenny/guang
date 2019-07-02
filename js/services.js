@@ -462,7 +462,7 @@ function doLoadIndex() {
 	// 设置超时后执行刷新
 	setTimeout(function(){
 		var last_server_load_url = load_url;
-		console.info("LOAD-TIMEOUT:"+JSON.stringify(pageContext));
+		// console.info("LOAD-TIMEOUT:"+JSON.stringify(pageContext));
 		// 如果已经加载完，不执行超时
 		if(pageContext.isLoaded)
 			return;
