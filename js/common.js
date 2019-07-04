@@ -272,3 +272,14 @@ function addFavorite() {
 		// alert('您的浏览器不支持,请按 Ctrl+D 手动收藏!');
 	}
 }
+
+// 打开页面
+function openWindow(url, target) {
+	if(target==undefined || target!="_blank") {
+		window.location.href = url;
+		// console.info("open:"+url);
+	} else {
+		window.open(url);
+		// console.info("open_blank:"+url);
+	}
+}

@@ -24,19 +24,19 @@ $(function() {
 		var item_pic = getQueryString("pic");
 		if(item_pic!=undefined && $.trim(item_pic)!="") {
 			item_pic = decodeURIComponent(item_pic);
-			var pic_box = $("#item_picture").attr("src",itemImgAddSuffix(item_pic,"TAOBAO")).parent();
+			var pic_box = $("#item_picture").attr("src",itemImgAddSuffix(item_pic,"TB")).parent();
 			// pic_box.css("height",pic_box.width()+"px");
 			pic_box.show();
 		} else {
 			// 调用接口，获取商品图片
 			$.ajax({
-				url: serverUrl("guang/item/ajaxItemInfo.html?id="+global_item_id),
+				url: serverUrl("guang/item/info.html?id="+global_item_id+"&platform=TB,TM"),
 				type: 'GET',
 				dataType: "jsonp",
 				success: function (data) {
 					if(data!=undefined && data.item!=undefined) {
 						global_platform = data.item.platform;
-						var tmp_pic = data.item.pic;
+						var tmp_pic = data.item.picUrl;
 						if(tmp_pic!=undefined && $.trim(tmp_pic)!="") {
 							var tmp_pic_box = $("#item_picture").attr("src",itemImgAddSuffix(tmp_pic,"TAOBAO")).parent();
 							tmp_pic_box.show();
@@ -56,6 +56,8 @@ $(function() {
 				// 全局变量：宝贝ID
 				global_item_id = item.id;
 				global_platform = item.platform;
+				// debug...
+				// console.info("Global-ItemId:"+global_item_id+";Platform:"+global_platform);
 				var title_suffix = " - 逛街啦";
 				// 京东平台
 				if(item.platform=="JD") {
@@ -145,41 +147,61 @@ $(function() {
 					// =============================京东平台==================================
 					$("#coupon_info_list").show();
 					var itemUrl = item.itemUrl;
-					var couponInfos = item.couponInfos;
+					// debug...
+					// console.info("JD-ItemUrl:"+itemUrl);
+					var couponInfos = item.coupons;
 					if(couponInfos!=undefined && couponInfos.length>0) {
+						// debug...
+						// console.info("JD-Coupons:"+JSON.stringify(couponInfos));
 						for(var i=0;i<couponInfos.length;i++) {
 							var couponInfo = couponInfos[i];
 							var couponUrl = couponInfo.url;
 							if(couponUrl==undefined)
 								couponUrl = "";
-							var coupon_link_html = "<div id=\"do_jd_coupon_button_"+global_item_id+"_c"+i+"\" class=\"d_coupon\">"
-								+"优惠券【<em id=\"jd_coupon_"+global_item_id+"_c"+i+"\">¥"+couponInfo.discount+"元</em>】一键领取</div>";
+							var coupon_link_text = "优惠券【<em>¥"+couponInfo.discount+"元</em>】一键领取";
+							if(couponInfo.info!=undefined && $.trim(couponInfo.info).length>0) {
+								if(couponInfo.info.indexOf("拼购")!=-1) {
+									coupon_link_text = "【<em>¥"+couponInfo.price+"元</em>】"+couponInfo.info;
+								}
+							}
+							var coupon_link_html = "<div id=\"do_jd_coupon_button_"+global_item_id+"_c"+i+"\" class=\"d_coupon\">"+coupon_link_text+"</div>";
 							$("#coupon_info_list").append(coupon_link_html);
 							var param_data = new Base64().encode(itemUrl+"@"+couponUrl);
 							// 调用接口，获取链接
 							$.ajax({
-								url: serverUrl("guang/jditem/ajaxClickUrl.html?coupon="+global_item_id+"_c"+i+"&d="+param_data+"&type=short"),
+								url: serverUrl("guang/item/jd/clickUrl.html?coupon="+global_item_id+"_c"+i+"&d="+param_data+"&type=short"),
 								type: 'GET',
 								dataType: "jsonp",
 								success: function (data) {
 									if(data.clickUrl!=undefined) {
 										$("#do_jd_coupon_button_"+data.coupon).attr("click",data.clickUrl);
 										var tmp_ajax_share_text = $("#item_share_text").val();
-										tmp_ajax_share_text += "¥"+couponInfo.price+"元 (优惠"+couponInfo.discount+"元)\r\n";
+										// 判断是否为领券+参团
+										var coupon_pingou_text = "(优惠"+couponInfo.discount+"元)";
+										if(couponInfo.info!=undefined && $.trim(couponInfo.info).length>0) {
+											if(couponInfo.info.indexOf("拼购")!=-1) {
+												coupon_pingou_text = "【"+couponInfo.info+"】";
+											}
+										}
+										tmp_ajax_share_text += "¥"+couponInfo.price+"元 "+coupon_pingou_text+"\r\n";
 										tmp_ajax_share_text += data.shortUrl + "\r\n";
 										$("#item_share_text").val(tmp_ajax_share_text);
 										$("#do_jd_coupon_button_"+data.coupon).click(function() {
 											var tmp_curl = $(this).attr("click");
 											if(tmp_curl!=undefined && $.trim(tmp_curl)!="") {
-												window.location.href = tmp_curl;
+												// window.location.href = tmp_curl;
+												openWindow(tmp_curl);
 											}
 										});
 										// 二维码
-										var doQrCodeUrl = data.shortUrl;
-										var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
-										$(".qr_code_img").attr("src",qr_code_url).click(function(){
-											window.open(doQrCodeUrl);
-										});
+										if($(".qr_code_img").attr("already")!="true") {
+											var doQrCodeUrl = data.shortUrl;
+											var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
+											$(".qr_code_img").attr("src",qr_code_url).attr("already","true").click(function(){
+												// window.open(doQrCodeUrl);
+												openWindow(doQrCodeUrl, "_blank");
+											});
+										}
 									} else {
 										$("#do_jd_coupon_button_"+data.coupon).remove();
 									}
@@ -191,11 +213,17 @@ $(function() {
 						var param_data = new Base64().encode(itemUrl);
 						// 调用接口，获取链接
 						$.ajax({
-							url: serverUrl("guang/jditem/ajaxClickUrl.html?d="+param_data+"&type=short"),
+							url: serverUrl("guang/item/jd/clickUrl.html?d="+param_data+"&type=short"),
 							type: 'GET',
 							dataType: "jsonp",
 							success: function (data) {
-								var coupon_link_html = "<div id=\"do_jd_buy_button\" click=\""+data.clickUrl+"\" class=\"d_tpwd\">折扣价【<em>¥"+item.price+"元</em>】去购买</div>";
+								var coupon_link_text = "折扣价【<em>¥"+item.price+"元</em>】去购买";
+								if(item.couponInfo!=undefined && $.trim(item.couponInfo).length>0) {
+									if(item.couponInfo.indexOf("拼购")!=-1) {
+										coupon_link_text = "参团："+item.couponInfo;
+									}
+								}
+								var coupon_link_html = "<div id=\"do_jd_buy_button\" click=\""+data.clickUrl+"\" class=\"d_tpwd\">"+coupon_link_text+"</div>";
 								$("#coupon_info_list").empty().append(coupon_link_html);
 								var tmp_ajax_share_text = $("#item_share_text").val();
 								tmp_ajax_share_text += data.shortUrl;
@@ -203,7 +231,8 @@ $(function() {
 								$("#do_jd_buy_button").click(function() {
 									var tmp_curl = $(this).attr("click");
 									if(tmp_curl!=undefined && $.trim(tmp_curl)!="") {
-										window.location.href = tmp_curl;
+										// window.location.href = tmp_curl;
+										openWindow(tmp_curl);
 									}
 								});
 								// 二维码
@@ -211,7 +240,8 @@ $(function() {
 								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 								$(".qr_code_img").attr("src",qr_code_url).click(function(){
 									if(typeof(android)=="undefined") {
-										window.open(doQrCodeUrl);
+										// window.open(doQrCodeUrl);
+										openWindow(doQrCodeUrl, "_blank");
 									}
 								});
 							}
@@ -227,7 +257,7 @@ $(function() {
 					$("#coupon_info_list").show();
 					// 调用接口，获取Url
 					$.ajax({
-						url: serverUrl("guang/pdditem/ajaxClickUrl.html?id="+global_item_id),
+						url: serverUrl("guang/item/pdd/clickUrl.html?id="+global_item_id),
 						type: 'GET',
 						dataType: "jsonp",
 						success: function (data) {
@@ -235,7 +265,7 @@ $(function() {
 							// console.info("DoPddBuy:"+JSON.stringify(data));
 							if(data!=undefined && data.clickUrl!=undefined) {
 								var coupon_link = "<div id=\"do_pdd_coupon_button_"+global_item_id+"\" class=\"d_coupon\" mobile_url=\""+data.clickUrl.mobileShortUrl+"\" _url=\""+data.clickUrl.url+"\">"
-									+ is_price_title +"【<em id=\"pdd_coupon_"+global_item_id+"\">¥"+item.price+"元</em>】去拼多多购买</div>";
+									+ is_price_title +"【<em>¥"+item.price+"元</em>】去拼多多购买</div>";
 								$("#coupon_info_list").append(coupon_link);
 								$("#do_pdd_coupon_button_"+global_item_id).click(function() {
 									var mobile_url = $(this).attr("mobile_url");
@@ -244,7 +274,8 @@ $(function() {
 										android.openUrl(mobile_url);
 									} else {
 										var url = $(this).attr("_url");
-										window.open(url);
+										// window.open(url);
+										openWindow(url, "_blank");
 									}
 								});
 								// 二维码
@@ -252,7 +283,8 @@ $(function() {
 								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 								$(".qr_code_img").attr("src",qr_code_url).click(function(){
 									if(typeof(android)=="undefined") {
-										window.open(doQrCodeUrl);
+										// window.open(doQrCodeUrl);
+										openWindow(doQrCodeUrl, "_blank");
 									}
 								});
 								// 分享文案
@@ -281,7 +313,7 @@ $(function() {
 					var picUrl = encodeURIComponent(item.picUrl);
 					// 调用接口，获取口令
 					$.ajax({
-						url: serverUrl("guang/item/ajaxItemTpwd.html?id="+global_item_id+"&url="+buyUrl),
+						url: serverUrl("guang/item/tbk/tpwd.html?id="+global_item_id+"&url="+buyUrl),
 						type: 'GET',
 						dataType: "jsonp",
 						success: function (data) {
@@ -291,33 +323,34 @@ $(function() {
 							var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 							$(".qr_code_img").attr("src",qr_code_url).click(function(){
 								if(typeof(android)=="undefined") {
-									window.open(doQrCodeUrl);
+									// window.open(doQrCodeUrl);
+									openWindow(doQrCodeUrl, "_blank");
 								}
 							});
 							$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
 							adapt_sharetext_height();
 						}
 					});
-					// 历史价格数据显示
-					$.ajax({
-						url: serverUrl("guang/item/ajaxHistoryPrices.html?id="+global_item_id),
-						type: 'GET',
-						dataType: "jsonp",
-						success: function (data) {
-							if(data.historyPrices!=undefined) {
-								if(data.price<=data.minPrice) {
-									$("div.d_price .icon_price").html("&#xf149;").show();
-								} else if(data.price>=data.maxPrice) {
-									$("div.d_price .icon_price").html("&#xf148;").css("color","#3cd500").show();
-								}
-								historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
-							}
-						}
-					});
-					//--历史价格--end--
+					
 					// =============================淘宝/天猫平台(END)==================================
 				}
-				
+				// 历史价格数据显示
+				$.ajax({
+					url: serverUrl("guang/item/historyPrices.html?id="+global_item_id+"&platform="+global_platform),
+					type: 'GET',
+					dataType: "jsonp",
+					success: function (data) {
+						if(data.historyPrices!=undefined) {
+							if(data.price<=data.minPrice) {
+								$("div.d_price .icon_price").html("&#xf149;").show();
+							} else if(data.price>=data.maxPrice) {
+								$("div.d_price .icon_price").html("&#xf148;").css("color","#3cd500").show();
+							}
+							historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
+						}
+					}
+				});
+				//--历史价格--end--
 			}
 		}
 		// textArea高度适应
@@ -333,7 +366,7 @@ $(function() {
 		// 拷贝成功
 		if(!$(e.trigger).hasClass("green")) {
 			var cache_text = $(e.trigger).html();
-			$(e.trigger).addClass("green").html("拷贝成功，打开购物APP购买");
+			$(e.trigger).addClass("green").html("复制成功，打开购物APP购买");
 			// 判断Android
 			if(typeof(android)!="undefined") {
 				if(global_platform!=undefined && $.trim(global_platform)!="") {
@@ -365,7 +398,7 @@ $(function() {
 			var cache_text = $(e.trigger).html();
 			if($(e.trigger).hasClass("blue"))
 				$(e.trigger).removeClass("blue");
-			$(e.trigger).addClass("purple").html("拷贝成功，去粘贴分享文案");
+			$(e.trigger).addClass("purple").html("复制成功，去粘贴分享文案");
 			// 3秒后恢复
 			setTimeout(function(){
 				$(e.trigger).removeClass("purple").addClass("blue").html(cache_text);
@@ -440,7 +473,7 @@ function itemImgAddSuffix(src,platform) {
 	var newSrc = src;
 	// 根据设备尺寸重设img后缀
 	var win_width = $(window).width();
-	if(platform==undefined || platform=="TAOBAO" || platform=="TMALL") {
+	if(platform==undefined || platform=="TB" || platform=="TM") {
 		if(win_width<=400)
 			newSrc += "_400x400.jpg";
 		else if(win_width<=500)
@@ -477,7 +510,7 @@ function loadRecommends() {
 	// 设置加载中
 	pageContext.isLoaded = false;
 	$("#wall_loading").show();
-	var load_url = "guang/item/ajaxRecommends.html?kw="+ encodeURI(keyword) +"&page="+pageContext.pageNo; //&item_id=global_item_id
+	var load_url = "guang/item/recommends.html?kw="+ encodeURI(keyword) +"&page="+pageContext.pageNo; //&item_id=global_item_id
 	$.ajax({
 		url: serverUrl(load_url),
 		type: 'GET',

@@ -83,6 +83,12 @@ $(function() {
 		if(base_app_change)
 			$("#hb_search_app").val(base_app_code);
 		$(this).attr("action", guangUrl());
+		// 处理所选平台数据
+		var platforms = $("#hb_search_platforms").val();
+		if(platforms!=undefined && platforms.indexOf(",")==0) {
+			platforms = platforms.substring(1);
+			$("#hb_search_platforms").val(platforms);
+		}
 		// 提交跳转后隐藏悬浮
 		resetBox();
 		return doSearch();
@@ -166,6 +172,40 @@ $(function() {
 				}
 			});
 		}
+		// 搜索多平台选择
+		$(".platform_item").click(function() {
+			var platforms = $("#hb_search_platforms").val();
+			if(platforms==undefined)
+				platforms = "";
+			var tag = $(this).attr("tag");
+			if($(this).hasClass("selected")) {
+				$(this).removeClass("selected");
+				if(platforms.indexOf(tag)!=-1 || platforms.indexOf(","+tag)!=-1) {
+					var replace_text = ","+tag;
+					if(platforms.indexOf(","+tag)==-1)
+						replace_text = tag;
+					var replace_reg = new RegExp(replace_text, "gm");
+					platforms = platforms.replace(replace_reg, "");
+				}
+			} else {
+				$(this).addClass("selected");
+				if(platforms.indexOf(tag)==-1) {
+					platforms = platforms+","+tag;
+				}
+			}
+			$("#hb_search_platforms").val(platforms);
+			// console.info("hb_search_platforms:"+platforms);
+		});
+		$(".hb_search_arrow .arrow_up").click(function() {
+			$(this).hide();
+			$(".hb_search_platform").fadeOut(fade_time);
+			$(".hb_search_arrow .arrow_down").show();
+		});
+		$(".hb_search_arrow .arrow_down").click(function() {
+			$(this).hide();
+			$(".hb_search_platform").fadeIn(fade_time);
+			$(".hb_search_arrow .arrow_up").show();
+		});
 	}
 	//============加载结束=============
 	// Android-------------
@@ -239,7 +279,7 @@ function serverUrl(url) {
 function loadMenus() {
 	// 调用接口，获取菜单项
 	$.ajax({
-		url: serverUrl("guang/base/menuItems.html"),
+		url: serverUrl("guang/base/menus.html"),
 		type: 'GET',
 		dataType: "jsonp",
 		success: function (data) {
@@ -249,13 +289,13 @@ function loadMenus() {
 					var menu_item = data.menus[m];
 					var mi_href = "?"+property_gss+"=";
 					if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="") {
-						if($.trim(menu_item.gss)=="jdGoods" && !(current_browser=="WeiXin" || current_browser=="PC")) {
+						if($.trim(menu_item.gss)=="jd" && !(current_browser=="WeiXin" || current_browser=="PC")) {
 							// 非微信浏览器不显示此菜单项
 							continue;
 						}
 						mi_href = mi_href + $.trim(menu_item.gss);
 					} else {
-						mi_href = mi_href + "material";
+						mi_href = mi_href + "tbk";
 					}
 					if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
 						mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
@@ -264,7 +304,7 @@ function loadMenus() {
 						mi_href = mi_href + "&cate="+menu_item.categorys;
 					}
 					if(menu_item.materialId!=undefined && $.trim(menu_item.materialId)!=""){
-						mi_href = mi_href + "&material_id="+menu_item.materialId;
+						mi_href = mi_href + "&mid="+menu_item.materialId;
 					}
 					var mi_icon_css = "";
 					if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
@@ -282,10 +322,11 @@ function menuClick(a) {
 	// 关闭悬浮层
 	resetBox();
 	var url = $(a).attr("link");
+	// console.info("Menu:"+url);
 	// 获取参数
 	pageContext.url = url;
 	pageContext.title = getUrlParam(url,"q");
-	pageContext.material = getUrlParam(url,"material_id");
+	pageContext.material = getUrlParam(url,"mid");
 	pageContext.gss = getUrlParam(url,property_gss);
 	pageContext.sort = undefined;
 	// 初始页码
@@ -311,8 +352,10 @@ function doCategory(a) {
 }
 function doSearch() {
 	var keyword = $("#hb_search_q").val();
+	var platforms = $("#hb_search_platforms").val();
 	// 获取参数
 	pageContext.title = keyword;
+	pageContext.platforms = platforms;
 	pageContext.sort = undefined;
 	pageContext.gss = "search";
 	// 初始页码
@@ -371,7 +414,7 @@ function loadIndex() {
 	// 初始参数
 	pageContext.title = getQueryString("q");
 	pageContext.category = getQueryString("cate");
-	pageContext.material = getQueryString("material_id");
+	pageContext.material = getQueryString("mid");
 	pageContext.sort = getQueryString("sort");
 	pageContext.pageNo = getQueryString("page");
 	// default
@@ -386,6 +429,7 @@ function loadIndex() {
 	doLoadIndex();
 }
 function doLoadIndex() {
+	// debug...
 	// console.info("CONTEXT:"+JSON.stringify(pageContext));
 	if(!pageContext.isLoaded)
 		return;
@@ -397,6 +441,7 @@ function doLoadIndex() {
 		// 页面内容重新载入
 	} else {
 		if(pageContext.pageNo==1) {
+			$("body").css("background-color","#FFFFFF");
 			$("#welcome_box").show();
 			$("#product_walls").hide();
 			$("#product_walls .wall_wrap").empty();
@@ -408,7 +453,7 @@ function doLoadIndex() {
 		$("#article_content").hide();
 	}
 	var load_url;
-	if(pageContext.gss=="material" || pageContext.gss=="search" || pageContext.gss=="jdGoods" || pageContext.gss=="pddGoods") {
+	if(pageContext.gss=="tbk" || pageContext.gss=="search" || pageContext.gss=="jd" || pageContext.gss=="pdd") {
 		// 物料载入
 		var search_q = pageContext.title;
 		if(search_q!=undefined)
@@ -420,25 +465,29 @@ function doLoadIndex() {
 		if(cate!=undefined)
 			cate_param = "&cate="+cate;
 		var material_param = "";
-		var material_id = pageContext.material;
-		if(material_id!=undefined)
-			material_param = "&material_id="+material_id;
+		var material = pageContext.material;
+		if(material!=undefined)
+			material_param = "&material="+material;
 		var sort_param = "";
 		var sort = pageContext.sort;
 		if(sort!=undefined)
 			sort_param = "&sort="+sort;
-		
-		var method_name = "guang/item/ajaxSearch.html";
-		if(pageContext.gss=="search")// Search
-			method_name = "guang/item/ajaxSearch.html";
-		else if(pageContext.gss=="material")// TaoBao-Material
-			method_name = "guang/item/ajaxMaterial.html";
-		else if(pageContext.gss=="jdGoods")// JD
-			method_name = "guang/jditem/ajaxItems.html";
-		else if(pageContext.gss=="pddGoods")// PDD
-			method_name = "guang/pdditem/ajaxItems.html";
+		var platforms_param = "";
+		// default-search
+		var method_name = "guang/item/search.html";
+		if(pageContext.gss=="search") {// Search
+			method_name = "guang/item/search.html";
+			if(pageContext.platforms!=undefined) {
+				platforms_param = "&platforms="+pageContext.platforms;
+			}
+		} else if(pageContext.gss=="tbk")// TBK
+			method_name = "guang/item/tbk/items.html";
+		else if(pageContext.gss=="jd")// JD
+			method_name = "guang/item/jd/items.html";
+		else if(pageContext.gss=="pdd")// PDD
+			method_name = "guang/item/pdd/items.html";
 
-		load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param +"&page="+pageContext.pageNo;
+		load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param + platforms_param +"&page="+pageContext.pageNo;
 	}
 	if(load_url==undefined) {
 		var cateId = pageContext.category;
@@ -446,9 +495,10 @@ function doLoadIndex() {
 		if(cateId!=undefined) {
 			cate_param = "&cate="+cateId;
 		}
-		load_url = "guang/item/ajaxItems.html?page="+pageContext.pageNo + cate_param;
+		load_url = "guang/item/tbk/cateItems.html?page="+pageContext.pageNo + cate_param;
 	}
 	pageContext.serverLoadUrl = load_url;
+	// debug...
 	// console.info("LOAD-URL:"+load_url);
 	$.ajax({
 		url: serverUrl(load_url),
@@ -462,6 +512,7 @@ function doLoadIndex() {
 	// 设置超时后执行刷新
 	setTimeout(function(){
 		var last_server_load_url = load_url;
+		// debug...
 		// console.info("LOAD-TIMEOUT:"+JSON.stringify(pageContext));
 		// 如果已经加载完，不执行超时
 		if(pageContext.isLoaded)
@@ -483,15 +534,15 @@ function doLoadIndex() {
 		var refresh_timeout_url = "", url_params = "";
 		var param_q = pageContext.title;
 		var param_cate = pageContext.category;
-		var param_material_id = pageContext.material;
+		var param_material = pageContext.material;
 		var param_sort = pageContext.sort;
 		var param_page = pageContext.pageNo;
 		if(param_q!=undefined && $.trim(param_q).length>0)
 			url_params = url_params+"&q="+encodeURI(param_q);
 		if(param_cate!=undefined && $.trim(param_cate).length>0)
 			url_params = url_params+"&cate="+param_cate;
-		if(param_material_id!=undefined && param_material_id>0)
-			url_params = url_params+"&material_id="+param_material_id;
+		if(param_material!=undefined && param_material>0)
+			url_params = url_params+"&material="+param_material;
 		if(param_sort!=undefined && $.trim(param_sort).length>0)
 			url_params = url_params+"&sort="+param_sort;
 		if(param_page!=undefined && param_page>0)
@@ -504,7 +555,8 @@ function doLoadIndex() {
 			refresh_timeout_url = "?"+property_gss+"="+pageContext.gss+url_params;
 		}
 		// console.info("REFRESH-TIMEOUT-URL:"+guangUrl(refresh_timeout_url));
-		window.location.href = guangUrl(refresh_timeout_url);
+		// window.location.href = guangUrl(refresh_timeout_url);
+		openWindow(guangUrl(refresh_timeout_url));
 	}, 5000);// 等待加载5秒后执行超时方法
 }
 
@@ -531,30 +583,38 @@ function showItems(data) {
 			if(!pageContext.isReload) {
 				$("#product_walls").show();
 				$("#welcome_box").hide();
+				$("body").css("background-color","#EFEFEF");
 			} else {
 				$("#product_walls .wall_wrap").empty();
 			}
 		}
 		for(var i=0;i<items.length;i++) {
 			var item = items[i];
-			var item_id = item.id;
+			var item_id = item.numId;
+			var item_platform = item.platform;
+			var item_title = item.title;
+			var item_price = item.price;
+			var item_volume = item.volume;
 			var item_dataStr = item.dataString;
+			var item_minPrice = item.minPrice;
+			var item_maxPrice = item.maxPrice;
 			var item_price_icon = "";
-			if(item.minPrice!=undefined && item.maxPrice!=undefined) {
-				if(item.price<=item.minPrice && item.maxPrice>item.price) {
+			if(item_minPrice!=undefined && item_maxPrice!=undefined) {
+				if(item_price<=item_minPrice && item_maxPrice>item_price) {
 					item_price_icon = "<span class=\"font_icon icon_price\" title=\"最低价\">&#xf149;</span>";
-				} else if(item.price>=item.maxPrice && item.minPrice<item.price) {
+				} else if(item_price>=item_maxPrice && item_minPrice<item_price) {
 					item_price_icon = "<span class=\"font_icon icon_price\" style=\"color:#3cd500;\" title=\"最高价\">&#xf148;</span>";
 				}
 			}
-			var item_pic = wallImgAddSuffix(item.pic, item.platform);
-			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item.platform+"\" >"
-				+"<div class=\"item_img\">"+"<img src=\""+item_pic+"\" pic=\""+item.pic+"\" alt=\""+item.title+"\" onload=\"imgLoaded(this)\" onerror=\"imgReload(this)\" />"
-				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item.title+"</div>"+"<div class=\"item_info\">"
-				+"<span class=\"item_info_price\"><i>¥</i>"+ item.price + item_price_icon +"</span>"
-				//+"<span class=\"item_info_delprice\">¥"+item.reservePrice+"</span>"
-				+"<span class=\"item_info_likes\">"+item.volume+"</span>"
-				//+"<span class=\"item_info_provcity\">"+item.provcity+"</span>"
+			var item_pic_url = item.picUrl;
+			var item_pic = wallImgAddSuffix(item_pic_url, item_platform);
+			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item_platform+"\" >"
+				+"<div class=\"item_img\">"+"<img src=\""+item_pic+"\" pic=\""+item_pic_url+"\" alt=\""+item_title+"\" onload=\"imgLoaded(this)\" onerror=\"imgReload(this)\" />"
+				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item_title+"</div>"+"<div class=\"item_info\">"
+				+"<span class=\"item_info_price\"><i>¥</i>"+ item_price + item_price_icon +"</span>"
+				//+"<span class=\"item_info_delprice\">¥delprice</span>"
+				+"<span class=\"item_info_likes\">"+item_volume+"</span>"
+				//+"<span class=\"item_info_provcity\">provcity</span>"
 				+"</div></a></li>";
 			var pw_h_max = $("#product_walls").height();
 			var pw_min;
@@ -583,6 +643,7 @@ function showItems(data) {
 	} else if(data_page_no==1) {
 		$("#welcome_box").hide();
 		$("#warning_box").show();
+		$("body").css("background-color","#FFFFFF");
 	}
 	if(data_page_no<=1 && !pageContext.isReload) {
 		// 显示类目列表
@@ -593,21 +654,21 @@ function showItems(data) {
 			for(var i=0;i<categorys.length;i++) {
 				var category = categorys[i];
 				var current_li = "";
-				if(category.favoritesId == data.currentCategoryId) {
+				if(category.numId == data.currentCategoryId) {
 					current_li = " class=\"current\"";
 				}
-				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl("?cate="+category.favoritesId)+ "\" onclick=\"doCategory(this)\">"+ category.favoritesTitle+"</a></li>";
+				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl("?cate="+category.numId)+ "\" onclick=\"doCategory(this)\">"+ category.title+"</a></li>";
 			}
 			$("#category_list").empty().append(category_lis).show();
 		}
-		if(data.from=="material" || data.from=="search" || data.from=="jdGoods" || data.from=="pddGoods") {
+		if(data.from=="tbk" || data.from=="search" || data.from=="jd" || data.from=="pdd") {
 			var query = data.query;
 			if(query!=undefined) {
 				if(query.keyword!=undefined) {
 					var title_suffix = " - 逛街啦";
-					if(data.from=="jdGoods")
+					if(data.from=="jd")
 						title_suffix = " - 京东商城";
-					else if(data.from=="pddGoods")
+					else if(data.from=="pdd")
 						title_suffix = " - 拼多多";
 					$(document).attr("title", query.keyword + title_suffix);
 				}
@@ -650,7 +711,7 @@ function wallImgAddSuffix(src,platform) {
 	var newSrc = src;
 	// 根据设备尺寸重设img后缀
 	var win_width = $(window).width();
-	if(platform==undefined || platform=="TAOBAO" || platform=="TMALL") {
+	if(platform==undefined || platform=="TB" || platform=="TM") {
 		if(win_width<=400)
 			newSrc += "_200x200.jpg";
 		else if(win_width<=500)
@@ -681,7 +742,12 @@ function imgLoaded(img) {
 }
 // 图片加载失败后调用
 function imgReload(img) {
-	$(img).attr("src",$(img).attr("pic"));
+	var pic = $(img).attr("pic");
+	if(pic!=undefined && pic!="undefined") {
+		$(img).attr("src",$(img).attr("pic"));
+	} else if(pic==$(img).attr("src")) {
+		return;
+	}
 }
 
 // 去购买（口令）
@@ -738,7 +804,7 @@ function doBuy(a) {
 	} else {
 		// 调用接口，获取口令
 		$.ajax({
-			url: serverUrl("guang/item/ajaxItemTpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)),
+			url: serverUrl("guang/item/tbk/tpwd.html?id="+itemId+"&url="+encodeURIComponent(buyUrl)),
 			type: 'GET',
 			dataType: "jsonp",
 			success: function (data) {
@@ -814,7 +880,7 @@ function doJdBuy(a) {
 		// Android-----------------
 		// 数据解包
 		var jsonStr = new Base64().decode(item_data);
-		// console.info("data:"+jsonStr);
+		// console.info("JD-data:"+jsonStr);
 		var item = JSON.parse(jsonStr);
 		if(item!=undefined) {
 			itemId = item.id;
@@ -836,7 +902,7 @@ function doJdBuy(a) {
 			var param_data = new Base64().encode(itemUrl+"@"+couponInfo.url);
 			// 调用接口，获取链接
 			$.ajax({
-				url: serverUrl("guang/jditem/ajaxClickUrl.html?coupon="+itemId+"_c"+i+"&d="+param_data),
+				url: serverUrl("guang/item/jd/clickUrl.html?coupon="+itemId+"_c"+i+"&d="+param_data),
 				type: 'GET',
 				dataType: "jsonp",
 				success: function (data) {
@@ -853,7 +919,7 @@ function doJdBuy(a) {
 		var param_data = new Base64().encode(itemUrl+"@"+couponUrl);
 		// 调用接口，获取链接
 		$.ajax({
-			url: serverUrl("guang/jditem/ajaxClickUrl.html?d="+param_data),
+			url: serverUrl("guang/item/jd/clickUrl.html?d="+param_data),
 			type: 'GET',
 			dataType: "jsonp",
 			success: function (data) {
@@ -862,7 +928,8 @@ function doJdBuy(a) {
 					if(typeof(android)!="undefined") {
 						android.openUrl(data.clickUrl);
 					} else{
-						window.location.href=data.clickUrl;
+						openWindow(data.clickUrl);
+						// window.location.href=data.clickUrl;
 						// window.open(data.clickUrl);
 					}
 				} else {
@@ -902,7 +969,7 @@ function doPddBuy(a) {
 	}
 	// 调用接口，获取Url
 	$.ajax({
-		url: serverUrl("guang/pdditem/ajaxClickUrl.html?id="+itemId),
+		url: serverUrl("guang/item/pdd/clickUrl.html?id="+itemId),
 		type: 'GET',
 		dataType: "jsonp",
 		success: function (data) {
@@ -913,7 +980,8 @@ function doPddBuy(a) {
 				if(typeof(android)!="undefined") {
 					android.openUrl(data.clickUrl.url);
 				} else{
-					window.location.href=data.clickUrl.url;
+					// window.location.href=data.clickUrl.url;
+					openWindow(data.clickUrl.url);
 				}
 			}
 		}
@@ -928,8 +996,9 @@ function openLink(link) {
 	if(typeof(android)!="undefined") {
 		android.openUrl(link_url);
 	} else{
-		window.location.href=link_url;
+		// window.location.href=link_url;
 		// window.open(link_url);
+		openWindow(link_url);
 	}
 }
 // 弹出详情内容窗口
@@ -939,7 +1008,8 @@ function openItem(link) {
 	// window.location.href = guangUrl("item.html?d="+data);
 	// Android--------------------
 	if(typeof(android)=="undefined") {
-		window.location.href = guangUrl("item.html?d="+data);
+		// window.location.href = guangUrl("item.html?d="+data);
+		openWindow(guangUrl("item.html?d="+data));
 	} else {
 		android.showItem(data);
 	}

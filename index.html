@@ -44,11 +44,23 @@
             <div class="hb_right"><a id="hd_search_link" class="font_icon hd_search_link" status="close">&#xe834;</a></div>
             <div id="hb_search_box" class="hb_search_box" style="display: none;"><!--  style="display: none;" -->
             	<form id="hb_search_form" action="" method="get">
-                	<input id="hb_search_text" type="text" placeholder="请输入关键词" class="hb_sb_text"/>
+                	<input id="hb_search_text" type="text" placeholder="请输入关键词、口令、ID、链接" class="hb_sb_text"/>
                     <input type="hidden" name="q" id="hb_search_q"/>
                     <input type="hidden" name="gss" value="search" />
                     <input id="hb_search_app" type="hidden" name="app" />
+					<input id="hb_search_platforms" type="hidden" name="platforms" />
                 </form>
+				<div class="hb_search_platform" style="display:none;">
+					<div class="platform_item" tag="TB">淘宝</div>
+					<div class="platform_item" tag="TM">天猫</div>
+					<div class="platform_item" tag="JD">京东</div>
+					<div class="platform_item" tag="PDD">拼多多</div>
+					<div class="platform_info"><div class="platform_info_text">~选择需要搜索的平台~</div></div>
+				</div>
+				<div class="hb_search_arrow">
+					<a class="font_icon arrow_up" style="display:none;">&#xe819;</a>
+					<a class="font_icon arrow_down">&#xe816;</a>
+				</div>
             </div>
 		</div>
     	
