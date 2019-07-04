@@ -443,6 +443,7 @@ function doLoadIndex() {
 		if(pageContext.pageNo==1) {
 			$("body").css("background-color","#FFFFFF");
 			$("#welcome_box").show();
+			$("#warning_box").hide();
 			$("#product_walls").hide();
 			$("#product_walls .wall_wrap").empty();
 			$("#category_box").hide();
