@@ -70,7 +70,7 @@ $(function() {
 				//- 图片-box ===============================================
 				var itemBlock_imgs = $("div.showcase");
 				var pic_main = itemImgAddSuffix(item.picUrl,item.platform);
-				var pic_list = item.picUrls;
+				var pic_list = item.picImages;
 				var imgList_html = "",imgList_nav = "";
 				if(item.whiteImage!=undefined && $.trim(item.whiteImage)!="") {
 					var white_img = itemImgAddSuffix(item.whiteImage,item.platform);
