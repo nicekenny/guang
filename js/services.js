@@ -583,6 +583,7 @@ function showItems(data) {
 			if(!pageContext.isReload) {
 				$("#product_walls").show();
 				$("#welcome_box").hide();
+				$("#warning_box").hide();
 				$("body").css("background-color","#EFEFEF");
 			} else {
 				$("#product_walls .wall_wrap").empty();
