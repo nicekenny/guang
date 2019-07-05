@@ -621,7 +621,7 @@ function showItems(data) {
 			var item_pic_url = item.picUrl;
 			var item_pic = wallImgAddSuffix(item_pic_url, item_platform);
 			var item_volume_class = "item_info_likes";
-			if(item_platform!=undefined) {
+			if(item_platform!=undefined && pageContext.isShared) {
 				item_volume_class = "platform_icon_"+item_platform;
 			}
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item_platform+"\" >"
