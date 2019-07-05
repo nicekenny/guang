@@ -647,6 +647,53 @@ a:hover {
 	float: right;
 	height: 20px;
 }
+.platform_icon_TB {
+	font-size: 12px;
+	line-height: 22px;
+	padding-left: 18px;
+	color: #999999;
+	float: right;
+	height: 22px;
+	background-image: url(images/platform_icons.png);
+	background-repeat: no-repeat;
+	background-position: -3px -4px;
+	background-size: 30px;
+}
+.platform_icon_TM {
+	font-size: 12px;
+	line-height: 22px;
+	padding-left: 18px;
+	color: #999999;
+	float: right;
+	height: 22px;
+	background-image: url(images/platform_icons.png);
+	background-repeat: no-repeat;
+	background-position: -3px -30px;
+	background-size: 30px;
+}
+.platform_icon_JD {
+	font-size: 12px;
+	line-height: 22px;
+	padding-left: 18px;
+	color: #999999;
+	float: right;
+	height: 22px;
+	background-image: url(images/platform_icons.png);
+	background-repeat: no-repeat;
+	background-position: -3px -54px;
+	background-size: 30px;
+}
+.platform_icon_PDD {
+	font-size: 12px;
+	line-height: 22px;
+	background-image: url(images/wall_like_icon.png);
+	background-repeat: no-repeat;
+	background-position: 0px 5px;
+	padding-left: 16px;
+	color: #999999;
+	float: right;
+	height: 22px;
+}
 .wall_loading {
 	text-align: center;
 	padding-top: 0px;

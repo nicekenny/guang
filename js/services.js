@@ -610,12 +610,16 @@ function showItems(data) {
 			}
 			var item_pic_url = item.picUrl;
 			var item_pic = wallImgAddSuffix(item_pic_url, item_platform);
+			var item_volume_class = "item_info_likes";
+			if(item_platform!=undefined) {
+				item_volume_class = "platform_icon_"+item_platform;
+			}
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item_platform+"\" >"
 				+"<div class=\"item_img\">"+"<img src=\""+item_pic+"\" pic=\""+item_pic_url+"\" alt=\""+item_title+"\" onload=\"imgLoaded(this)\" onerror=\"imgReload(this)\" />"
 				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item_title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+ item_price + item_price_icon +"</span>"
 				//+"<span class=\"item_info_delprice\">¥delprice</span>"
-				+"<span class=\"item_info_likes\">"+item_volume+"</span>"
+				+"<span class=\""+item_volume_class+"\">"+item_volume+"</span>"
 				//+"<span class=\"item_info_provcity\">provcity</span>"
 				+"</div></a></li>";
 			var pw_h_max = $("#product_walls").height();
