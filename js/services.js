@@ -448,6 +448,8 @@ function doLoadIndex() {
 			$("#product_walls .wall_wrap").empty();
 			$("#category_box").hide();
 			$("#category_list").empty();
+			// 回到顶部
+			$(window).scrollTop(0);
 		}
 		$("#wall_loading").show();
 		$("#wall_loading_page").html(pageContext.currentPageNo);
