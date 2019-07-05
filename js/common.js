@@ -16,6 +16,7 @@ $(function() {
 		// $(window).scrollTop(0);
 		$("body,html").animate({ scrollTop: 0 }, 800);
 	});
+	// 导航菜单
 	$(".fixed_box .nav_menu").click(function() {
 		var cate_box = $("#hd_category_link");
 		if(cate_box.length==0)
@@ -26,6 +27,22 @@ $(function() {
 			$("#hb_category_box").fadeIn(fade_time);
 			$("#m_ui_mask").fadeIn(fade_time);
 		} else if(cate_box.attr("show_box")=="1") {
+			resetBox();
+		}
+	});
+	// 搜索盒子
+	$(".fixed_box .search_bar").click(function() {
+		var search_bar = $("#hd_search_link");
+		if(search_bar.length==0)
+			return false;
+		if(search_bar.attr("status")!="open") {
+			resetBox();
+			search_bar.attr("status","open");
+			$("#hb_search_box").fadeIn(fade_time);
+			$("#m_ui_mask").fadeIn(fade_time);
+			$("#hb_search_text").focus();
+			$("#hb_search_text").select();
+		} else if(search_bar.attr("status")!="close") {
 			resetBox();
 		}
 	});

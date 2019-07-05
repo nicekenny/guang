@@ -172,6 +172,7 @@ a:hover {
 	padding-right: 13px;
 	padding-left: 10px;
 	padding-bottom: 8px;
+	padding-top: 10px;
 }
 .head_bar .hb_search_box .hb_sb_text {
 	border: 1px solid #DCDCDC;
@@ -182,7 +183,7 @@ a:hover {
 	line-height: 20px;
 	margin-top: 10px;
 	margin-right: 0px;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 	margin-left: 0px;
 	padding-left: 0px;
 	padding-top: 2px;
@@ -273,7 +274,7 @@ a:hover {
 	padding-bottom: 5px;
 	padding-left: 10px;
 }
-.head_bar .hb_cate_box_fixed {
+.head_bar .hb_box_fixed {
 	position: fixed;
 	top: 44px;
 }
