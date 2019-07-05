@@ -41,7 +41,7 @@ $(function() {
 			$("#hb_search_box").fadeIn(fade_time);
 			$("#m_ui_mask").fadeIn(fade_time);
 			$("#hb_search_text").focus();
-			$("#hb_search_text").select();
+			// $("#hb_search_text").select();
 		} else if(search_bar.attr("status")!="close") {
 			resetBox();
 		}
