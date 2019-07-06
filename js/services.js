@@ -45,7 +45,7 @@ $(function() {
 		var tmp_href = $(this).attr("href");
 		var guang_href = guangUrl(tmp_href);
 		var app_code = $(this).attr("app");
-		if(app_code!=undefined) {
+		if(app_code!=undefined && $.trim(app_code).length>0) {
 			guang_href = changeURLArg(guang_href,"app",app_code);
 		}
 		$(this).attr("href", guang_href);
@@ -324,36 +324,48 @@ function loadMenus() {
 		type: 'GET',
 		dataType: "jsonp",
 		success: function (data) {
-			if(data!=undefined && data.menus!=undefined && data.menus.length>0) {
-				var menu_html = "";
-				for(var m=0;m<data.menus.length;m++) {
-					var menu_item = data.menus[m];
-					var mi_href = "?"+property_gss+"=";
-					if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="") {
-						if($.trim(menu_item.gss)=="jd" && !(current_browser=="WeiXin" || current_browser=="PC")) {
-							// 非微信浏览器不显示此菜单项
-							continue;
+			if(data!=undefined) {
+				// 菜单项
+				if(data.menus!=undefined && data.menus.length>0) {
+					var menu_html = "";
+					for(var m=0;m<data.menus.length;m++) {
+						var menu_item = data.menus[m];
+						var mi_href = "?"+property_gss+"=";
+						if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="") {
+							if($.trim(menu_item.gss)=="jd" && !(current_browser=="WeiXin" || current_browser=="PC")) {
+								// 非微信浏览器不显示此菜单项
+								continue;
+							}
+							mi_href = mi_href + $.trim(menu_item.gss);
+						} else {
+							mi_href = mi_href + "tbk";
 						}
-						mi_href = mi_href + $.trim(menu_item.gss);
-					} else {
-						mi_href = mi_href + "tbk";
+						if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
+							mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
+						}
+						if(menu_item.categorys!=undefined && $.trim(menu_item.categorys)!=""){
+							mi_href = mi_href + "&cate="+menu_item.categorys;
+						}
+						if(menu_item.materialId!=undefined && $.trim(menu_item.materialId)!=""){
+							mi_href = mi_href + "&mid="+menu_item.materialId;
+						}
+						var mi_icon_css = "";
+						if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
+							mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
+						}
+						menu_html = menu_html + "<li><a link=\""+guangUrl(encodeURI(mi_href))+"\" onclick=\"menuClick(this);\"><i"+mi_icon_css+"></i>"+menu_item.title+"</a></li>";
 					}
-					if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
-						mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
-					}
-					if(menu_item.categorys!=undefined && $.trim(menu_item.categorys)!=""){
-						mi_href = mi_href + "&cate="+menu_item.categorys;
-					}
-					if(menu_item.materialId!=undefined && $.trim(menu_item.materialId)!=""){
-						mi_href = mi_href + "&mid="+menu_item.materialId;
-					}
-					var mi_icon_css = "";
-					if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
-						mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
-					}
-					menu_html = menu_html + "<li><a link=\""+guangUrl(encodeURI(mi_href))+"\" onclick=\"menuClick(this);\"><i"+mi_icon_css+"></i>"+menu_item.title+"</a></li>";
+					$("#hb_menus_box").empty().append(menu_html);
 				}
-				$("#hb_menus_box").empty().append(menu_html);
+				// 站点项
+				if(data.sites!=undefined && data.sites.length>0) {
+					var site_html = "";
+					for(var s=0;s<data.sites.length;s++) {
+						var site_item = data.sites[s];
+						site_html = site_html + "<div class=\"hb_data_item\"><a href=\""+site_item.url+"\" scl=\"guang\" app=\""+site_item.appCode+"\">"+site_item.name+"</a></div>";
+					}
+					$("#hb_data_switch_box").empty().append(site_html);
+				}
 			}
 		}
 	});
