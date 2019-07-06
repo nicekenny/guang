@@ -43,7 +43,12 @@ $(function() {
 
 	$("a[scl='guang']").each(function(){
 		var tmp_href = $(this).attr("href");
-		$(this).attr("href", guangUrl(tmp_href));
+		var guang_href = guangUrl(tmp_href);
+		var app_code = $(this).attr("app");
+		if(app_code!=undefined) {
+			guang_href = changeURLArg(guang_href,"app",app_code);
+		}
+		$(this).attr("href", guang_href);
 	});
 	$("a[scl='x_scode']").each(function(){
 		var tmp_href = $(this).attr("href");
@@ -113,6 +118,17 @@ $(function() {
 		$("#set_options_link").attr("status","show").html("&#xe80a;");
 		pageContext.isShared = true;
 	}
+	// 地点选择
+	$("#hd_data_switch_link").click(function() {
+		if($(this).attr("status")=="close") {
+			resetBox();
+			$(this).css("color","#FF6570");
+			$("#hb_data_switch_box").fadeIn(fade_time);
+			$(this).attr("status","open");
+		} else if($(this).attr("status")=="open") {
+			resetBox();
+		}
+	});
 	var pathname = window.location.pathname;
 	if(pathname=="" || pathname=="/" || pathname=="/index.html") {
 		// 首页加载菜单项目
@@ -232,6 +248,17 @@ $(function() {
 		}
 	}
 	// Android-------------
+	// 全局点击事件
+	$(document).click(function(e) {
+		// 点击页面其他区域关闭悬浮窗口
+		if($(e.target).parents("#head_box").length>0) {
+			return;
+		}
+		if($(e.target).parents(".dialogLayer").length>0) {
+			return;
+		}
+		resetBox();
+	});
 });
 // 顶部加载box
 function topLoading(bool) {
@@ -248,6 +275,12 @@ function topLoading(bool) {
 }
 // 关闭搜索、类目等弹出层，并且关闭遮罩层
 function resetBox() {
+	if(!$("#hb_data_switch_box").is(":hidden")) {
+		$("#hb_data_switch_box").fadeOut(fade_time);
+		$("#hd_data_switch_link").css("color","");
+		$("#hd_data_switch_link").attr("status","close");
+	}
+	// 带遮罩层的box，如果遮罩层不显示则默认没有box是显示状态
 	if($("#m_ui_mask").is(":hidden"))
 		return;
 	if(!$("#hb_search_box").is(":hidden")) {
@@ -350,6 +383,9 @@ function doCategory(a) {
 	// 获取参数
 	pageContext.url = url;
 	pageContext.category = getUrlParam(url,"cate");
+	var url_gss = getUrlParam(url,property_gss);
+	if(url_gss!=undefined)
+		pageContext.gss = url_gss;
 	// 初始页码
 	pageContext.pageNo = 1;
 	pageContext.currentPageNo = 0;
@@ -425,6 +461,7 @@ function loadIndex() {
 	pageContext.material = getQueryString("mid");
 	pageContext.sort = getQueryString("sort");
 	pageContext.pageNo = getQueryString("page");
+	pageContext.gss = getQueryString(property_gss);
 	// default
 	pageContext.isLoaded = true;
 	pageContext.isReload = false;
@@ -499,6 +536,13 @@ function doLoadIndex() {
 			method_name = "guang/item/pdd/items.html";
 
 		load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param + platforms_param +"&page="+pageContext.pageNo;
+	} else if(pageContext.gss!=undefined) {
+		var cateId = pageContext.category;
+		var cate_param = "";
+		if(cateId!=undefined) {
+			cate_param = "&cate="+cateId;
+		}
+		load_url = "guang/item/list.html?"+property_gss+"="+pageContext.gss+cate_param+"&page="+pageContext.pageNo;
 	}
 	if(load_url==undefined) {
 		var cateId = pageContext.category;
@@ -660,6 +704,8 @@ function showItems(data) {
 		$("#welcome_box").hide();
 		$("#warning_box").show();
 		$("body").css("background-color","#FFFFFF");
+	} else {
+		pageContext.currentPageNo = pageContext.pageNo;
 	}
 	if(data_page_no<=1 && !pageContext.isReload) {
 		// 显示类目列表
@@ -669,11 +715,15 @@ function showItems(data) {
 			var category_lis = "";
 			for(var i=0;i<categorys.length;i++) {
 				var category = categorys[i];
+				var category_type = category.type;
 				var current_li = "";
 				if(category.numId == data.currentCategoryId) {
 					current_li = " class=\"current\"";
 				}
-				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl("?cate="+category.numId)+ "\" onclick=\"doCategory(this)\">"+ category.title+"</a></li>";
+				var category_type_param = "";
+				if(category_type!=undefined)
+					category_type_param = "&"+property_gss+"="+category_type;
+				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl("?cate="+category.numId+category_type_param)+ "\" onclick=\"doCategory(this)\">"+ category.title+"</a></li>";
 			}
 			$("#category_list").empty().append(category_lis).show();
 		}
