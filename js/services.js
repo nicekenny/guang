@@ -251,12 +251,13 @@ $(function() {
 	// 全局点击事件
 	$(document).click(function(e) {
 		// 点击页面其他区域关闭悬浮窗口
-		if($(e.target).parents("#head_box").length>0) {
+		if($(e.target).parents("#head_box").length>0)
 			return;
-		}
-		if($(e.target).parents(".dialogLayer").length>0) {
+		if($(e.target).parents(".dialogLayer").length>0)
 			return;
-		}
+		if($(e.target).parents(".fixed_box").length>0)
+			return;
+		// 重置弹窗(关闭所有弹窗和遮罩)
 		resetBox();
 	});
 });
