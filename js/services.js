@@ -11,8 +11,8 @@
 var basepath = "http://guang.scode.org.cn/";
 var serv_basepath = "http://x.scode.org.cn:81/";
 // test server-----------------------
- basepath = "http://192.168.0.10/";
- serv_basepath = "http://192.168.0.10/scodelab/";
+// basepath = "http://192.168.0.10/";
+// serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
 var android_app_apk = "app/guang_stable.apk";
 // 定义AppCode
