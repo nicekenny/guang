@@ -392,6 +392,21 @@ function menuClick(a) {
 	doLoadIndex();
 }
 function doCategory(a) {
+	var a_left = $(a).offset().left;
+	var cates_left = $("#category_list").scrollLeft();
+	var cates_width = $("#category_list").width();
+	var a_margin = 60;
+	if(a_left<a_margin) {
+		var tmp_cates_left = cates_left - (a_margin-a_left);
+		if(tmp_cates_left<0)
+			tmp_cates_left = 0;
+		$("#category_list").scrollLeft(tmp_cates_left);
+	} else if(a_left>(cates_width-a_margin)) {
+		var tmp_cates_left = cates_left + (a_margin);
+		if(tmp_cates_left<0)
+			tmp_cates_left = 0;
+		$("#category_list").scrollLeft(tmp_cates_left);
+	}
 	var url = $(a).attr("link");
 	// 获取参数
 	pageContext.url = url;
