@@ -11,8 +11,8 @@
 var basepath = "http://guang.scode.org.cn/";
 var serv_basepath = "http://x.scode.org.cn:81/";
 // test server-----------------------
-// basepath = "http://192.168.0.10/";
-// serv_basepath = "http://192.168.0.10/scodelab/";
+ basepath = "http://192.168.0.10/";
+ serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
 var android_app_apk = "app/guang_stable.apk";
 // 定义AppCode
@@ -63,7 +63,7 @@ $(function() {
 			resetBox();
 			$(this).html("&#xe81b;");
 			$("#hb_search_box").fadeIn(fade_time);
-			$("#m_ui_mask").fadeIn(fade_time);
+			$("#m_ui_mask").show();
 			$("#hb_search_text").focus();
 			// $("#hb_search_text").select();
 			$(this).attr("status","open");
@@ -76,7 +76,7 @@ $(function() {
 			resetBox();
 			$(this).attr("show_box","1");
 			$("#hb_category_box").fadeIn(fade_time);
-			$("#m_ui_mask").fadeIn(fade_time);
+			$("#m_ui_mask").show();
 		} else if($(this).attr("show_box")=="1") {
 			resetBox();
 		}
@@ -293,7 +293,7 @@ function resetBox() {
 		$("#hb_category_box").fadeOut(fade_time);
 		$("#hd_category_link").removeAttr("show_box");
 	}
-	$("#m_ui_mask").fadeOut(fade_time);
+	$("#m_ui_mask").hide();
 }
 // 完善处理Guang.scode连接地址
 function guangUrl(url) {
