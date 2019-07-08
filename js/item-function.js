@@ -317,18 +317,20 @@ $(function() {
 						type: 'GET',
 						dataType: "jsonp",
 						success: function (data) {
-							$("#tao_pwd_view").text(data);
-							var tpwd = data.replace(/￥/g,"");
-							var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
-							var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
-							$(".qr_code_img").attr("src",qr_code_url).click(function(){
-								if(typeof(android)=="undefined") {
-									// window.open(doQrCodeUrl);
-									openWindow(doQrCodeUrl, "_blank");
-								}
-							});
-							$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
-							adapt_sharetext_height();
+							if(data.tpwd!=undefined) {
+								$("#tao_pwd_view").text(data.tpwd);
+								var tpwd = data.tpwd.replace(/￥/g,"");
+								var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
+								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
+								$(".qr_code_img").attr("src",qr_code_url).click(function(){
+									if(typeof(android)=="undefined") {
+										// window.open(doQrCodeUrl);
+										openWindow(doQrCodeUrl, "_blank");
+									}
+								});
+								$("#item_share_text").val(item_share_text+"复制本条("+tpwd+")去打开购物APP即可把我带回家。");
+								adapt_sharetext_height();
+							}
 						}
 					});
 					

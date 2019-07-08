@@ -904,8 +904,10 @@ function doBuy(a) {
 			type: 'GET',
 			dataType: "jsonp",
 			success: function (data) {
-				$(tpwd_dgContent).find("span[info='tpwd']").html(data);
-				$("a[itemId='"+itemId+"']").attr("tpwd",data);
+				if(data.tpwd!=undefined) {
+					$(tpwd_dgContent).find("span[info='tpwd']").html(data.tpwd);
+					$("a[itemId='"+itemId+"']").attr("tpwd",data.tpwd);
+				}
 			}
 		});
 	}
