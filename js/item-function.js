@@ -190,13 +190,13 @@ $(function() {
 											var tmp_curl = $(this).attr("click");
 											if(tmp_curl!=undefined && $.trim(tmp_curl)!="") {
 												// window.location.href = tmp_curl;
-												// openWindow(tmp_curl);
+												openWindow(tmp_curl);
 												// Android
-												if(typeof(android)!="undefined") {
-													android.openApp(global_platform, tmp_curl);
-												} else {
-													openWindow(tmp_curl);
-												}
+												//if(typeof(android)!="undefined") {
+												//	android.openApp(global_platform, tmp_curl);
+												//} else {
+												//	openWindow(tmp_curl);
+												//}
 											}
 										});
 										// 二维码
@@ -238,13 +238,13 @@ $(function() {
 									var tmp_curl = $(this).attr("click");
 									if(tmp_curl!=undefined && $.trim(tmp_curl)!="") {
 										// window.location.href = tmp_curl;
-										// openWindow(tmp_curl);
+										openWindow(tmp_curl);
 										// Android
-										if(typeof(android)!="undefined") {
-											android.openApp(global_platform, tmp_curl);
-										} else {
-											openWindow(tmp_curl);
-										}
+										//if(typeof(android)!="undefined") {
+										//	android.openApp(global_platform, tmp_curl);
+										//} else {
+										//	openWindow(tmp_curl);
+										//}
 									}
 								});
 								// 二维码
