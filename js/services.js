@@ -680,7 +680,7 @@ function showItems(data) {
 			var item_platform = item.platform;
 			var item_title = item.title;
 			var item_price = item.price;
-			var item_volume = item.volume;
+			var item_volume = item.volume==undefined?0:item.volume;
 			var item_dataStr = item.dataString;
 			var item_minPrice = item.minPrice;
 			var item_maxPrice = item.maxPrice;
