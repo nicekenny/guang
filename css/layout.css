@@ -430,7 +430,7 @@ a:hover {
 	overflow-x: auto;
 	overflow-y: hidden;
 	-webkit-overflow-scrolling: touch;
-	height: 55px;
+	height: 60px;
 }
 .cc_nav_box li {
 	display: inline-block;
