@@ -62,10 +62,11 @@ $(function() {
 		if($(this).attr("status")=="close") {
 			resetBox();
 			$(this).html("&#xe81b;");
-			$("#hb_search_box").fadeIn(fade_time);
-			$("#m_ui_mask").show();
-			$("#hb_search_text").focus();
-			// $("#hb_search_text").select();
+			$("#hb_search_box").fadeIn(fade_time,function(){
+				$("#m_ui_mask").show();
+				$("#hb_search_text").focus();
+				// $("#hb_search_text").select();
+			});
 			$(this).attr("status","open");
 		} else if($(this).attr("status")=="open") {
 			resetBox();
@@ -75,8 +76,9 @@ $(function() {
 		if($(this).attr("show_box")!="1") {
 			resetBox();
 			$(this).attr("show_box","1");
-			$("#hb_category_box").fadeIn(fade_time);
-			$("#m_ui_mask").show();
+			$("#hb_category_box").fadeIn(fade_time,function(){
+				$("#m_ui_mask").show();
+			});
 		} else if($(this).attr("show_box")=="1") {
 			resetBox();
 		}

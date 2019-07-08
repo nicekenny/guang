@@ -24,8 +24,9 @@ $(function() {
 		if(cate_box.attr("show_box")!="1") {
 			resetBox();
 			cate_box.attr("show_box","1");
-			$("#hb_category_box").fadeIn(fade_time);
-			$("#m_ui_mask").fadeIn(fade_time);
+			$("#hb_category_box").fadeIn(fade_time,function(){
+				$("#m_ui_mask").show();
+			});
 		} else if(cate_box.attr("show_box")=="1") {
 			resetBox();
 		}
@@ -38,10 +39,11 @@ $(function() {
 		if(search_bar.attr("status")!="open") {
 			resetBox();
 			search_bar.attr("status","open");
-			$("#hb_search_box").fadeIn(fade_time);
-			$("#m_ui_mask").fadeIn(fade_time);
-			$("#hb_search_text").focus();
-			// $("#hb_search_text").select();
+			$("#hb_search_box").fadeIn(fade_time,function(){
+				$("#m_ui_mask").show();
+				$("#hb_search_text").focus();
+				// $("#hb_search_text").select();
+			});
 		} else if(search_bar.attr("status")!="close") {
 			resetBox();
 		}
