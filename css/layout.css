@@ -444,13 +444,13 @@ a:hover {
 	
 }
 .cc_nav_box li a {
-	font-size: 14px;
+	font-size: 15px;
 	line-height: 35px;
 	color: #666666;
 	padding-right: 0px;
 	padding-left: 0px;
 	display: block;
-	font-weight: 500;
+	font-weight: 400;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
