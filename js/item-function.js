@@ -291,7 +291,7 @@ $(function() {
 									}
 								});
 								// 二维码
-								var doQrCodeUrl = data.clickUrl.mobileShortUrl;
+								var doQrCodeUrl = data.clickUrl.shortUrl;
 								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 								$(".qr_code_img").attr("src",qr_code_url).click(function(){
 									if(typeof(android)=="undefined") {
