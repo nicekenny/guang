@@ -246,7 +246,7 @@ $(function() {
 	} else {
 		// 非android客户端，提示下载APP
 		if(getCookie("app_download_status")!="NO") {
-			setTimeout(function(){openDownloadApp();},5000);
+			// setTimeout(function(){openDownloadApp();},5000);
 		}
 	}
 	// Android-------------
