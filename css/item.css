@@ -238,6 +238,102 @@
 	border: 1px solid #333333;
 	background-color: #F8F8F8;
 }
+.detail_gotoBuy {
+	position: relative;
+	margin-right: 10px;
+	margin-left: 10px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+.detail_gotoBuy .gt_right {
+	height: 45px;
+	width: 125px;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	overflow: hidden;
+}
+.detail_gotoBuy .gt_left {
+	margin-right: 130px;	
+	position: relative;
+}
+.detail_gotoBuy .gt_buy_link {
+	font-size: 14px;
+	line-height: 40px;
+	color: #FFFFFF;
+	background-color: #ff6570;
+	text-align: center;
+	border-radius: 3px;
+	box-shadow: 0px 2px 4px #D6D6D6;
+	font-weight: 500;
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+.detail_gotoBuy .green {
+	background-color: #4fd54f;
+}
+
+.detail_gotoBuy .gt_buy_loading {
+	background-image: url(images/loading_icon.gif);
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	padding-left: 50px;
+	font-size: 14px;
+	line-height: 40px;
+	color: #666666;
+}
+.detail_gotoBuy .gt_share_link {
+	background-color: #FCFCFD;
+	color: #ff6570;
+	font-size: 14px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 3px;
+	box-shadow: 0px 2px 4px #D6D6D6;
+	font-weight: 500;
+	width: 100px;
+	margin-right: 10px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+.detail_gotoBuy .gt_share_link_icon{
+	font-size: 14px;
+	line-height: 40px;
+	height: 40px;
+	width: 20px;
+}
+.detail_gotoBuy .gt_share_link_icon:before {
+  content: '\f09e';
+}
+.detail_gotoBuy .copyed {
+	color: #33CC33;
+}
+.detail_gotoBuy .copyed .gt_share_link_icon:before {
+  content: '\e81a';
+}
+.detail_gotoBuy .gt_recoms_link {
+	background-color: #FCFCFD;
+	color: #ff6570;
+	font-size: 14px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 3px;
+	box-shadow: 0px 2px 4px #D6D6D6;
+	font-weight: 500;
+	margin-left: 110px;
+	height: 40px;
+	overflow: hidden;
+}
+.detail_gotoBuy .gt_recoms_link_icon{
+	font-size: 14px;
+	line-height: 40px;
+	height: 40px;
+	width: 20px;
+}
+.detail_gotoBuy .gt_recoms_link_icon:before {
+  content: '\f124';
+}
 .detail_item {
 	background-color: #FFFFFF;
 	padding: 10px;
@@ -305,7 +401,6 @@
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 	border-bottom-color: #DCDCDC;
-	padding-left: 10px;
 	text-align: center;
 	background-color: #FFFFFF;
 }

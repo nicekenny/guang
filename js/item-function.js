@@ -46,6 +46,9 @@ $(function() {
 			});
 		}
 	} else if(pathname=="/item.html") {
+		if(!pageContext.isShared) {
+			$("#goto_buy_view").show();
+		}
 		// 获取宝贝数据包
 		var data = getQueryString("d");
 		if(data!=undefined && $.trim(data)!="") {
@@ -145,7 +148,9 @@ $(function() {
 				// 判断商品来源平台
 				if(item.platform=="JD") {
 					// =============================京东平台==================================
-					$("#coupon_info_list").show();
+					if(pageContext.isShared) {
+						$("#coupon_info_list").show();
+					}
 					var itemUrl = item.itemUrl;
 					// debug...
 					// console.info("JD-ItemUrl:"+itemUrl);
@@ -164,8 +169,13 @@ $(function() {
 									coupon_link_text = "【<em>¥"+couponInfo.price+"元</em>】"+couponInfo.info;
 								}
 							}
-							var coupon_link_html = "<div id=\"do_jd_coupon_button_"+global_item_id+"_c"+i+"\" class=\"d_coupon\">"+coupon_link_text+"</div>";
+							var do_jd_coupon_button_style = " style=\"display:none;\"";
+							if(pageContext.isShared) {
+								do_jd_coupon_button_style = "";
+							}
+							var coupon_link_html = "<div id=\"do_jd_coupon_button_"+global_item_id+"_c"+i+"\" class=\"d_coupon\""+do_jd_coupon_button_style+">"+coupon_link_text+"</div>";
 							$("#coupon_info_list").append(coupon_link_html);
+							
 							var param_data = new Base64().encode(itemUrl+"@"+couponUrl);
 							// 调用接口，获取链接
 							$.ajax({
@@ -174,6 +184,10 @@ $(function() {
 								dataType: "jsonp",
 								success: function (data) {
 									if(data.clickUrl!=undefined) {
+										// 简版
+										if(couponInfo.price<=item.price) {
+											$("#goto_buy_link_jd").attr("click",data.clickUrl).show();
+										}
 										$("#do_jd_coupon_button_"+data.coupon).attr("click",data.clickUrl);
 										var tmp_ajax_share_text = $("#item_share_text").val();
 										// 判断是否为领券+参团
@@ -223,13 +237,21 @@ $(function() {
 							type: 'GET',
 							dataType: "jsonp",
 							success: function (data) {
+								// 简版
+								if(data.clickUrl!=undefined) {
+									$("#goto_buy_link_jd").attr("click",data.clickUrl).show();
+								}
 								var coupon_link_text = "折扣价【<em>¥"+item.price+"元</em>】去购买";
 								if(item.couponInfo!=undefined && $.trim(item.couponInfo).length>0) {
 									if(item.couponInfo.indexOf("拼购")!=-1) {
 										coupon_link_text = "参团："+item.couponInfo;
 									}
 								}
-								var coupon_link_html = "<div id=\"do_jd_buy_button\" click=\""+data.clickUrl+"\" class=\"d_tpwd\">"+coupon_link_text+"</div>";
+								var do_jd_buy_button_style = " style=\"display:none;\"";
+								if(pageContext.isShared) {
+									do_jd_buy_button_style = "";
+								}
+								var coupon_link_html = "<div id=\"do_jd_buy_button\" click=\""+data.clickUrl+"\" class=\"d_tpwd\""+do_jd_buy_button_style+">"+coupon_link_text+"</div>";
 								$("#coupon_info_list").empty().append(coupon_link_html);
 								var tmp_ajax_share_text = $("#item_share_text").val();
 								tmp_ajax_share_text += data.shortUrl;
@@ -266,7 +288,9 @@ $(function() {
 					// =============================京东平台(END)==================================
 				} else if(item.platform=="PDD") {
 					// =============================拼多多平台==================================
-					$("#coupon_info_list").show();
+					if(pageContext.isShared) {
+						$("#coupon_info_list").show();
+					}
 					// 调用接口，获取Url
 					$.ajax({
 						url: serverUrl("guang/item/pdd/clickUrl.html?id="+global_item_id),
@@ -276,7 +300,16 @@ $(function() {
 							// print log
 							// console.info("DoPddBuy:"+JSON.stringify(data));
 							if(data!=undefined && data.clickUrl!=undefined) {
-								var coupon_link = "<div id=\"do_pdd_coupon_button_"+global_item_id+"\" class=\"d_coupon\" mobile_url=\""+data.clickUrl.mobileShortUrl+"\" _url=\""+data.clickUrl.url+"\">"
+								// 多平台
+								var do_pdd_coupon_button_style = " style=\"display:none;\"";
+								if(pageContext.isShared) {
+									do_pdd_coupon_button_style = "";
+								} else {
+									// 简版
+									var click_url = data.clickUrl.mobileUrl;
+									$("#goto_buy_link_pdd").attr("click",click_url).show();
+								}
+								var coupon_link = "<div id=\"do_pdd_coupon_button_"+global_item_id+"\" class=\"d_coupon\" mobile_url=\""+data.clickUrl.mobileShortUrl+"\" _url=\""+data.clickUrl.url+"\""+do_pdd_coupon_button_style+">"
 									+ is_price_title +"【<em>¥"+item.price+"元</em>】去拼多多购买</div>";
 								$("#coupon_info_list").append(coupon_link);
 								$("#do_pdd_coupon_button_"+global_item_id).click(function() {
@@ -319,7 +352,9 @@ $(function() {
 					// =============================拼多多平台(END)==================================
 				} else {
 					// =============================淘宝/天猫平台==================================
-					$("#tao_pwd_buy").show();
+					if(pageContext.isShared) {
+						$("#tao_pwd_buy").show();
+					}
 					item_share_text += "【"+is_price_title+"】¥"+item.price+"元"+item_share_coupon+"\r\n━┉┉┉┉∞┉┉┉┉━\r\n";
 					var buyUrl = encodeURIComponent(item.buyUrl);
 					var picUrl = encodeURIComponent(item.picUrl);
@@ -330,6 +365,10 @@ $(function() {
 						dataType: "jsonp",
 						success: function (data) {
 							if(data.tpwd!=undefined) {
+								// 简版
+								$("#goto_buy_link_tbk").attr("tpwd",data.tpwd).show();
+								$(".gt_buy_loading").hide();
+								// 多平台
 								$("#tao_pwd_view").text(data.tpwd);
 								var tpwd = data.tpwd.replace(/￥/g,"");
 								var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
@@ -365,11 +404,47 @@ $(function() {
 					}
 				});
 				//--历史价格--end--
+				if(pageContext.isShared) {
+					$("#item_share_text_view").show();
+					$("#item_share_text_button").show();
+					$("#item_again_load_button").show();
+				}
 			}
 		}
 		// textArea高度适应
 		adapt_sharetext_height();
 	}
+	// 简版复制淘口令
+	var tbk_clipboard = new ClipboardJS("#goto_buy_link_tbk", {
+		text: function(content) {
+			//console.log($(content).attr("tpwd"));
+			return $(content).attr("tpwd");
+		}
+	});
+	tbk_clipboard.on("success", function(e) {
+		// 拷贝成功
+		if(!$(e.trigger).hasClass("green")) {
+			var cache_text = $(e.trigger).html();
+			$(e.trigger).addClass("green").html("淘口令已复制");
+			// 判断Android
+			if(typeof(android)!="undefined") {
+				if(global_platform!=undefined && $.trim(global_platform)!="") {
+					// 通知APP打开购物APP
+					android.openApp(global_platform);
+				}
+			}
+			// 3秒后恢复
+			setTimeout(function(){
+				$(e.trigger).removeClass("green").html(cache_text);
+			},3000);
+		}
+	});
+	tbk_clipboard.on("error", function(e) {
+		// 提示失败，手工拷贝
+		// $(e.trigger).append("(失败)");
+		// $(e.trigger).removeClass("green");
+		// console.info("copy_error:"+e);
+	});
 	// 一键复制口令
 	var clipboard = new ClipboardJS("#copy_tpwd_button", {
 		text: function(content) {
@@ -398,6 +473,29 @@ $(function() {
 		// 提示失败，手工拷贝
 		// $(e.trigger).append("(失败)");
 		// $(e.trigger).removeClass("green");
+		// console.info("copy_error:"+e);
+	});
+	// 简版分享宝贝文案
+	var clipboard_share_link = new ClipboardJS("#goto_share_link", {
+		text: function(content) {
+			return $("#item_share_text").val();
+		}
+	});
+	clipboard_share_link.on("success", function(e) {
+		// 拷贝成功
+		if(!$(e.trigger).hasClass("copyed")) {
+			var cache_text = $(e.trigger).html();
+			$(e.trigger).addClass("copyed").html("<div class=\"font_icon gt_share_link_icon\"></div>已复制");
+			// 3秒后恢复
+			setTimeout(function(){
+				$(e.trigger).removeClass("copyed").html(cache_text);
+			},3000);
+		}
+	});
+	clipboard_share_link.on("error", function(e) {
+		// 提示失败，手工拷贝
+		// $(e.trigger).append("(失败)");
+		// $(e.trigger).removeClass("purple").addClass("blue");
 		// console.info("copy_error:"+e);
 	});
 	// 一键复制分享文案
@@ -465,11 +563,30 @@ $(function() {
 		event.stopPropagation();
 		addFavorite();
 	});
+	// 加载更多相似商品
+	$("#goto_recoms_link").click(function() {
+		$("div.detail_recoms").show();
+		loadRecommends();
+	});
 	// 再逛一逛-加载
 	$("#again_load_button").click(function() {
 		$(this).parent().remove();
 		$("div.detail_recoms").show();
 		loadRecommends();
+	});
+	// 去京东购买
+	$("#goto_buy_link_jd").click(function() {
+		var click_url = $(this).attr("click");
+		if(click_url!=undefined) {
+			openWindow(click_url);
+		}
+	});
+	// 去拼多多购买
+	$("#goto_buy_link_pdd").click(function() {
+		var click_url = $(this).attr("click");
+		if(click_url!=undefined) {
+			openWindow(click_url);
+		}
 	});
 });
 // itemShare textArea高度适应

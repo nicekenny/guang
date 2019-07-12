@@ -669,7 +669,8 @@ function showItems(data) {
 				$("#product_walls").show();
 				$("#welcome_box").hide();
 				$("#warning_box").hide();
-				$("body").css("background-color","#EFEFEF");
+				if(data.from!="recommend")
+					$("body").css("background-color","#EFEFEF");
 			} else {
 				$("#product_walls .wall_wrap").empty();
 			}

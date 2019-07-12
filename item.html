@@ -54,29 +54,43 @@
             </div>
         </div>
         <div class="detail_notes">～长按识别二维码～</div>
+		<!-- 简版 -->
+		<div id="goto_buy_view" class="detail_gotoBuy clearfix" style="display:none;">
+        	<div class="gt_left">
+        		<div id="goto_share_link" class="gt_share_link"><div class="font_icon gt_share_link_icon"></div>分享宝贝</div>
+                <div id="goto_recoms_link" class="gt_recoms_link"><div class="font_icon gt_recoms_link_icon"></div>发现相似</div>
+            </div>
+            <div class="gt_right">
+            	<div id="goto_buy_link_tbk" class="gt_buy_link" style="display:none;">复制淘口令</div>
+				<div id="goto_buy_link_pdd" class="gt_buy_link" style="display:none;">拼多多购买</div>
+				<div id="goto_buy_link_jd" class="gt_buy_link" style="display:none;">去京东购买</div>
+                <div class="gt_buy_loading">载入中</div>
+            </div>
+        </div>
+		<!-- 各平台 -->
         <div id="tao_pwd_buy" class="detail_buttons" style="display:none;">
             <div id="copy_tpwd_button" class="d_tpwd">口令<em id="tao_pwd_view">载入中...</em>一键复制</div>
         </div>
 		<div id="coupon_info_list" class="detail_buttons" style="display:none;">
             <!-- 优惠券（多张） -->
         </div>
-        <div class="detail_item_text">
+        <div id="item_share_text_view" class="detail_item_text" style="display:none;">
         	<textarea id="item_share_text" class="input_textarea r3"></textarea>
         </div>
-        <div class="detail_buttons">
+        <div id="item_share_text_button" class="detail_buttons" style="display:none;">
             <div id="copy_item_share_text_button" class="d_tpwd blue">分享给其他人，一键复制</div>
         </div>
         <!-- 历史价格 -->
         <div id="history_prices" class="detail_item" style="display:none;">
         </div>
 		<!-- 再逛一逛 -->
-		<div class="detail_buttons">
+		<div id="item_again_load_button" class="detail_buttons" style="display:none;">
             <div id="again_load_button" class="d_tpwd black">～再逛一逛～</div>
         </div>
         
         <!--推荐宝贝-->
         <div class="detail_recoms" style="display: none;">
-			<div class="drs_title"><a name="recoms"></a>～再逛一逛～<span id="item_category_name" style="display:none;"></span></div>
+			<div class="drs_title"><a name="recoms"></a>～为您推荐:<span id="item_category_name"></span>～</div>
 			<div class="drs_content">
             	<!--Products-->
 				<div id="product_walls" class="product_box clearfix" style="display: none;">
