@@ -228,6 +228,21 @@ $(function() {
 								}
 							});
 						}
+						if($("#goto_buy_link_jd").is(":hidden")) {
+							var param_data = new Base64().encode(itemUrl);
+							// 调用接口，获取链接
+							$.ajax({
+								url: serverUrl("guang/item/jd/clickUrl.html?d="+param_data+"&type=short"),
+								type: 'GET',
+								dataType: "jsonp",
+								success: function (data) {
+									// 简版
+									if(data.clickUrl!=undefined) {
+										$("#goto_buy_link_jd").attr("click",data.clickUrl).show();
+									}
+								}
+							});
+						}
 						is_price_title = "券后价";
 					} else {
 						var param_data = new Base64().encode(itemUrl);
