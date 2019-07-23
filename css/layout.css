@@ -279,12 +279,14 @@ a:hover {
 	top: 44px;
 }
 .head_bar .hb_category_box li {
-	border-top: 1px dashed #dfdfdf;
 	float: left;
 	height: 60px;
 	line-height: 59px;
 	width: 33%;
 	text-align: center;
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: #f6f6f6;
 }
 .head_bar .hb_category_box li a {
     display: block;
