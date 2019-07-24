@@ -642,7 +642,7 @@ function doLoadIndex() {
 		// console.info("REFRESH-TIMEOUT-URL:"+guangUrl(refresh_timeout_url));
 		// window.location.href = guangUrl(refresh_timeout_url);
 		openWindow(guangUrl(refresh_timeout_url));
-	}, 5000);// 等待加载5秒后执行超时方法
+	}, 1000*10);// 等待加载5秒后执行超时方法
 }
 
 // 回调：显示Items
