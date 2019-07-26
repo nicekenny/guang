@@ -326,7 +326,7 @@ function loadMenus() {
 					var menu_html = "";
 					for(var m=0;m<data.menus.length;m++) {
 						var menu_item = data.menus[m];
-						var mi_href = "?gss=menu&id="+menu_item.id;
+						var mi_href = "?gss=menu&menu="+menu_item.id;
 						var mi_icon_css = "";
 						if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
 							mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
@@ -355,7 +355,7 @@ function menuClick(a) {
 	var url = $(a).attr("link");
 	// console.info("Menu:"+url);
 	// 获取参数
-	pageContext.menuId = getUrlParam(url,"id");
+	pageContext.menuId = getUrlParam(url,"menu");
 	pageContext.gss = getUrlParam(url,"gss");
 	pageContext.category = undefined;
 	pageContext.sort = undefined;
@@ -465,7 +465,7 @@ function loadIndex() {
 	pageContext.pageNo = getQueryString("page");
 	pageContext.gss = getQueryString("gss");
 	if(pageContext.gss=="menu") {
-		pageContext.menuId = getQueryString("id");
+		pageContext.menuId = getQueryString("menu");
 	}
 	// default
 	pageContext.isLoaded = true;
@@ -517,7 +517,7 @@ function doLoadIndex() {
 			}
 		} else if(pageContext.gss=="menu") {
 			load_url = "guang/item/menu.html";
-			load_url = changeURLArg(load_url,"id",pageContext.menuId);
+			load_url = changeURLArg(load_url,"menu",pageContext.menuId);
 		} else {
 			if(pageContext.gss!=undefined && $.trim(pageContext.gss).length>0) {
 				load_url = changeURLArg(load_url,"client",pageContext.gss);
@@ -583,7 +583,7 @@ function doLoadIndex() {
 		if(param_q!=undefined && $.trim(param_q).length>0)
 			url_params = url_params+"&q="+encodeURI(param_q);
 		if(param_menuId!=undefined && param_menuId>0)
-			url_params = url_params+"&id="+param_menuId;
+			url_params = url_params+"&menu="+param_menuId;
 		if(param_cate!=undefined && $.trim(param_cate).length>0)
 			url_params = url_params+"&cate="+param_cate;
 		if(param_sort!=undefined && $.trim(param_sort).length>0)
