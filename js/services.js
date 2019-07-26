@@ -11,8 +11,8 @@
 var basepath = "http://guang.scode.org.cn/";
 var serv_basepath = "http://x.scode.org.cn:81/";
 // test server-----------------------
-// basepath = "http://192.168.0.10/";
-// serv_basepath = "http://192.168.0.10/scodelab/";
+ basepath = "http://192.168.0.10/";
+ serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
 var android_app_apk = "app/guang_stable.apk";
 // 显示隐藏效果时间
@@ -307,7 +307,7 @@ function serverUrl(url) {
 	} else {
 		serviceUrl = serviceUrl + changeURLArg(url,"app",pageContext.appCode);
 	}
-	if(pageContext.client!=undefined && getUrlParam(serviceUrl,"client")==undefined) {
+	if(pageContext.client!=undefined && $.trim(pageContext.client).length>0 && getUrlParam(serviceUrl,"client")==undefined) {
 		serviceUrl = changeURLArg(serviceUrl,"client",pageContext.client);
 	}
 	return serviceUrl;
