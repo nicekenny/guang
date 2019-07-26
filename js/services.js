@@ -15,14 +15,10 @@ var serv_basepath = "http://x.scode.org.cn:81/";
 // serv_basepath = "http://192.168.0.10/scodelab/";
 //-----------------------------------
 var android_app_apk = "app/guang_stable.apk";
-// 定义AppCode
-var base_app_code = "guang",base_app_change = false;
-// 页面执行全局变量
-var property_gss = "gss";
 // 显示隐藏效果时间
 var fade_time = 200;
-// 页面上下文数据
-var pageContext = {};
+// 页面上下文数据{client:"wxapp"}
+var pageContext = {appCode:"guang",client:""};
 
 // 页面数据初始化
 $(function() {
@@ -32,13 +28,12 @@ $(function() {
 		serv_basepath = "https://x.scode.org.cn:444/";
 	}
 	// 获取全局执行变量
-	pageContext.gss = getQueryString(property_gss);
+	pageContext.gss = getQueryString("gss");
 
 	// 初始全局APP代码
 	var tmp_app_code = getQueryString("app");
-	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="" && tmp_app_code!=base_app_code) {
-		base_app_code = tmp_app_code;
-		base_app_change = true;
+	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="" && tmp_app_code!=pageContext.appCode) {
+		pageContext.appCode = tmp_app_code;
 	}
 
 	$("a[scl='guang']").each(function(){
@@ -88,8 +83,7 @@ $(function() {
 		if(keyword=="")
 			return false;
 		$("#hb_search_q").val(encodeURIComponent(keyword));
-		if(base_app_change)
-			$("#hb_search_app").val(base_app_code);
+		$("#hb_search_app").val(pageContext.appCode);
 		$(this).attr("action", guangUrl());
 		// 处理所选平台数据
 		var platforms = $("#hb_search_platforms").val();
@@ -300,24 +294,23 @@ function resetBox() {
 // 完善处理Guang.scode连接地址
 function guangUrl(url) {
 	if(url==undefined || $.trim(url)=="" || url=="null" || url=="undefined") {
-		if(base_app_change)
-			return basepath + "?app=" + base_app_code;
-		else
-			return basepath;
+		return basepath + "?app=" + pageContext.appCode;
 	} else {
-		if(base_app_change)
-			return basepath + changeURLArg(url,"app",base_app_code);
-		else
-			return basepath + url;
+		return basepath + changeURLArg(url,"app",pageContext.appCode);
 	}
 }
 // 完善处理x.scode连接地址
 function serverUrl(url) {
+	var serviceUrl = serv_basepath;
 	if(url==undefined || $.trim(url)=="" || url=="null" || url=="undefined") {
-		return serv_basepath + "?app=" + base_app_code;
+		serviceUrl = serviceUrl + "?app=" + pageContext.appCode;
 	} else {
-		return serv_basepath + changeURLArg(url,"app",base_app_code);
+		serviceUrl = serviceUrl + changeURLArg(url,"app",pageContext.appCode);
 	}
+	if(pageContext.client!=undefined && getUrlParam(serviceUrl,"client")==undefined) {
+		serviceUrl = changeURLArg(serviceUrl,"client",pageContext.client);
+	}
+	return serviceUrl;
 }
 // Load-Menus
 function loadMenus() {
@@ -333,25 +326,7 @@ function loadMenus() {
 					var menu_html = "";
 					for(var m=0;m<data.menus.length;m++) {
 						var menu_item = data.menus[m];
-						var mi_href = "?"+property_gss+"=";
-						if(menu_item.gss!=undefined && $.trim(menu_item.gss)!="") {
-							if($.trim(menu_item.gss)=="jd" && !(current_browser=="WeiXin" || current_browser=="PC")) {
-								// 非微信浏览器不显示此菜单项
-								continue;
-							}
-							mi_href = mi_href + $.trim(menu_item.gss);
-						} else {
-							mi_href = mi_href + "tbk";
-						}
-						if(menu_item.keyword!=undefined && $.trim(menu_item.keyword)!=""){
-							mi_href = mi_href + "&q="+encodeURI(menu_item.keyword);
-						}
-						if(menu_item.categorys!=undefined && $.trim(menu_item.categorys)!=""){
-							mi_href = mi_href + "&cate="+menu_item.categorys;
-						}
-						if(menu_item.materialId!=undefined && $.trim(menu_item.materialId)!=""){
-							mi_href = mi_href + "&mid="+menu_item.materialId;
-						}
+						var mi_href = "?gss=menu&id="+menu_item.id;
 						var mi_icon_css = "";
 						if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
 							mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
@@ -380,10 +355,9 @@ function menuClick(a) {
 	var url = $(a).attr("link");
 	// console.info("Menu:"+url);
 	// 获取参数
-	pageContext.url = url;
-	pageContext.title = getUrlParam(url,"q");
-	pageContext.material = getUrlParam(url,"mid");
-	pageContext.gss = getUrlParam(url,property_gss);
+	pageContext.menuId = getUrlParam(url,"id");
+	pageContext.gss = getUrlParam(url,"gss");
+	pageContext.category = undefined;
 	pageContext.sort = undefined;
 	// 初始页码
 	pageContext.pageNo = 1;
@@ -411,9 +385,8 @@ function doCategory(a) {
 	}
 	var url = $(a).attr("link");
 	// 获取参数
-	pageContext.url = url;
 	pageContext.category = getUrlParam(url,"cate");
-	var url_gss = getUrlParam(url,property_gss);
+	var url_gss = getUrlParam(url,"gss");
 	if(url_gss!=undefined)
 		pageContext.gss = url_gss;
 	// 初始页码
@@ -488,10 +461,12 @@ function loadIndex() {
 	// 初始参数
 	pageContext.title = getQueryString("q");
 	pageContext.category = getQueryString("cate");
-	pageContext.material = getQueryString("mid");
 	pageContext.sort = getQueryString("sort");
 	pageContext.pageNo = getQueryString("page");
-	pageContext.gss = getQueryString(property_gss);
+	pageContext.gss = getQueryString("gss");
+	if(pageContext.gss=="menu") {
+		pageContext.menuId = getQueryString("id");
+	}
 	// default
 	pageContext.isLoaded = true;
 	pageContext.isReload = false;
@@ -504,8 +479,6 @@ function loadIndex() {
 	doLoadIndex();
 }
 function doLoadIndex() {
-	// debug...
-	// console.info("CONTEXT:"+JSON.stringify(pageContext));
 	if(!pageContext.isLoaded)
 		return;
 	if(pageContext.pageNo<=pageContext.currentPageNo)
@@ -531,60 +504,43 @@ function doLoadIndex() {
 		$("#article_content").hide();
 	}
 	var load_url;
-	if(pageContext.gss=="tbk" || pageContext.gss=="search" || pageContext.gss=="jd" || pageContext.gss=="pdd") {
-		// 物料载入
-		var search_q = pageContext.title;
-		if(search_q!=undefined)
-			search_q = decodeURI(search_q);
-		else
-			search_q = "";
-		var cate_param = "";
-		var cate = pageContext.category;
-		if(cate!=undefined)
-			cate_param = "&cate="+cate;
-		var material_param = "";
-		var material = pageContext.material;
-		if(material!=undefined)
-			material_param = "&material="+material;
-		var sort_param = "";
-		var sort = pageContext.sort;
-		if(sort!=undefined)
-			sort_param = "&sort="+sort;
-		var platforms_param = "";
-		// default-search
-		var method_name = "guang/item/search.html";
-		if(pageContext.gss=="search") {// Search
-			method_name = "guang/item/search.html";
-			if(pageContext.platforms!=undefined) {
-				platforms_param = "&platforms="+pageContext.platforms;
+	if(pageContext.gss!=undefined) {
+		load_url = "guang/item/list.html";
+		if(pageContext.gss=="search") {
+			load_url = "guang/item/search.html";
+			if(pageContext.platforms!=undefined && $.trim(pageContext.platforms).length>0) {
+				load_url = changeURLArg(load_url,"platforms",pageContext.platforms);
 			}
-		} else if(pageContext.gss=="tbk")// TBK
-			method_name = "guang/item/tbk/items.html";
-		else if(pageContext.gss=="jd")// JD
-			method_name = "guang/item/jd/items.html";
-		else if(pageContext.gss=="pdd")// PDD
-			method_name = "guang/item/pdd/items.html";
-
-		load_url = method_name+"?q="+ search_q + cate_param + material_param + sort_param + platforms_param +"&page="+pageContext.pageNo;
-	} else if(pageContext.gss!=undefined) {
-		var cateId = pageContext.category;
-		var cate_param = "";
-		if(cateId!=undefined) {
-			cate_param = "&cate="+cateId;
+			if(pageContext.title!=undefined) {
+				var search_q = decodeURI(pageContext.title);
+				load_url = changeURLArg(load_url,"q",search_q);
+			}
+		} else if(pageContext.gss=="menu") {
+			load_url = "guang/item/menu.html";
+			load_url = changeURLArg(load_url,"id",pageContext.menuId);
+		} else {
+			load_url = changeURLArg(load_url,"client",pageContext.gss);
+			if(pageContext.category!=undefined) {
+				load_url = changeURLArg(load_url,"cate",pageContext.category);
+			}
 		}
-		load_url = "guang/item/list.html?"+property_gss+"="+pageContext.gss+cate_param+"&page="+pageContext.pageNo;
+		if(pageContext.sort!=undefined) {
+			load_url = changeURLArg(load_url,"sort",pageContext.sort);
+		}
+		load_url = changeURLArg(load_url,"page",pageContext.pageNo);
 	}
 	if(load_url==undefined) {
-		var cateId = pageContext.category;
-		var cate_param = "";
-		if(cateId!=undefined) {
-			cate_param = "&cate="+cateId;
+		load_url = "guang/item/tbk/cateItems.html";
+		if(pageContext.category!=undefined) {
+			load_url = changeURLArg(load_url,"cate",pageContext.category);
 		}
-		load_url = "guang/item/tbk/cateItems.html?page="+pageContext.pageNo + cate_param;
+		load_url = changeURLArg(load_url,"page",pageContext.pageNo);
 	}
 	pageContext.serverLoadUrl = load_url;
 	// debug...
 	// console.info("LOAD-URL:"+load_url);
+	// debug...
+	// console.info("CONTEXT:"+JSON.stringify(pageContext));
 	$.ajax({
 		url: serverUrl(load_url),
 		type: 'GET',
@@ -618,16 +574,16 @@ function doLoadIndex() {
 		}
 		var refresh_timeout_url = "", url_params = "";
 		var param_q = pageContext.title;
+		var param_menuId = pageContext.menuId;
 		var param_cate = pageContext.category;
-		var param_material = pageContext.material;
 		var param_sort = pageContext.sort;
 		var param_page = pageContext.pageNo;
 		if(param_q!=undefined && $.trim(param_q).length>0)
 			url_params = url_params+"&q="+encodeURI(param_q);
+		if(param_menuId!=undefined && param_menuId>0)
+			url_params = url_params+"&id="+param_menuId;
 		if(param_cate!=undefined && $.trim(param_cate).length>0)
 			url_params = url_params+"&cate="+param_cate;
-		if(param_material!=undefined && param_material>0)
-			url_params = url_params+"&material="+param_material;
 		if(param_sort!=undefined && $.trim(param_sort).length>0)
 			url_params = url_params+"&sort="+param_sort;
 		if(param_page!=undefined && param_page>0)
@@ -637,7 +593,7 @@ function doLoadIndex() {
 			if(url_params.length>0)
 				refresh_timeout_url = "?"+url_params.substring(1);
 		} else {
-			refresh_timeout_url = "?"+property_gss+"="+pageContext.gss+url_params;
+			refresh_timeout_url = "?gss="+pageContext.gss+url_params;
 		}
 		// console.info("REFRESH-TIMEOUT-URL:"+guangUrl(refresh_timeout_url));
 		// window.location.href = guangUrl(refresh_timeout_url);
@@ -650,7 +606,9 @@ function showItems(data) {
 	if(data==undefined)
 		return;
 	var current_category = data.currentCategory;
-	var data_page_no = data.currentPageNumber;
+	var data_page_no = 0;
+	if(data.query!=undefined && data.query.pageNumber!=undefined)
+		data_page_no = data.query.pageNumber;
 	pageContext.currentPageNo = data_page_no;
 	if(current_category!=undefined) {
 		$(document).attr("title", current_category + " - 逛街啦");
@@ -696,7 +654,7 @@ function showItems(data) {
 			var item_pic_url = item.picUrl;
 			var item_pic = wallImgAddSuffix(item_pic_url, item_platform);
 			var item_volume_class = "item_info_likes";
-			if(item_platform!=undefined && pageContext.isShared) {
+			if(item_platform!=undefined && pageContext.isShared && (item_platform=="TB"||item_platform=="TM"||item_platform=="JD")) {
 				item_volume_class = "platform_icon_"+item_platform;
 			}
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item_platform+"\" >"
@@ -753,21 +711,21 @@ function showItems(data) {
 				}
 				var category_type_param = "";
 				if(category_type!=undefined)
-					category_type_param = "&"+property_gss+"="+category_type;
+					category_type_param = "&gss="+category_type;
 				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl("?cate="+category.numId+category_type_param)+ "\" onclick=\"doCategory(this)\">"+ category.title+"</a></li>";
 			}
 			$("#category_list").empty().append(category_lis).show();
 		}
-		if(data.from=="tbk" || data.from=="search" || data.from=="jd" || data.from=="pdd") {
+		if(data.from=="menu" || data.from=="search") {
 			var query = data.query;
 			if(query!=undefined) {
-				if(query.keyword!=undefined) {
+				if(query.title!=undefined) {
 					var title_suffix = " - 逛街啦";
 					if(data.from=="jd")
 						title_suffix = " - 京东商城";
 					else if(data.from=="pdd")
 						title_suffix = " - 拼多多";
-					$(document).attr("title", query.keyword + title_suffix);
+					$(document).attr("title", query.title + title_suffix);
 				}
 				var sort_vol_up = "",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
 				var sort = query.sort;
@@ -780,7 +738,7 @@ function showItems(data) {
 				} else if(sort=="price_des") {
 					sort_price_down = "current"
 				}
-				var tmp_title = query.keyword;
+				var tmp_title = query.title;
 				if(tmp_title!=undefined) {
 					if(tmp_title.length>10)
 						tmp_title = tmp_title.substring(0,10)+"...";

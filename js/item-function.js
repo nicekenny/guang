@@ -386,7 +386,7 @@ $(function() {
 								// 多平台
 								$("#tao_pwd_view").text(data.tpwd);
 								var tpwd = data.tpwd.replace(/￥/g,"");
-								var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&"+property_gss+"=item"); //&pic=picUrl
+								var doQrCodeUrl = guangUrl("pwd.html?id="+global_item_id+"&pwd="+tpwd+"&gss=item"); //&pic=picUrl
 								var qr_code_url = "http://qr.topscan.com/api.php?bg=ffffff&el=l&w=100&m=5&text="+encodeURIComponent(doQrCodeUrl);
 								$(".qr_code_img").attr("src",qr_code_url).click(function(){
 									if(typeof(android)=="undefined") {
