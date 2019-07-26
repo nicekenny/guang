@@ -519,7 +519,8 @@ function doLoadIndex() {
 			load_url = "guang/item/menu.html";
 			load_url = changeURLArg(load_url,"id",pageContext.menuId);
 		} else {
-			load_url = changeURLArg(load_url,"client",pageContext.gss);
+			if(pageContext.gss!=undefined && $.trim(pageContext.gss).length>0)
+				load_url = changeURLArg(load_url,"client",pageContext.gss);
 			if(pageContext.category!=undefined) {
 				load_url = changeURLArg(load_url,"cate",pageContext.category);
 			}
