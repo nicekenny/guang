@@ -784,7 +784,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			enabled : false
 		},
 		series : [{
-			name : "历史价格",
+			name : "价格走势",
 			color: "#FF6570",
 			data : (function() {
 				var data = [],time = (new Date()).getTime();
