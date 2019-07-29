@@ -738,7 +738,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			plotLines : [ {
 				value : 0,
 				width : 2,
-				color : "#FF6570"
+				color : "#808080"
 			} ],
 			max : y_max,
 			min : y_min//,
