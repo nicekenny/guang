@@ -695,7 +695,11 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			 enabled: false
 		},
 		chart : {
-			type : 'spline',
+			type : "line",
+			plotBorderColor: "#CCCCCC",
+			plotBorderWidth: 1,
+			//plotBackgroundColor: "#FFFFFF",
+			//plotShadow: true,
 			animation : Highcharts.svg,
 			height : 300,
 			events : {
@@ -706,9 +710,8 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			text : "最高："+max_p+"元，最低："+min_p+"元，现在："+now_p+"元",
 			style: {
 				color: "#333333",
-				fontWeight: "bold",
-				fontSize: "12px",
-				height: "40px"
+				fontWeight: "400",
+				fontSize: "14px"
 			}
 		},
 		plotOptions : {
@@ -728,23 +731,41 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			}
 		},
 		xAxis : {
+			gridLineColor: "#DDDDDD",
+			gridLineDashStyle: "longdash",
+			gridLineWidth: 1,
 			type : "datetime",
+			dateTimeLabelFormats: {
+				millisecond: '%H:%M:%S.%L',
+				second: '%H:%M:%S',
+				minute: '%H:%M',
+				hour: '%H:%M',
+				day: '%m/%e',
+				week: '%m/%e',
+				month: '%Y/%m',
+				year: '%Y'
+			},
 			tickPixelInterval : 100
 		},
 		yAxis : {
+			gridLineColor: "#DDDDDD",
+			gridLineDashStyle: "longdash",
+			//minorGridLineColor: "#F0F0F0",
+			//minorGridLineDashStyle: "longdash",
+			//minorTickInterval: "auto",
 			title : {
 				text : undefined
 			},
 			plotLines : [ {
 				value : 0,
-				width : 2,
-				color : "#808080"
+				width : 2
 			} ],
 			max : y_max,
 			min : y_min//,
 			//tickInterval : y_tick
 		},
 		tooltip : {
+			borderColor: "#666666",
 			formatter : function() {
 				return "<b>" + this.series.name + "</b><br/>"
 						+ Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>"
