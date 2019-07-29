@@ -705,7 +705,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 		title : {
 			text : "最高："+max_p+"元，最低："+min_p+"元，现在："+now_p+"元",
 			style: {
-				color: "#FF6570",
+				color: "#333333",
 				fontWeight: "bold",
 				fontSize: "12px"
 			}
@@ -727,7 +727,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			}
 		},
 		xAxis : {
-			type : 'datetime',
+			type : "datetime",
 			tickPixelInterval : 100
 		},
 		yAxis : {
@@ -737,7 +737,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			plotLines : [ {
 				value : 0,
 				width : 2,
-				color : '#808080'
+				color : "#FF6570"
 			} ],
 			max : y_max,
 			min : y_min//,
@@ -745,25 +745,25 @@ function historyPrices(prices,now_p,max_p,min_p) {
 		},
 		tooltip : {
 			formatter : function() {
-				return '<b>' + this.series.name + '</b><br/>'
-						+ Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>'
+				return "<b>" + this.series.name + "</b><br/>"
+						+ Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>"
 						+ Highcharts.numberFormat(this.y, 2) + "元";
 			}
 		},
 		legend : {
 			enabled : false,
-			align: 'center',
-			verticalAlign: 'bottom',
+			align: "center",
+			verticalAlign: "bottom",
 			x: 0,
 			y: 0,
-			borderColor : '#FFFFFF'
+			borderColor : "#FFFFFF"
 		},
 		exporting : {
 			enabled : false
 		},
 		series : [{
-			name : '历史价格',
-			color: '#666666',
+			name : "历史价格",
+			color: "#FF6570",
 			data : (function() {
 				var data = [],time = (new Date()).getTime();
 				for (var i = -1; i <= prices.length+1; i++) {
