@@ -928,6 +928,10 @@ function doBuy(a) {
 
 // 京东弹窗
 function doJdBuy(a) {
+	// 为开启分享可见，点击商品跳转详情页
+	if(!pageContext.isShared) {
+		return openItem($(a));
+	}
 	// 变量定义
 	var item_data = $(a).attr("data");
 	var itemId,itemUrl,title,price,couponInfos;
@@ -1014,6 +1018,10 @@ function doJdBuy(a) {
 }
 // 拼多多弹窗
 function doPddBuy(a) {
+	// 为开启分享可见，点击商品跳转详情页
+	if(!pageContext.isShared) {
+		return openItem($(a));
+	}
 	var itemId = $(a).attr("itemid");
 	if(itemId==undefined)
 		return false;

@@ -689,8 +689,9 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			useUTC : false
 		}
 	});
+	var win_width = $(window).width()-15;
 	// 报表
-	$('#history_prices').highcharts({
+	$("#history_prices").highcharts({
 		credits:{
 			 enabled: false
 		},
@@ -702,6 +703,7 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			//plotShadow: true,
 			animation : Highcharts.svg,
 			height : 300,
+			width : win_width,
 			events : {
 				
 			}
