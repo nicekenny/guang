@@ -707,7 +707,8 @@ function historyPrices(prices,now_p,max_p,min_p) {
 			style: {
 				color: "#333333",
 				fontWeight: "bold",
-				fontSize: "12px"
+				fontSize: "12px",
+				height: "40px"
 			}
 		},
 		plotOptions : {
