@@ -7,15 +7,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no" media="(device-height: 568px)" />
 
-<meta name="keywords" content="Source Code Laboratory">
-<meta name="description" content="Source Code Laboratory">
+<meta name="keywords" content="逛街啦 淘宝 天猫 京东 拼多多 优惠券 比价 性价比 优惠商品">
+<meta name="description" content="逛街啦~集成淘宝天猫京东拼多多等多平台海量优质优惠券，严选高性价比商品，为您打造不一样的购物体验。天天逛逛街，好货不打烊！">
 <link rel="shortcut icon" href="images/favicon.ico" />
 <link rel="icon" type="image/gif" href="images/favicon.ico" />
 
 <link href="css/layout.css?v=1.1" rel="stylesheet" type="text/css" />
 <link href="css/dialog.css?v=1.1" rel="stylesheet" type="text/css" />
 <link href="css/item.css?v=1.1" rel="stylesheet" type="text/css" />
-
+<link href="css/icon_font.css?v=1.1" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="js/jquery-min.js"></script>
 <script type="text/javascript" src="js/clipboard-min.js"></script>
@@ -33,8 +33,8 @@
     	<div class="detail_img">
             <!-- 工具栏-悬浮 -->
             <div class="detail_head_bar">
-                <a class="font_icon back_link">&#xf104;</a>
-                <a class="font_icon home_link">&#xe831;</a>
+                <a class="font_icon back_link"></a>
+                <a class="font_icon home_link"></a>
             </div>
             <!-- Image-box -->
             <div class="showcase">
@@ -49,7 +49,11 @@
         	<div class="di_left">
                 <div class="detail_title"><!--宝贝标题--></div>
                 <div class="d_price"></div>
-                <div class="d_coupon r3" style="display:none;"></div>
+                <div class="d_coupon_tag r3" style="display:none;">
+					<div class="ct_text"></div>
+					<div class="ct_left"></div>
+					<div class="ct_right"></div>
+				</div>
                 <div class="di_likes"></div>
             </div>
         </div>
@@ -123,7 +127,7 @@
 	<div id="m_ui_mask" class="ui_mask" style="display: none;"></div>
 	<!--悬浮工具栏-->
 	<div class="fixed_box">
-		<a class="font_icon back_top" href="javascript:void(0);">&#xe823;</a>
+		<a class="side_item font_icon back_top" href="javascript:void(0);"></a>
 	</div>
     
 </body>

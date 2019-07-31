@@ -16,6 +16,15 @@ $(function() {
 		// $(window).scrollTop(0);
 		$("body,html").animate({ scrollTop: 0 }, 800);
 	});
+	// 更多菜单
+	$(".fixed_box .more_bar").click(function() {
+		$(this).hide();
+		$(".fixed_box .side_item_blank").show();
+	});
+	$(".fixed_box .side_item_box .close").click(function() {
+		$(".fixed_box .more_bar").show();
+		$(".fixed_box .side_item_blank").hide();
+	});
 	// 导航菜单
 	$(".fixed_box .nav_menu").click(function() {
 		var cate_box = $("#hd_category_link");

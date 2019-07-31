@@ -7,13 +7,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no" media="(device-height: 568px)" />
 
-<meta name="keywords" content="Source Code Laboratory">
-<meta name="description" content="Source Code Laboratory">
+<meta name="keywords" content="逛街啦 淘宝 天猫 京东 拼多多 优惠券 比价 性价比 优惠商品">
+<meta name="description" content="逛街啦~集成淘宝天猫京东拼多多等多平台海量优质优惠券，严选高性价比商品，为您打造不一样的购物体验。天天逛逛街，好货不打烊！">
 <link rel="shortcut icon" href="images/favicon.ico" />
 <link rel="icon" type="image/gif" href="images/favicon.ico" />
 
 <link href="css/layout.css?v=1.1" rel="stylesheet" type="text/css" />
 <link href="css/dialog.css?v=1.1" rel="stylesheet" type="text/css" />
+<link href="css/icon_font.css?v=1.1" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="js/jquery-min.js"></script>
 <script type="text/javascript" src="js/clipboard-min.js"></script>
@@ -28,42 +29,43 @@
 <body>
 
 	<div class="screen_wrap">
-    
-    	<div id="head_box" class="head_bar"><!--  style="display: none;" -->
-			<div class="hb_center">
-              <a href="?gss=" scl="guang" class="hb_title">～逛一逛～</a>
-            </div>
-            <!-- Left-Menu -->
-            <div class="hb_left"><a id="hd_category_link" class="font_icon hb_category_link">&#xf0c9;</a><a id="set_options_link" status="hide" class="font_icon">&#xe80b;</a></div>
-            <div id="hb_category_box" class="hb_category_box" style="display: none;"><!--  style="display: none;" -->
-                <ul id="hb_menus_box" class="clearfix">
-                    <!--Load Meuns-->
-				</ul>
-            </div>
-            <!-- Right-Search -->
-            <div class="hb_right"><a id="hd_data_switch_link" class="font_icon" status="close">&#xe835;</a><a id="hd_search_link" class="font_icon hd_search_link" status="close">&#xe834;</a></div>
-            <div id="hb_search_box" class="hb_search_box" style="display: none;"><!--  style="display: none;" -->
-            	<form id="hb_search_form" action="" method="get">
-                	<input id="hb_search_text" type="text" placeholder="请输入关键词、口令、ID、链接" autocomplete="off" class="hb_sb_text"/>
-                    <input type="hidden" name="q" id="hb_search_q"/>
-                    <input type="hidden" name="gss" value="search" />
-                    <input id="hb_search_app" type="hidden" name="app" />
-					<input id="hb_search_platforms" type="hidden" name="platforms" />
-                </form>
-				<div class="hb_search_platform" style="display:none;">
-					<div class="platform_item" tag="TB">淘宝</div>
-					<div class="platform_item" tag="TM">天猫</div>
-					<div class="platform_item" tag="JD">京东</div>
-					<div class="platform_item" tag="PDD">拼多多</div>
-					<div class="platform_info"><div class="platform_info_text">~选择需要搜索的平台~</div></div>
+		<div class="head_wrap">
+			<div id="head_box" class="head_bar"><!--  style="display: none;" -->
+				<div class="hb_center">
+				  <a href="?gss=" scl="guang" class="hb_title">～逛一逛～</a>
 				</div>
-				<div class="hb_search_arrow">
-					<a class="font_icon arrow_up" style="display:none;">&#xe819;</a>
-					<a class="font_icon arrow_down">&#xe816;</a>
+				<!-- Left-Menu -->
+				<div class="hb_left"><a id="hd_category_link" class="font_icon hb_category_link"></a><a id="set_options_link" status="hide" class="font_icon options_eye_hide"></a></div>
+				<div id="hb_category_box" class="hb_category_box" style="display: none;"><!--  style="display: none;" -->
+					<ul id="hb_menus_box" class="clearfix">
+						<!--Load Meuns-->
+					</ul>
 				</div>
-            </div>
-			<div id="hb_data_switch_box" class="hb_data_switch" style="display:none;">
-				<div class="hb_data_item"><a href="" scl="guang" app="guang">默认地点</a></div>
+				<!-- Right-Search -->
+				<div class="hb_right"><a id="hd_data_switch_link" class="font_icon hd_data_switch_link" status="close"></a><a id="hd_search_link" class="font_icon hd_search_link" status="close"></a></div>
+				<div id="hb_search_box" class="hb_search_box" style="display: none;"><!--  style="display: none;" -->
+					<form id="hb_search_form" action="" method="get">
+						<input id="hb_search_text" type="text" placeholder="请输入关键词、口令、ID、链接" autocomplete="off" class="hb_sb_text"/>
+						<input type="hidden" name="q" id="hb_search_q"/>
+						<input type="hidden" name="gss" value="search" />
+						<input id="hb_search_app" type="hidden" name="app" />
+						<input id="hb_search_platforms" type="hidden" name="platforms" />
+					</form>
+					<div class="hb_search_platform" style="display:none;">
+						<div class="platform_item" tag="TB">淘宝</div>
+						<div class="platform_item" tag="TM">天猫</div>
+						<div class="platform_item" tag="JD">京东</div>
+						<div class="platform_item" tag="PDD">拼多多</div>
+						<div class="platform_info"><div class="platform_info_text">~选择需要搜索的平台~</div></div>
+					</div>
+					<div class="hb_search_arrow">
+						<a class="font_icon arrow_up" style="display:none;"></a>
+						<a class="font_icon arrow_down"></a>
+					</div>
+				</div>
+				<div id="hb_data_switch_box" class="hb_data_switch" style="display:none;">
+					<div class="hb_data_item"><a href="" scl="guang" app="guang">默认地点</a></div>
+				</div>
 			</div>
 		</div>
     	
@@ -122,10 +124,16 @@
 	<div id="m_ui_mask" class="ui_mask" style="display: none;"></div>
 	<!--悬浮工具栏-->
 	<div class="fixed_box">
-		<a class="font_icon back_top" href="javascript:void(0);">&#xe823;</a>
-		<a class="font_icon search_bar" href="javascript:void(0);">&#xe834;</a>
-		<a class="font_icon nav_menu" href="javascript:void(0);">&#xf0c9;</a>
-        <a class="font_icon refresh" href="javascript:void(0);">&#xe824;</a>
+		<a class="side_item font_icon back_top"></a>
+		<a class="side_item font_icon more_bar"></a>
+		<div class="side_item_blank" style="display: none;">
+		  <div class="side_item_box">
+			<a class="sib_item font_icon close"></a>
+			<a class="sib_item font_icon refresh"></a>
+			<a class="sib_item font_icon search_bar"></a>
+			<a class="sib_item font_icon nav_menu"></a>
+		  </div>
+		</div>
 	</div>
     
 </body>

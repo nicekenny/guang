@@ -56,7 +56,7 @@ $(function() {
 	$("#hd_search_link").click(function() {
 		if($(this).attr("status")=="close") {
 			resetBox();
-			$(this).html("&#xe81b;");
+			$(this).removeClass("hd_search_link").addClass("hd_search_close");
 			$("#hb_search_box").fadeIn(fade_time,function(){
 				$("#m_ui_mask").show();
 				$("#hb_search_text").focus();
@@ -98,12 +98,12 @@ $(function() {
 	$("#set_options_link").click(function() {
 		if($(this).attr("status")=="hide") {
 			$("div.item_open").fadeIn(fade_time);
-			$(this).attr("status","show").html("&#xe80a;");
+			$(this).attr("status","show").removeClass("options_eye_hide").addClass("options_eye_show");
 			pageContext.isShared = true;
 			setCookie("items_share_status","true");
 		} else if($(this).attr("status")=="show") {
 			$("div.item_open").fadeOut(fade_time);
-			$(this).attr("status","hide").html("&#xe80b;");
+			$(this).attr("status","hide").removeClass("options_eye_show").addClass("options_eye_hide");
 			pageContext.isShared = false;
 			setCookie("items_share_status","false");
 		}
@@ -111,7 +111,7 @@ $(function() {
 	// 获取cookie中记录的选项
 	if(getCookie("items_share_status")=="true") {
 		$("div.item_open").fadeIn(fade_time);
-		$("#set_options_link").attr("status","show").html("&#xe80a;");
+		$("#set_options_link").attr("status","show").removeClass("options_eye_hide").addClass("options_eye_show");
 		pageContext.isShared = true;
 	}
 	// 地点选择
@@ -282,7 +282,7 @@ function resetBox() {
 		return;
 	if(!$("#hb_search_box").is(":hidden")) {
 		$("#hb_search_box").fadeOut(fade_time);
-		$("#hd_search_link").html("&#xe834;");
+		$("#hd_search_link").removeClass("hd_search_close").addClass("hd_search_link");
 		$("#hd_search_link").attr("status","close");
 	}
 	if(!$("#hb_category_box").is(":hidden")) {
@@ -648,9 +648,9 @@ function showItems(data) {
 			var item_price_icon = "";
 			if(item_minPrice!=undefined && item_maxPrice!=undefined) {
 				if(item_price<=item_minPrice && item_maxPrice>item_price) {
-					item_price_icon = "<span class=\"font_icon icon_price\" title=\"最低价\">&#xf149;</span>";
+					item_price_icon = "<span class=\"font_icon icon_price_min\" title=\"最低价\"></span>";
 				} else if(item_price>=item_maxPrice && item_minPrice<item_price) {
-					item_price_icon = "<span class=\"font_icon icon_price\" style=\"color:#3cd500;\" title=\"最高价\">&#xf148;</span>";
+					item_price_icon = "<span class=\"font_icon icon_price_max\" style=\"color:#3cd500;\" title=\"最高价\"></span>";
 				}
 			}
 			var item_pic_url = item.picUrl;
@@ -661,7 +661,7 @@ function showItems(data) {
 			}
 			var item_li = "<li class=\"wall_item\">"+"<a onclick=\"doBuy(this);\" itemId=\""+item_id+"\" data=\""+item_dataStr+"\" platform=\""+item_platform+"\" >"
 				+"<div class=\"item_img\">"+"<img src=\""+item_pic+"\" pic=\""+item_pic_url+"\" alt=\""+item_title+"\" onload=\"imgLoaded(this)\" onerror=\"imgReload(this)\" />"
-				+"<div class=\"item_open font_icon\">&#xf09e;</div></div><div class=\"item_title\">"+item_title+"</div>"+"<div class=\"item_info\">"
+				+"<div class=\"font_icon item_open\"></div></div><div class=\"item_title\">"+item_title+"</div>"+"<div class=\"item_info\">"
 				+"<span class=\"item_info_price\"><i>¥</i>"+ item_price + item_price_icon +"</span>"
 				//+"<span class=\"item_info_delprice\">¥delprice</span>"
 				+"<span class=\""+item_volume_class+"\">"+item_volume+"</span>"
@@ -750,8 +750,8 @@ function showItems(data) {
 				var title_li = "<li class=\"query_title current\"><a>"+ tmp_title +"</a></li>";
 				$("#category_list").empty().append(title_li).show();
 				var category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
-					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_vol_down+"\">&#xe812;</i></span></a></li>"
-					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\">&#xe813;</i><i class=\"font_icon si_down "+sort_price_down+"\">&#xe812;</i></span></a></li>";
+					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\"></i><i class=\"font_icon si_down "+sort_vol_down+"\"></i></span></a></li>"
+					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\"></i><i class=\"font_icon si_down "+sort_price_down+"\"></i></span></a></li>";
 				$("#category_options").empty().append(category_option).show();
 			}
 		}
@@ -839,14 +839,14 @@ function doBuy(a) {
 	var shop_app_txt = "购物";
 	var price_name = "折扣价：";
 	if(coupon_amount!=undefined && coupon_amount>0) {
-		coupon_txt = "<span class=\"ti_coupon_tag r3\"><i>券</i>"+coupon_amount+"</span>";
+		coupon_txt = "<div class=\"ti_coupon_tag r3\"><div class=\"ct_text\">"+coupon_amount+"</div><div class=\"ct_left\"></div><div class=\"ct_right\"></div></div>";
 		price_name = "券后价：";
 	}
 	var tpwd_dialog = new dialogLayer();
 	var tpwd_dgContent = tpwd_dialog.open("口令/二维码，快速淘好货！",260,333);
 	var tpwd_html = "<div class=\"tao_pwd\">"
-		+"<div class=\"tpwd_content\" clipboard=\"true\"><p class=\"ti_title\">"+title+"</p><p class=\"ti_price\">"+price_name
-		+"<span class=\"tip_block\"><i>¥</i>"+price+"</span>"+coupon_txt+"</p><p style=\"color:#0099CC;\">口令：<span info=\"tpwd\">载入中...</span></p></div>"
+		+"<div class=\"tpwd_content\" clipboard=\"true\"><div class=\"ti_title\">"+title+"</div><div class=\"ti_price\">"+price_name
+		+"<span class=\"tip_block\"><i>¥</i>"+price+"</span>"+coupon_txt+"</div><div style=\"color:#0099CC;\">口令：<span info=\"tpwd\">载入中...</span></div></div>"
 		+"<div class=\"item_qrcode\" style=\"display:none;\"><img src=\"http://qr.liantu.com/api.php?bg=ffffff&el=l&w=200&m=5&text="+encodeURIComponent(buyUrl)
 		+"\" style=\"width:160px;height:160px;\"/></div>"
 		+"<div class=\"tpwd_info\">拷贝口令，打开"+shop_app_txt+"APP购买</div>"

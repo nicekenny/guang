@@ -13,7 +13,7 @@ var again_load = false;
 
 $(function() {
 	var pathname = window.location.pathname;
-	if(pathname=="/tpwd.html" || pathname=="/pwd.html") {
+	if(pathname=="/pwd.html") {
 		// 复制口令页面
 		global_item_id = getQueryString("id");
 		global_platform = getQueryString("platform");
@@ -135,10 +135,11 @@ $(function() {
 					del_price_html = "<em>¥"+del_price+"</em>";
 					del_price_text = "【自己买】¥"+del_price+"元\r\n";
 				}
-				$("div.d_price").html("¥"+item.price+"<span class=\"font_icon icon_price\" style=\"display:none;\"></span>"+del_price_html);
+				$("div.d_price").html("¥"+item.price+"<span id=\"item_price_icon\" class=\"font_icon\" style=\"display:none;\"></span>"+del_price_html);
 				var item_share_coupon = "",is_price_title = "折扣价";
 				if(item.couponAmount!=undefined && item.couponAmount>0) {
 					$("div.d_coupon").html("<i>券</i>"+item.couponAmount).show();
+					$("div.d_coupon_tag .ct_text").html(item.couponAmount).parent().show();
 					item_share_coupon = " (优惠"+item.couponAmount+"元)";
 					is_price_title = "券后价";
 				}
@@ -410,9 +411,9 @@ $(function() {
 					success: function (data) {
 						if(data.historyPrices!=undefined) {
 							if(data.price<=data.minPrice) {
-								$("div.d_price .icon_price").html("&#xf149;").show();
+								$("#item_price_icon").addClass("icon_price_min").show();
 							} else if(data.price>=data.maxPrice) {
-								$("div.d_price .icon_price").html("&#xf148;").css("color","#3cd500").show();
+								$("#item_price_icon").addClass("icon_price_max").css("color","#3cd500").show();
 							}
 							historyPrices(data.historyPrices,data.price,data.maxPrice,data.minPrice);
 						}
@@ -538,7 +539,7 @@ $(function() {
 		// $(e.trigger).removeClass("purple").addClass("blue");
 		// console.info("copy_error:"+e);
 	});
-	if(pathname=="/item.html" || pathname=="/tpwd.html") {
+	if(pathname=="/item.html") {
 		// 滚动条加载商品数据
 		$(window).scroll(function() {
 			var items_box = $("#product_walls");
@@ -666,6 +667,8 @@ function loadRecommends() {
 			//console.info("success");
 			//$("div.detail_recoms").show();
 			again_load = true;
+			var scroll_height = $(".detail_recoms").offset().top;
+			$("body,html").animate({ scrollTop: scroll_height }, 500);
 		},
 		error:function() {
 			//error
