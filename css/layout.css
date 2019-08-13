@@ -93,6 +93,7 @@ a:hover {
 	position: relative;
 	height: 45px;
 	width: 100%;
+	max-width: 800px;
 	z-index: 9999;
 }
 .head_bar {
