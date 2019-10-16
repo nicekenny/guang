@@ -1,6 +1,7 @@
 @charset "utf-8";
 .item_screen_wrap {
 	margin-bottom: 47px;
+	min-height: 480px;
 }
 .detail_img {
 	margin: 0px;
