@@ -395,23 +395,22 @@
 	bottom: 0px;
 	border-left-width: 1pt;
 	border-left-style: solid;
-	border-left-color: #F3F3F3;
+	border-left-color: #EFEFEF;
 }
 .detail_buy_bar .db_buy_link {
 	background-color: #ff6570;
 	position: absolute;
-	height: 37px;
-	width: 110px;
-	top: 5px;
-	right: 10px;
-	bottom: 5px;
+	height: 47px;
+	width: 130px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
 	color: #FFFFFF;
 	font-size: 14px;
-	line-height: 37px;
+	line-height: 47px;
 	text-align: center;
 	font-weight: 500;
 	z-index: 1;
-	border-radius: 0px 20px 20px 0px;
 }
 .detail_buy_bar .green {
 	background-color: #4fd54f;
@@ -426,7 +425,7 @@
 	color: #666666;
 	position: absolute;
 	height: 47px;
-	width: 70px;
+	width: 80px;
 	top: 0px;
 	right: 0px;
 	bottom: 0px;
@@ -434,24 +433,18 @@
 	z-index: 0;
 }
 .detail_buy_bar .db_share_link {
-	background-color: #F5F5F5;
+	background-color: #FCFCFD;
 	color: #ff6570;
 	font-size: 14px;
-	line-height: 37px;
+	line-height: 47px;
 	text-align: center;
 	font-weight: 500;
-	position: absolute;
-	left: 10px;
-	top: 5px;
-	right: 0px;
-	bottom: 5px;
-	border-radius: 20px 0px 0px 20px;
-	width: 110px;
+	margin-right: 130px;
 }
 .detail_buy_bar .gt_share_link_icon{
 	font-size: 14px;
-	line-height: 37px;
-	height: 37px;
+	line-height: 47px;
+	height: 47px;
 	width: 20px;
 }
 .detail_buy_bar .copyed {
