@@ -489,6 +489,13 @@
 	text-align: center;
 	background-color: #FFFFFF;
 }
+.detail_desc_loading {
+	font-size: 14px;
+	line-height: 30px;
+	color: #666666;
+	text-align: center;
+}
+
 .detail_desc_imgs {
 	margin: 0px;
 	padding: 0px;

@@ -429,6 +429,7 @@ $(function() {
 					success: function (data) {
 						if(data.imgs!=undefined) {
 							$("#item_desc_box").show();
+							$("#item_desc_imgs").empty();
 							for(var i=0;i<data.imgs.length;i++) {
 								var img_url = data.imgs[i];
 								img_url = itemImgAddSuffix(img_url,global_platform);
