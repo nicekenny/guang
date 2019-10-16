@@ -1,4 +1,7 @@
 @charset "utf-8";
+.item_screen_wrap {
+	margin-bottom: 50px;
+}
 .detail_img {
 	margin: 0px;
 	padding: 0px;
@@ -136,7 +139,7 @@
   margin-top: 10px;
   float: left;
   position: relative;
-  /*±³¾°½¥±ä*/
+  /*bg-jianbian*/
   filter: alpha(opacity=100 finishopacity=50 style=1 startx=0, starty=0, finishx=0, finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#ff949c, endcolorstr=#ff6570, gradientType=0);
   -ms-filter: alpha(opacity=100 finishopacity=50 style=1 startx=0, starty=0, finishx=0, finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#ff949c, endcolorstr=#ff6570, gradientType=0); /*IE8*/
   background: -moz-linear-gradient(top, #ff949c, rgba(255, 101, 112, 0.9));
@@ -367,11 +370,132 @@
 	height: 40px;
 	width: 20px;
 }
+.detail_buy_bar {
+	position: fixed;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: #FFFFFF;
+	height: 50px;
+	z-index: 1000;
+}
+.detail_buy_bar .dbb_left {
+	height: 50px;
+	margin-right: 240px;
+}
+
+.detail_buy_bar .dbb_right {
+	position: absolute;
+	height: 50px;
+	width: 240px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+.detail_buy_bar .db_buy_link {
+	background-color: #ff6570;
+	position: absolute;
+	height: 50px;
+	width: 130px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	color: #FFFFFF;
+	font-size: 14px;
+	line-height: 50px;
+	text-align: center;
+	font-weight: 500;
+	z-index: 1;
+}
+.detail_buy_bar .green {
+	background-color: #4fd54f;
+}
+.detail_buy_bar .db_buy_loading {
+	background-image: url(images/loading_icon.gif);
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	padding-left: 50px;
+	font-size: 14px;
+	line-height: 50px;
+	color: #666666;
+	position: absolute;
+	height: 50px;
+	width: 80px;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: #FFFFFF;
+	z-index: 0;
+}
+.detail_buy_bar .db_share_link {
+	background-color: #FCFCFD;
+	color: #ff6570;
+	font-size: 14px;
+	line-height: 50px;
+	text-align: center;
+	font-weight: 500;
+	margin-right: 130px;
+}
+.detail_buy_bar .gt_share_link_icon{
+	font-size: 14px;
+	line-height: 40px;
+	height: 40px;
+	width: 20px;
+}
+.detail_buy_bar .copyed {
+	color: #33CC33;
+}
+.detail_buy_bar .db_recoms_link {
+	background-color: #FCFCFD;
+	color: #ff6570;
+	font-size: 14px;
+	line-height: 50px;
+	text-align: center;
+	font-weight: 500;
+	height: 50px;
+	overflow: hidden;
+}
+.detail_buy_bar .gt_recoms_link_icon{
+	font-size: 14px;
+	line-height: 40px;
+	height: 40px;
+	width: 20px;
+}
+
 .detail_item {
 	background-color: #FFFFFF;
 	padding: 10px;
 	overflow: hidden;
 }
+.detail_desc {
+	padding: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 15px;
+	margin-left: 0px;
+}
+.detail_desc_top {
+	font-size: 16px;
+	line-height: 45px;
+	color: #333333;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #DCDCDC;
+	text-align: center;
+	background-color: #FFFFFF;
+}
+.detail_desc_imgs {
+	margin: 0px;
+	padding: 0px;
+}
+.detail_desc_imgs img {
+	width: 100%;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+}
+
 .detail_market {
 	padding-top: 5px;
 	padding-bottom: 5px;

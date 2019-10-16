@@ -48,6 +48,7 @@ $(function() {
 	} else if(pathname=="/item.html") {
 		if(!pageContext.isShared) {
 			$("#goto_buy_view").show();
+			$(".screen_wrap").addClass("item_screen_wrap");
 		}
 		// 获取宝贝数据包
 		var data = getQueryString("d");
@@ -420,6 +421,23 @@ $(function() {
 					}
 				});
 				//--历史价格--end--
+				// 商品详情图片加载
+				$.ajax({
+					url: serverUrl("guang/item/descImgs.html?id="+global_item_id+"&platform="+global_platform),
+					type: 'GET',
+					dataType: "jsonp",
+					success: function (data) {
+						if(data.imgs!=undefined) {
+							$("#item_desc_box").show();
+							for(var i=0;i<data.imgs.length;i++) {
+								var img_url = data.imgs[i];
+								img_url = itemImgAddSuffix(img_url,global_platform);
+								$("#item_desc_imgs").append("<img src=\""+img_url+"\" />");
+							}
+						}
+					}
+				});
+				//--商品详情--end--
 				if(pageContext.isShared) {
 					$("#item_share_text_view").show();
 					$("#item_share_text_button").show();
