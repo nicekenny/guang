@@ -450,6 +450,9 @@ $(function() {
 									rate_images += "<div class=\"drl_item_images\">";
 									for(var j=0;j<rate.images.length;j++) {
 										var imageUrl = rate.images[j];
+										if(global_platform=="TB"||global_platform=="TM") {
+											imageUrl = imageUrl+"_80x80.jpg";
+										}
 										rate_images += "<div class=\"drl_item_image\" style=\"background-image: url("+imageUrl+");\"><!--image--></div>"
 									}
 									rate_images += "</div>";
