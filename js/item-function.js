@@ -443,13 +443,15 @@ $(function() {
 								var rate = data.rateList[i];
 								var rate_images = "";
 								if(rate.images!=undefined && rate.images.length>0) {
+									rate_images += "<div class=\"drl_item_images\">";
 									for(var j=0;j<rate.images.length;j++) {
 										var imageUrl = rate.images[j];
 										rate_images += "<div class=\"drl_item_image\" style=\"background-image: url("+imageUrl+");\"><!--image--></div>"
 									}
+									rate_images += "</div>";
 								}
 								var rate_html = "<div class=\"drl_item\"><div class=\"drl_item_user\"><div class=\"drl_item_userpic\" style=\"background-image: url("+rate.headPic+");\"></div><div class=\"drl_item_username\">"+rate.userName+"</div></div>"
-										+"<div class=\"drl_item_content\"><div class=\"drl_item_text\">"+rate.content+"</div><div class=\"drl_item_images\">"+rate_images+"</div></div></div>";
+										+"<div class=\"drl_item_content\"><div class=\"drl_item_text\">"+rate.content+"</div>"+rate_images+"</div></div>";
 								$("#item_rate_list").append(rate_html);
 							}
 						}
