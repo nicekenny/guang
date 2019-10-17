@@ -522,7 +522,7 @@
 }
 .detail_rate_list .drl_item {
 	position: relative;
-	min-height: 65px;
+	min-height: 70px;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 	border-bottom-color: #F6F6F6;
