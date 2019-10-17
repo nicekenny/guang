@@ -482,7 +482,7 @@
 	display: inline-block;
 	background-color: #fff0f1;
 	margin-right: 10px;
-	color: #666666;
+	color: #333333;
 	font-size: 12px;
 	line-height: 24px;
 	padding-right: 8px;
@@ -560,7 +560,7 @@
 .drl_item .drl_item_text {
 	font-size: 12px;
 	line-height: 22px;
-	color: #666666;
+	color: #333333;
 }
 .drl_item .drl_item_images {
 	padding: 0px;
