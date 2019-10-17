@@ -492,6 +492,9 @@
 	margin-top: 10px;
 	margin-left: 0px;
 }
+.detail_rate_keywords .drk_low {
+	background-color: #F6F6F6;
+}
 .detail_rate_keywords .drk_item em {
 	font-size: 10px;
 	font-style: normal;
@@ -525,6 +528,7 @@
 	border-bottom-color: #F6F6F6;
 	margin-bottom: 10px;
 }
+
 .drl_item .drl_item_user {
 	position: absolute;
 	height: 65px;

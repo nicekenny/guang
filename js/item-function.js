@@ -432,7 +432,11 @@ $(function() {
 							$("#item_rate_keywords").show();
 							for(var i=0;i<data.rateKeywords.length;i++) {
 								var kw = data.rateKeywords[i];
-								var kw_html = "<div class=\"drk_item\">"+kw.word+"<em>("+kw.count+")</em></div>";
+								var kw_style = "";
+								if(kw.type==-1) {
+									kw_style = "drk_low";
+								}
+								var kw_html = "<div class=\"drk_item "+kw_style+"\">"+kw.word+"<em>("+kw.count+")</em></div>";
 								$("#item_rate_keywords").append(kw_html);
 							}
 						}
