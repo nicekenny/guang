@@ -423,10 +423,37 @@ $(function() {
 				//--历史价格--end--
 				// 商品详情图片加载
 				$.ajax({
-					url: serverUrl("guang/item/descImgs.html?id="+global_item_id+"&platform="+global_platform),
+					url: serverUrl("guang/item/descData.html?id="+global_item_id+"&platform="+global_platform),
 					type: 'GET',
 					dataType: "jsonp",
 					success: function (data) {
+						// 商品评价
+						if(data.rateKeywords!=undefined) {
+							$("#item_rate_keywords").show();
+							for(var i=0;i<data.rateKeywords.length;i++) {
+								var kw = data.rateKeywords[i];
+								var kw_html = "<div class=\"drk_item\">"+kw.word+"<em>("+kw.count+")</em></div>";
+								$("#item_rate_keywords").append(kw_html);
+							}
+						}
+						if(data.rateList!=undefined && data.rateList.length>0) {
+							$("#item_rate_box").show();
+							$("#item_rate_list").empty();
+							for(var i=0;i<data.rateList.length;i++) {
+								var rate = data.rateList[i];
+								var rate_images = "";
+								if(rate.images!=undefined && rate.images.length>0) {
+									for(var j=0;j<rate.images.length;j++) {
+										var imageUrl = rate.images[j];
+										rate_images += "<div class=\"drl_item_image\" style=\"background-image: url("+imageUrl+");\"><!--image--></div>"
+									}
+								}
+								var rate_html = "<div class=\"drl_item\"><div class=\"drl_item_user\"><div class=\"drl_item_userpic\" style=\"background-image: url("+rate.headPic+");\"></div><div class=\"drl_item_username\">"+rate.userName+"</div></div>"
+										+"<div class=\"drl_item_content\"><div class=\"drl_item_text\">"+rate.content+"</div><div class=\"drl_item_images\">"+rate_images+"</div></div></div>";
+								$("#item_rate_list").append(rate_html);
+							}
+						}
+						// 商品详情图片
 						if(data.imgs!=undefined) {
 							$("#item_desc_box").show();
 							$("#item_desc_imgs").empty();
