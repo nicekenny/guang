@@ -722,7 +722,7 @@ function loadRecommends() {
 			//console.info("success");
 			//$("div.detail_recoms").show();
 			again_load = true;
-			if(pageContext.pageNo==1) {
+			if(pageContext.currentPageNo==1) {
 				var scroll_height = $(".detail_recoms").offset().top;
 				$("body,html").animate({ scrollTop: scroll_height }, 500);
 			}
