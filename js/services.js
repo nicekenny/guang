@@ -371,7 +371,7 @@ function doCategory(a) {
 	var a_left = $(a).offset().left;
 	var cates_left = $("#category_list").scrollLeft();
 	var cates_width = $("#category_list").width();
-	var a_margin = 60;
+	var a_margin = 100;
 	if(a_left<a_margin) {
 		var tmp_cates_left = cates_left - (a_margin-a_left);
 		if(tmp_cates_left<0)
