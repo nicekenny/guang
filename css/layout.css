@@ -726,6 +726,13 @@ a:hover {
 	color: #333333;
 	margin-bottom: 10px;
 }
+.warning_box p {
+	font-size: 14px;
+	line-height: 25px;
+	font-weight: 400;
+	color: #999999;
+	margin-bottom: 10px;
+}
 .footer {
 	background-color: #666666;
 	border-top-width: 1px;
