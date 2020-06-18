@@ -673,7 +673,7 @@ function showItems(data) {
 		$("#category_box").show();
 		var categorys = data.categorys;
 		if(categorys!=undefined && categorys.length>0) {
-			var category_lis = "",category_url = "?gss="+pageContext.gss;
+			var category_lis = "",category_url = "?gss=category";
 			for(var i=0;i<categorys.length;i++) {
 				var category = categorys[i];
 				var category_type = category.type;
