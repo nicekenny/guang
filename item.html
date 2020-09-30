@@ -14,7 +14,7 @@
 
 <link href="css/layout.css?v=1.1" rel="stylesheet" type="text/css" />
 <link href="css/dialog.css?v=1.1" rel="stylesheet" type="text/css" />
-<link href="css/item.css?v=1.1" rel="stylesheet" type="text/css" />
+<link href="css/item.css" rel="stylesheet" type="text/css" />
 <link href="css/icon_font.css?v=1.1" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="js/jquery-min.js"></script>
@@ -57,8 +57,8 @@
                 <div class="di_likes"></div>
             </div>
         </div>
-        <div class="detail_notes">～长按识别二维码～</div>
-		<!-- 简版 -->
+        <div class="detail_notes">～长按识别图中二维码～</div>
+		<!-- 简版 
 		<div id="goto_buy_view" class="detail_gotoBuy clearfix" style="display:none;">
         	<div class="gt_left">
         		<div id="goto_share_link" class="gt_share_link"><div class="font_icon gt_share_link_icon"></div>分享宝贝</div>
@@ -70,6 +70,20 @@
 				<div id="goto_buy_link_jd" class="gt_buy_link" style="display:none;">去京东购买</div>
                 <div class="gt_buy_loading">载入中</div>
             </div>
+        </div>-->
+        <!-- 固定版 -->
+        <div id="goto_buy_view" class="detail_buy_bar" style="display:none;">
+            <div class="dbb_left">
+                <div id="goto_recoms_link" class="db_recoms_link"><div class="font_icon gt_recoms_link_icon"></div>发现更多</div>
+            </div>
+            <div class="dbb_right">
+                <div id="goto_share_link" class="db_share_link"><div class="font_icon gt_share_link_icon"></div>分享文案</div>
+                <!-- 多平台购买 -->
+              <div id="goto_buy_link_tbk" class="db_buy_link" style="display:none;">复制淘口令</div>
+                <div id="goto_buy_link_pdd" class="db_buy_link" style="display:none;">拼多多购买</div>
+                <div id="goto_buy_link_jd" class="db_buy_link" style="display:none;">去京东购买</div>
+                <div class="db_buy_loading">载入中</div>
+			</div>
         </div>
 		<!-- 各平台 -->
         <div id="tao_pwd_buy" class="detail_buttons" style="display:none;">
@@ -86,6 +100,23 @@
         </div>
         <!-- 历史价格 -->
         <div id="history_prices" class="detail_item" style="display:none;">
+        </div>
+        <!-- 商品评价 -->
+        <div id="item_rate_keywords" class="detail_rate_keywords" style="display:none;">
+        	<!-- rate-keyword -->
+        </div>
+        <div id="item_rate_box" class="detail_rates" style="display:none;">
+        	<div class="detail_rate_top">~ 来自用户的评价 ~</div>
+            <div id="item_rate_list" class="detail_rate_list">
+            	<!-- rate-item -->
+            </div>
+        </div>
+        <!-- 商品详情 -->
+        <div id="item_desc_box" class="detail_desc" style="display:none;">
+        	<div class="detail_desc_top">~ 商品详情 ~</div>
+            <div id="item_desc_imgs" class="detail_desc_imgs">
+            	<div class="detail_desc_loading">努力加载中...</div>
+            </div>
         </div>
 		<!-- 再逛一逛 -->
 		<div id="item_again_load_button" class="detail_buttons" style="display:none;">

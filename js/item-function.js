@@ -48,6 +48,7 @@ $(function() {
 	} else if(pathname=="/item.html") {
 		if(!pageContext.isShared) {
 			$("#goto_buy_view").show();
+			$(".screen_wrap").addClass("item_screen_wrap");
 		}
 		// 获取宝贝数据包
 		var data = getQueryString("d");
@@ -420,6 +421,60 @@ $(function() {
 					}
 				});
 				//--历史价格--end--
+				// 商品详情图片加载
+				$.ajax({
+					url: serverUrl("guang/item/descData.html?id="+global_item_id+"&platform="+global_platform),
+					type: 'GET',
+					dataType: "jsonp",
+					success: function (data) {
+						// 商品评价
+						if(data.rateKeywords!=undefined) {
+							$("#item_rate_keywords").show();
+							for(var i=0;i<data.rateKeywords.length;i++) {
+								var kw = data.rateKeywords[i];
+								var kw_style = "";
+								if(kw.type==-1) {
+									kw_style = "drk_low";
+								}
+								var kw_html = "<div class=\"drk_item "+kw_style+"\">"+kw.word+"<em>("+kw.count+")</em></div>";
+								$("#item_rate_keywords").append(kw_html);
+							}
+						}
+						if(data.rateList!=undefined && data.rateList.length>0) {
+							$("#item_rate_box").show();
+							$("#item_rate_list").empty();
+							for(var i=0;i<data.rateList.length;i++) {
+								var rate = data.rateList[i];
+								var rate_images = "";
+								if(rate.images!=undefined && rate.images.length>0) {
+									rate_images += "<div class=\"drl_item_images\">";
+									for(var j=0;j<rate.images.length;j++) {
+										var imageUrl = rate.images[j];
+										if(global_platform=="TB"||global_platform=="TM") {
+											imageUrl = imageUrl+"_80x80.jpg";
+										}
+										rate_images += "<div class=\"drl_item_image\" style=\"background-image: url("+imageUrl+");\"><!--image--></div>"
+									}
+									rate_images += "</div>";
+								}
+								var rate_html = "<div class=\"drl_item\"><div class=\"drl_item_user\"><div class=\"drl_item_userpic\" style=\"background-image: url("+rate.headPic+");\"></div><div class=\"drl_item_username\">"+rate.userName+"</div></div>"
+										+"<div class=\"drl_item_content\"><div class=\"drl_item_text\">"+rate.content+"</div>"+rate_images+"</div></div>";
+								$("#item_rate_list").append(rate_html);
+							}
+						}
+						// 商品详情图片
+						if(data.imgs!=undefined) {
+							$("#item_desc_box").show();
+							$("#item_desc_imgs").empty();
+							for(var i=0;i<data.imgs.length;i++) {
+								var img_url = data.imgs[i];
+								img_url = itemImgAddSuffix(img_url,global_platform);
+								$("#item_desc_imgs").append("<img src=\""+img_url+"\" />");
+							}
+						}
+					}
+				});
+				//--商品详情--end--
 				if(pageContext.isShared) {
 					$("#item_share_text_view").show();
 					$("#item_share_text_button").show();
@@ -667,8 +722,10 @@ function loadRecommends() {
 			//console.info("success");
 			//$("div.detail_recoms").show();
 			again_load = true;
-			var scroll_height = $(".detail_recoms").offset().top;
-			$("body,html").animate({ scrollTop: scroll_height }, 500);
+			if(pageContext.currentPageNo==1) {
+				var scroll_height = $(".detail_recoms").offset().top;
+				$("body,html").animate({ scrollTop: scroll_height }, 500);
+			}
 		},
 		error:function() {
 			//error

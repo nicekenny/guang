@@ -18,7 +18,7 @@ var android_app_apk = "app/guang_stable.apk";
 // 显示隐藏效果时间
 var fade_time = 200;
 // 页面上下文数据{client:"wxapp"}
-var pageContext = {appCode:"guang",client:""};
+var pageContext = {appCode:"guang",client:"",gss:"category"};
 
 // 页面数据初始化
 $(function() {
@@ -27,14 +27,26 @@ $(function() {
 		basepath = "https://guang.scode.org.cn/";
 		serv_basepath = "https://x.scode.org.cn:444/";
 	}
-	// 获取全局执行变量
-	pageContext.gss = getQueryString("gss");
 
-	// 初始全局APP代码
+	// 初始地址栏参数
 	var tmp_app_code = getQueryString("app");
 	if(tmp_app_code!=undefined && $.trim(tmp_app_code)!="" && tmp_app_code!=pageContext.appCode) {
 		pageContext.appCode = tmp_app_code;
 	}
+	var tmp_client = getQueryString("client");
+	if(tmp_client!=undefined && $.trim(tmp_client)!="" && tmp_client!=pageContext.client) {
+		pageContext.client = tmp_client;
+	}
+	var tmp_gss = getQueryString("gss");
+	if(tmp_gss!=undefined && $.trim(tmp_gss)!="" && tmp_gss!=pageContext.gss) {
+		pageContext.gss = tmp_gss;
+	}
+	pageContext.id = getQueryString("id");
+	pageContext.title = getQueryString("q");
+	pageContext.sort = getQueryString("sort");
+	pageContext.pageNo = getQueryString("page");
+	// 输出页面上下文信息
+	// console.log("pageContext",pageContext);
 
 	$("a[scl='guang']").each(function(){
 		var tmp_href = $(this).attr("href");
@@ -326,7 +338,7 @@ function loadMenus() {
 					var menu_html = "";
 					for(var m=0;m<data.menus.length;m++) {
 						var menu_item = data.menus[m];
-						var mi_href = "?gss=menu&menu="+menu_item.id;
+						var mi_href = "?gss=menu&id="+menu_item.id;
 						var mi_icon_css = "";
 						if(menu_item.code!=undefined && $.trim(menu_item.code)!=""){
 							mi_icon_css = " class=\"ct-icon ct-i-"+menu_item.code+"\"";
@@ -340,7 +352,7 @@ function loadMenus() {
 					var site_html = "";
 					for(var s=0;s<data.sites.length;s++) {
 						var site_item = data.sites[s];
-						site_html = site_html + "<div class=\"hb_data_item\"><a href=\""+site_item.url+"\" scl=\"guang\" app=\""+site_item.appCode+"\">"+site_item.name+"</a></div>";
+						site_html = site_html + "<div class=\"hb_data_item\"><a href=\""+site_item.url+"\">"+site_item.name+"</a></div>";
 					}
 					$("#hb_data_switch_box").empty().append(site_html);
 				}
@@ -355,7 +367,7 @@ function menuClick(a) {
 	var url = $(a).attr("link");
 	// console.info("Menu:"+url);
 	// 获取参数
-	pageContext.menuId = getUrlParam(url,"menu");
+	pageContext.id = getUrlParam(url,"id");
 	pageContext.gss = getUrlParam(url,"gss");
 	pageContext.category = undefined;
 	pageContext.sort = undefined;
@@ -371,7 +383,7 @@ function doCategory(a) {
 	var a_left = $(a).offset().left;
 	var cates_left = $("#category_list").scrollLeft();
 	var cates_width = $("#category_list").width();
-	var a_margin = 60;
+	var a_margin = 100; // $(window).width()/3;
 	if(a_left<a_margin) {
 		var tmp_cates_left = cates_left - (a_margin-a_left);
 		if(tmp_cates_left<0)
@@ -385,7 +397,7 @@ function doCategory(a) {
 	}
 	var url = $(a).attr("link");
 	// 获取参数
-	pageContext.category = getUrlParam(url,"cate");
+	pageContext.id = getUrlParam(url,"id");
 	var url_gss = getUrlParam(url,"gss");
 	if(url_gss!=undefined)
 		pageContext.gss = url_gss;
@@ -458,15 +470,6 @@ function reloadIndex() {
 }
 // index.html页面数据加载
 function loadIndex() {
-	// 初始参数
-	pageContext.title = getQueryString("q");
-	pageContext.category = getQueryString("cate");
-	pageContext.sort = getQueryString("sort");
-	pageContext.pageNo = getQueryString("page");
-	pageContext.gss = getQueryString("gss");
-	if(pageContext.gss=="menu") {
-		pageContext.menuId = getQueryString("menu");
-	}
 	// default
 	pageContext.isLoaded = true;
 	pageContext.isReload = false;
@@ -503,42 +506,16 @@ function doLoadIndex() {
 		$("#wall_loading_page").html(pageContext.currentPageNo);
 		$("#article_content").hide();
 	}
-	var load_url;
-	if(pageContext.gss!=undefined) {
-		load_url = "guang/item/list.html";
-		if(pageContext.gss=="search") {
-			load_url = "guang/item/search.html";
-			if(pageContext.platforms!=undefined && $.trim(pageContext.platforms).length>0) {
-				load_url = changeURLArg(load_url,"platforms",pageContext.platforms);
-			}
-			if(pageContext.title!=undefined) {
-				var search_q = decodeURI(pageContext.title);
-				load_url = changeURLArg(load_url,"q",search_q);
-			}
-		} else if(pageContext.gss=="menu") {
-			load_url = "guang/item/menu.html";
-			load_url = changeURLArg(load_url,"menu",pageContext.menuId);
-		} else {
-			if(pageContext.gss!=undefined && $.trim(pageContext.gss).length>0) {
-				load_url = changeURLArg(load_url,"client",pageContext.gss);
-			}
-			if(pageContext.category!=undefined) {
-				load_url = changeURLArg(load_url,"cate",pageContext.category);
-			}
-		}
-		if(pageContext.sort!=undefined) {
-			load_url = changeURLArg(load_url,"sort",pageContext.sort);
-		}
-		load_url = changeURLArg(load_url,"page",pageContext.pageNo);
-	}
-	if(load_url==undefined) {
-		load_url = "guang/item/tbk/cateItems.html";
-		if(pageContext.category!=undefined) {
-			load_url = changeURLArg(load_url,"cate",pageContext.category);
-		}
-		load_url = changeURLArg(load_url,"page",pageContext.pageNo);
-	}
-	pageContext.serverLoadUrl = load_url;
+	var load_url = "guang/item/data.html";
+	load_url = changeURLArg(load_url,"id",pageContext.id);
+	load_url = changeURLArg(load_url,"platforms",pageContext.platforms);
+	var search_q = pageContext.title==undefined?"":decodeURI(pageContext.title);
+	load_url = changeURLArg(load_url,"q",search_q);
+	load_url = changeURLArg(load_url,"sort",pageContext.sort);
+	load_url = changeURLArg(load_url,"gss",pageContext.gss);
+	load_url = changeURLArg(load_url,"page",pageContext.pageNo);
+
+	pageContext.serviceUrl = load_url;
 	// debug...
 	// console.info("LOAD-URL:"+load_url);
 	// debug...
@@ -554,13 +531,13 @@ function doLoadIndex() {
 	});
 	// 设置超时后执行刷新
 	setTimeout(function(){
-		var last_server_load_url = load_url;
+		var last_service_url = load_url;
 		// debug...
 		// console.info("LOAD-TIMEOUT:"+JSON.stringify(pageContext));
 		// 如果已经加载完，不执行超时
 		if(pageContext.isLoaded)
 			return;
-		else if(last_server_load_url!=pageContext.serverLoadUrl)
+		else if(last_service_url!=pageContext.serviceUrl)
 			return;
 		var timeout_refresh_count = 0;
 		var query_refresh = getQueryString("refresh");
@@ -574,29 +551,23 @@ function doLoadIndex() {
 			$("#warning_box").show();
 			return;
 		}
-		var refresh_timeout_url = "", url_params = "";
+		var param_id = pageContext.id;
 		var param_q = pageContext.title;
-		var param_menuId = pageContext.menuId;
-		var param_cate = pageContext.category;
 		var param_sort = pageContext.sort;
 		var param_page = pageContext.pageNo;
+		var url_params = "";
+		if(param_id!=undefined && param_id>0)
+			url_params = url_params+"&id="+param_id;
 		if(param_q!=undefined && $.trim(param_q).length>0)
 			url_params = url_params+"&q="+encodeURI(param_q);
-		if(param_menuId!=undefined && param_menuId>0)
-			url_params = url_params+"&menu="+param_menuId;
-		if(param_cate!=undefined && $.trim(param_cate).length>0)
-			url_params = url_params+"&cate="+param_cate;
 		if(param_sort!=undefined && $.trim(param_sort).length>0)
 			url_params = url_params+"&sort="+param_sort;
 		if(param_page!=undefined && param_page>0)
 			url_params = url_params+"&page="+param_page;
 		url_params = url_params+"&refresh="+(timeout_refresh_count+1);
-		if(pageContext.gss==undefined) {
-			if(url_params.length>0)
-				refresh_timeout_url = "?"+url_params.substring(1);
-		} else {
-			refresh_timeout_url = "?gss="+pageContext.gss+url_params;
-		}
+
+		var refresh_timeout_url = "?gss="+pageContext.gss+url_params;
+
 		// console.info("REFRESH-TIMEOUT-URL:"+guangUrl(refresh_timeout_url));
 		// window.location.href = guangUrl(refresh_timeout_url);
 		openWindow(guangUrl(refresh_timeout_url));
@@ -607,13 +578,12 @@ function doLoadIndex() {
 function showItems(data) {
 	if(data==undefined)
 		return;
-	var current_category = data.currentCategory;
 	var data_page_no = 0;
 	if(data.query!=undefined && data.query.pageNumber!=undefined)
 		data_page_no = data.query.pageNumber;
 	pageContext.currentPageNo = data_page_no;
-	if(current_category!=undefined) {
-		$(document).attr("title", current_category + " - 逛街啦");
+	if(data.title!=undefined) {
+		$(document).attr("title", data.title + " - 逛街啦");
 	}
 	topLoading(false);
 	if(!$("#wall_loading").is(":hidden"))
@@ -703,57 +673,50 @@ function showItems(data) {
 		$("#category_box").show();
 		var categorys = data.categorys;
 		if(categorys!=undefined && categorys.length>0) {
-			var category_lis = "";
+			var category_lis = "",category_url = "?gss=category";
 			for(var i=0;i<categorys.length;i++) {
 				var category = categorys[i];
 				var category_type = category.type;
 				var current_li = "";
-				if(category.numId == data.currentCategoryId) {
+				if(category.numId == data.currentId) {
 					current_li = " class=\"current\"";
 				}
-				var category_type_param = "";
-				if(category_type!=undefined)
-					category_type_param = "&gss="+category_type;
-				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl("?cate="+category.numId+category_type_param)+ "\" onclick=\"doCategory(this)\">"+ category.title+"</a></li>";
+				category_lis = category_lis + "<li"+current_li+"><a link=\""+guangUrl(category_url+"&id="+category.numId)+ "\" onclick=\"doCategory(this)\">"+ category.title+"</a></li>";
 			}
 			$("#category_list").empty().append(category_lis).show();
-		}
-		if(data.from=="menu" || data.from=="search") {
-			var query = data.query;
-			if(query!=undefined) {
-				if(query.title!=undefined) {
-					var title_suffix = " - 逛街啦";
-					if(data.from=="jd")
-						title_suffix = " - 京东商城";
-					else if(data.from=="pdd")
-						title_suffix = " - 拼多多";
-					$(document).attr("title", query.title + title_suffix);
-				}
-				var sort_vol_up = "",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
-				var sort = query.sort;
-				if(sort=="total_sales_asc") {
-					sort_vol_up = "current"
-				} else if(sort=="total_sales_des") {
-					sort_vol_down = "current"
-				} else if(sort=="price_asc") {
-					sort_price_up = "current"
-				} else if(sort=="price_des") {
-					sort_price_down = "current"
-				}
-				var tmp_title = query.title;
-				if(tmp_title!=undefined) {
-					if(tmp_title.length>10)
-						tmp_title = tmp_title.substring(0,10)+"...";
-				} else {
-					tmp_title = "逛街啦";
-				}
-				var title_li = "<li class=\"query_title current\"><a>"+ tmp_title +"</a></li>";
-				$("#category_list").empty().append(title_li).show();
-				var category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
-					+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\"></i><i class=\"font_icon si_down "+sort_vol_down+"\"></i></span></a></li>"
-					+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\"></i><i class=\"font_icon si_down "+sort_price_down+"\"></i></span></a></li>";
-				$("#category_options").empty().append(category_option).show();
+		} else if(data.query!=undefined) {
+			if(data.query.title!=undefined) {
+				var title_suffix = " - 逛街啦";
+				if(data.from=="jd")
+					title_suffix = " - 京东商城";
+				else if(data.from=="pdd")
+					title_suffix = " - 拼多多";
+				$(document).attr("title", data.query.title + title_suffix);
 			}
+			var sort_vol_up = "",sort_vol_down = "",sort_price_up = "",sort_price_down = "";
+			var sort = data.query.sort;
+			if(sort=="total_sales_asc") {
+				sort_vol_up = "current"
+			} else if(sort=="total_sales_des") {
+				sort_vol_down = "current"
+			} else if(sort=="price_asc") {
+				sort_price_up = "current"
+			} else if(sort=="price_des") {
+				sort_price_down = "current"
+			}
+			var tmp_title = data.query.title;
+			if(tmp_title!=undefined) {
+				if(tmp_title.length>10)
+					tmp_title = tmp_title.substring(0,10)+"...";
+			} else {
+				tmp_title = "逛街啦";
+			}
+			var title_li = "<li class=\"query_title current\"><a>"+ tmp_title +"</a></li>";
+			$("#category_list").empty().append(title_li).show();
+			var category_option = "<li><a onclick=\"sortItems(this);\" sort=\"default\">综合排序</a></li>"
+				+"<li><a onclick=\"sortItems(this);\" sort=\"total_sales\">销量<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_vol_up+"\"></i><i class=\"font_icon si_down "+sort_vol_down+"\"></i></span></a></li>"
+				+"<li><a onclick=\"sortItems(this);\" sort=\"price\">价格<span class=\"sort_icon\"><i class=\"font_icon si_up "+sort_price_up+"\"></i><i class=\"font_icon si_down "+sort_price_down+"\"></i></span></a></li>";
+			$("#category_options").empty().append(category_option).show();
 		}
 	}
 	// 加载完成后重置状态

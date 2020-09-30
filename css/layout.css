@@ -98,6 +98,7 @@ a:hover {
 .head_bar {
 	height: 45px;
 	width: 100%;
+	max-width: 800px;
 	position: fixed;
 	/*box-shadow: 0px 1px 3px #E0E0E0;*/
 	z-index: 1000;
@@ -129,7 +130,7 @@ a:hover {
 	background:-o-linear-gradient(top, #FAFAFA, rgba(255, 255, 255, 0.9));
 }
 .head_bar .hb_search_box {
-	position: fixed;
+	position: absolute;
 	/*height: 54px;*/
 	left: 0px;
 	top: 45px;
@@ -394,7 +395,7 @@ a:hover {
 	overflow-x: auto;
 	overflow-y: hidden;
 	-webkit-overflow-scrolling: touch;
-	height: 60px;
+	height: 65px;
 }
 .cc_nav_box li {
 	display: inline-block;
@@ -725,6 +726,13 @@ a:hover {
 	color: #333333;
 	margin-bottom: 10px;
 }
+.warning_box p {
+	font-size: 14px;
+	line-height: 25px;
+	font-weight: 400;
+	color: #999999;
+	margin-bottom: 10px;
+}
 .footer {
 	background-color: #666666;
 	border-top-width: 1px;
@@ -744,7 +752,7 @@ a:hover {
 .fixed_box {
 	position: fixed;
 	right: 10px;
-	bottom: 60px;
+	bottom: 80px;
 	width: 36px;
 	z-index: 1000;
 }
@@ -985,14 +993,14 @@ a:hover {
 	box-shadow: 0px 2px 4px #D6D6D6;
 }
 .article_title {
-	height: 40px;
+	height: 45px;
 	padding-right: 10px;
 	padding-left: 10px;
 	overflow: hidden;
 }
 .article_title h1 {
 	font-size: 18px;
-	line-height: 40px;
+	line-height: 45px;
 	color: #333333;
 	font-style: normal;
 	font-weight: 500;
